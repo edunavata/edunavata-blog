@@ -5,6 +5,7 @@ import { getCollection, render } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime, formatDate } from '@/i18n/utils';
 import type { GetStaticPaths } from 'astro';
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -71,7 +72,11 @@ const related = allPosts
       <!-- Cover -->
       {post.data.cover && (
         <div style="width:100%; aspect-ratio:16/9; border-radius:10px; border:1px solid var(--border); margin-bottom:48px; overflow:hidden;">
-          <img src={`/posts/${post.id.split('/')[0]}/${post.data.cover.image}`} alt={post.data.cover.alt || ''} style="width:100%; height:100%; object-fit:cover;" />
+          <Image 
+            src={post.data.cover.image} 
+            alt={post.data.cover.alt || ''} 
+            style="width:100%; height:100%; object-fit:cover;" 
+          />
         </div>
       )}
 

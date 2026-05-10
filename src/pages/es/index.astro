@@ -66,7 +66,7 @@ const categories = [...allTags.entries()]
           tag={featured.data.tags[0] || ''}
           description={featured.data.description}
           readingTime={getReadingTime(featured.body ?? '')}
-          coverImage={featured.data.cover?.image ? `/posts/${featured.id.split('/')[0]}/${featured.data.cover.image}` : undefined}
+          coverImage={featured.data.cover?.image}
           coverAlt={featured.data.cover?.alt}
         />
       </section>

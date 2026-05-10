@@ -4,7 +4,8 @@ import { z } from 'astro/zod';
 
 const posts = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
-  schema: z.object({
+  
+  schema: ({ image }) => z.object({
     title: z.string(),
     date: z.coerce.date(),
     draft: z.boolean().default(false),
@@ -14,7 +15,7 @@ const posts = defineCollection({
     tags: z.array(z.string()).default([]),
     categories: z.array(z.string()).default([]),
     cover: z.object({
-      image: z.string(),
+      image: image(),
       alt: z.string().optional(),
     }).optional(),
     lang: z.enum(['es', 'en']).default('es'),

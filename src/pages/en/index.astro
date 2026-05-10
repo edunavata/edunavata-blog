@@ -6,6 +6,7 @@ import CategoryChip from '@/components/CategoryChip.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime } from '@/i18n/utils';
 import { home } from '@/data/home';
+import { Image } from 'astro:assets';
 
 const lang = 'en';
 const t = useTranslations(lang);
@@ -66,7 +67,7 @@ const categories = [...allTags.entries()]
           tag={featured.data.tags[0] || ''}
           description={featured.data.description}
           readingTime={getReadingTime(featured.body ?? '')}
-          coverImage={featured.data.cover?.image ? `/posts/${featured.id.split('/')[0]}/${featured.data.cover.image}` : undefined}
+          coverImage={featured.data.cover?.image}
           coverAlt={featured.data.cover?.alt}
         />
       </section>
