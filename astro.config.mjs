@@ -4,10 +4,12 @@ import sitemap from '@astrojs/sitemap';
 import expressiveCode from 'astro-expressive-code';
 import tailwindcss from '@tailwindcss/vite';
 
+import cloudflare from '@astrojs/cloudflare';
+
 export default defineConfig({
   // TODO: Cambia esto por tu dominio real en producción
   site: 'https://tublog.com',
-  
+
   // Configuración de i18n nativa
   i18n: {
     defaultLocale: 'es',
@@ -36,4 +38,6 @@ export default defineConfig({
       },
     }),
   ],
+
+  adapter: cloudflare(),
 });

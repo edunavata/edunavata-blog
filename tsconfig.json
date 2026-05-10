@@ -4,7 +4,12 @@
     "jsx": "react-jsx",
     "jsxImportSource": "astro",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
-  }
+  },
+  "include": [
+    "./worker-configuration.d.ts"
+  ]
 }
