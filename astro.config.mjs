@@ -7,7 +7,10 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   // TODO: Cambia esto por tu dominio real en producción
   site: 'https://tublog.com',
-  
+
+  // Exclude unrelated directories from type checking
+  exclude: ['mi-blog/**'],
+
   // Configuración de i18n nativa
   i18n: {
     defaultLocale: 'es',

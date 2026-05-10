@@ -17,8 +17,7 @@ const { title, image = '/og-default.jpg' } = Astro.props;
 const lang = Astro.props.lang || 'es';
 const t = useTranslations(lang);
 
-const rawDescription = Astro.props.description || t('blog.featured');
-const description = typeof rawDescription === 'function' ? rawDescription(1) : rawDescription;
+const description = Astro.props.description || t('blog.featured');
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 

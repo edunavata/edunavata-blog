@@ -2,8 +2,9 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PostCard from '@/components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { useTranslations, getPostUrl, getReadingTime } from '@/i18n/utils';
+import { getPostUrl, getReadingTime } from '@/i18n/utils';
 import type { GetStaticPaths } from 'astro';
+import type { CollectionEntry } from 'astro:content';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -28,9 +29,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return paths;
 };
 
-const { tag, posts: tagPosts } = Astro.props;
+const { tag, posts: tagPosts } = Astro.props as { tag: string; posts: CollectionEntry<'posts'>[] };
 const lang = Astro.params.lang as 'es' | 'en';
-const t = useTranslations(lang);
 const sorted = tagPosts.sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
 ---
 

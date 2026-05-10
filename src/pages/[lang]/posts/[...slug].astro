@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import PostCard from '@/components/PostCard.astro';
 import TagPill from '@/components/TagPill.astro';
 import { getCollection, render } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime, formatDate } from '@/i18n/utils';
 import type { GetStaticPaths } from 'astro';
+import type { CollectionEntry } from 'astro:content';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -14,7 +14,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }));
 };
 
-const { post } = Astro.props;
+const { post } = Astro.props as { post: CollectionEntry<'posts'> };
 const { Content, headings } = await render(post);
 const lang = post.data.lang as 'es' | 'en';
 const t = useTranslations(lang);
