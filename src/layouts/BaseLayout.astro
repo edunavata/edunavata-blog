@@ -21,7 +21,7 @@ const description = Astro.props.description || t('blog.featured');
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<html lang={lang} data-theme="dark">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -46,22 +46,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <ClientRouter />
 
     <script is:inline>
-      const theme = (() => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
+      (function () {
+        function getTheme() {
+          var stored = typeof localStorage !== 'undefined' && localStorage.getItem('theme');
+          if (stored === 'dark' || stored === 'light') return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 'dark';
+        var theme = getTheme();
+        document.documentElement.classList.add('no-transitions');
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        document.documentElement.offsetHeight;
+        document.documentElement.classList.remove('no-transitions');
+        if (!window.__themeSwapListenerAdded) {
+          window.__themeSwapListenerAdded = true;
+          document.addEventListener('astro:before-swap', function (e) {
+            var t = getTheme();
+            e.newDocument.documentElement.setAttribute('data-theme', t);
+          });
         }
-        return 'light';
       })();
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-
-      document.addEventListener('astro:after-swap', () => {
-        const saved = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', saved);
-      });
     </script>
   </head>
 

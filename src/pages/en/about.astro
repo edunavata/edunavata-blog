@@ -112,16 +112,18 @@ const contactIcons: Record<string, string> = {
 </BaseLayout>
 
 <script is:inline>
-  const pgpBtn = document.getElementById('pgp-copy');
-  if (pgpBtn) {
-    pgpBtn.addEventListener('click', async () => {
-      const key = document.getElementById('pgp-key')?.textContent || '';
-      try { await navigator.clipboard.writeText(key); } catch (e) {}
-      const old = pgpBtn.textContent;
-      pgpBtn.style.color = 'var(--accent)';
-      pgpBtn.style.borderColor = 'var(--callout-info-bd)';
-      pgpBtn.textContent = '✓ Copied';
-      setTimeout(() => { pgpBtn.style.color = ''; pgpBtn.style.borderColor = ''; pgpBtn.textContent = old; }, 1600);
-    });
-  }
+  (function () {
+    var pgpBtn = document.getElementById('pgp-copy');
+    if (pgpBtn) {
+      pgpBtn.addEventListener('click', async function () {
+        var key = (document.getElementById('pgp-key') || {}).textContent || '';
+        try { await navigator.clipboard.writeText(key); } catch (e) {}
+        var old = pgpBtn.textContent;
+        pgpBtn.style.color = 'var(--accent)';
+        pgpBtn.style.borderColor = 'var(--callout-info-bd)';
+        pgpBtn.textContent = '✓ Copied';
+        setTimeout(function () { pgpBtn.style.color = ''; pgpBtn.style.borderColor = ''; pgpBtn.textContent = old; }, 1600);
+      });
+    }
+  })();
 </script>

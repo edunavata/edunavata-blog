@@ -187,50 +187,56 @@ const related = allPosts
 </style>
 
 <script is:inline>
-  // Reading progress
-  const progress = document.getElementById('progress');
-  function onScroll() {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const docH = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = Math.max(0, Math.min(1, scrollTop / Math.max(1, docH)));
-    if (progress) progress.style.width = (pct * 100).toFixed(2) + '%';
+  (function () {
+    var progress = document.getElementById('progress');
+    function onScroll() {
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = Math.max(0, Math.min(1, scrollTop / Math.max(1, docH)));
+      if (progress) progress.style.width = (pct * 100).toFixed(2) + '%';
 
-    // Active TOC
-    const offset = 120;
-    const tocLinks = [...(document.querySelectorAll('.toc a') || [])];
-    const headings = tocLinks.map(a => document.getElementById(a.getAttribute('href')?.slice(1))).filter(Boolean);
-    let activeIdx = 0;
-    headings.forEach((h, i) => {
-      if (h.getBoundingClientRect().top - offset <= 0) activeIdx = i;
-    });
-    tocLinks.forEach((a, i) => {
-      a.parentElement?.classList.toggle('active', i === activeIdx);
-    });
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+      var offset = 120;
+      var tocLinks = [].slice.call(document.querySelectorAll('.toc a') || []);
+      var headings = tocLinks.map(function (a) {
+        return document.getElementById((a.getAttribute('href') || '').slice(1));
+      }).filter(Boolean);
+      var activeIdx = 0;
+      headings.forEach(function (h, i) {
+        if (h.getBoundingClientRect().top - offset <= 0) activeIdx = i;
+      });
+      tocLinks.forEach(function (a, i) {
+        if (a.parentElement) a.parentElement.classList.toggle('active', i === activeIdx);
+      });
+    }
+    if (window.__postScrollHandler) {
+      window.removeEventListener('scroll', window.__postScrollHandler);
+    }
+    window.__postScrollHandler = onScroll;
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 
-  // Smooth scroll TOC
-  document.querySelectorAll('.toc a').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const id = a.getAttribute('href')?.slice(1);
-      const target = id && document.getElementById(id);
-      if (target) {
-        const top = target.getBoundingClientRect().top + window.scrollY - 80;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
+    document.querySelectorAll('.toc a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var id = (a.getAttribute('href') || '').slice(1);
+        var target = id && document.getElementById(id);
+        if (target) {
+          var top = target.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      });
     });
-  });
 
-  // Copy link
-  const copyBtn = document.getElementById('copy-link');
-  copyBtn?.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(location.href); } catch (e) {}
-    copyBtn.classList.add('ok');
-    const span = copyBtn.querySelector('span');
-    const old = span?.textContent || '';
-    if (span) span.textContent = '✓ Copiado';
-    setTimeout(() => { copyBtn.classList.remove('ok'); if (span) span.textContent = old; }, 1600);
-  });
+    var copyBtn = document.getElementById('copy-link');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async function () {
+        try { await navigator.clipboard.writeText(location.href); } catch (e) {}
+        copyBtn.classList.add('ok');
+        var span = copyBtn.querySelector('span');
+        var old = span ? span.textContent : '';
+        if (span) span.textContent = '✓ Copiado';
+        setTimeout(function () { copyBtn.classList.remove('ok'); if (span) span.textContent = old; }, 1600);
+      });
+    }
+  })();
 </script>

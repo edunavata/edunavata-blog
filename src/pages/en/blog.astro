@@ -77,24 +77,26 @@ const tagList = [...allTags.entries()].sort((a, b) => b[1] - a[1]);
 </style>
 
 <script is:inline>
-  const chips = document.querySelectorAll('.chip');
-  const posts = document.querySelectorAll('.post-item');
-  const empty = document.getElementById('empty');
-  const countDisplay = document.getElementById('count-display');
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      chips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      const tag = chip.dataset.tag;
-      let visible = 0;
-      posts.forEach(p => {
-        const tags = (p.dataset.tags || '').split(/\s+/);
-        const show = tag === 'all' || tags.includes(tag);
-        p.classList.toggle('hidden', !show);
-        if (show) visible++;
+  (function () {
+    var chips = document.querySelectorAll('.chip');
+    var posts = document.querySelectorAll('.post-item');
+    var empty = document.getElementById('empty');
+    var countDisplay = document.getElementById('count-display');
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chips.forEach(function (c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        var tag = chip.dataset.tag;
+        var visible = 0;
+        posts.forEach(function (p) {
+          var tags = (p.dataset.tags || '').split(/\s+/);
+          var show = tag === 'all' || tags.includes(tag);
+          p.classList.toggle('hidden', !show);
+          if (show) visible++;
+        });
+        if (empty) empty.classList.toggle('show', visible === 0);
+        if (countDisplay) countDisplay.textContent = visible;
       });
-      if (empty) empty.classList.toggle('show', visible === 0);
-      if (countDisplay) countDisplay.textContent = visible;
     });
-  });
+  })();
 </script>

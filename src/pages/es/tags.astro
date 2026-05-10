@@ -134,40 +134,46 @@ for (const [letter, terms] of [...groupMap.entries()].sort()) {
 </style>
 
 <script is:inline>
-  document.querySelectorAll('.sort-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('alpha-list').style.display = btn.dataset.view === 'freq' ? 'none' : '';
-      const fl = document.getElementById('freq-list');
-      if (btn.dataset.view === 'freq') { fl.style.display = 'flex'; fl.style.flexDirection = 'column'; }
-      else { fl.style.display = 'none'; }
-      applyFilter();
+  (function () {
+    document.querySelectorAll('.sort-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.sort-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        document.getElementById('alpha-list').style.display = btn.dataset.view === 'freq' ? 'none' : '';
+        var fl = document.getElementById('freq-list');
+        if (btn.dataset.view === 'freq') { fl.style.display = 'flex'; fl.style.flexDirection = 'column'; }
+        else { fl.style.display = 'none'; }
+        applyFilter();
+      });
     });
-  });
-  const search = document.getElementById('search-input');
-  const empty = document.getElementById('empty');
-  const termsShown = document.getElementById('terms-shown');
-  function applyFilter() {
-    const q = (search?.value || '').trim().toLowerCase();
-    let visible = 0;
-    document.querySelectorAll('.term-row').forEach(r => {
-      const show = !q || r.dataset.name.toLowerCase().includes(q);
-      r.style.display = show ? '' : 'none';
-      if (show) visible++;
-    });
-    document.querySelectorAll('.alpha-group').forEach(g => {
-      const hasVisible = [...g.querySelectorAll('.term-row')].some(r => r.style.display !== 'none');
-      g.style.display = hasVisible ? '' : 'none';
-    });
-    document.querySelectorAll('.freq-row').forEach(r => {
-      r.style.display = (!q || r.dataset.name.toLowerCase().includes(q)) ? '' : 'none';
-    });
-    if (empty) empty.classList.toggle('show', visible === 0);
-    if (termsShown) termsShown.textContent = visible;
-  }
-  search?.addEventListener('input', applyFilter);
-  window.addEventListener('keydown', e => {
-    if (e.key === '/' && document.activeElement !== search) { e.preventDefault(); search?.focus(); }
-  });
+    var search = document.getElementById('search-input');
+    var empty = document.getElementById('empty');
+    var termsShown = document.getElementById('terms-shown');
+    function applyFilter() {
+      var q = (search && search.value || '').trim().toLowerCase();
+      var visible = 0;
+      document.querySelectorAll('.term-row').forEach(function (r) {
+        var show = !q || r.dataset.name.toLowerCase().includes(q);
+        r.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      document.querySelectorAll('.alpha-group').forEach(function (g) {
+        var hasVisible = [].slice.call(g.querySelectorAll('.term-row')).some(function (r) { return r.style.display !== 'none'; });
+        g.style.display = hasVisible ? '' : 'none';
+      });
+      document.querySelectorAll('.freq-row').forEach(function (r) {
+        r.style.display = (!q || r.dataset.name.toLowerCase().includes(q)) ? '' : 'none';
+      });
+      if (empty) empty.classList.toggle('show', visible === 0);
+      if (termsShown) termsShown.textContent = visible;
+    }
+    if (search) search.addEventListener('input', applyFilter);
+    if (!window.__tagsKeydown) {
+      window.__tagsKeydown = true;
+      window.addEventListener('keydown', function (e) {
+        var s = document.getElementById('search-input');
+        if (e.key === '/' && document.activeElement !== s) { e.preventDefault(); if (s) s.focus(); }
+      });
+    }
+  })();
 </script>

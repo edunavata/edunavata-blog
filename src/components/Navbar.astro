@@ -50,10 +50,15 @@ const navItems = [
 </nav>
 
 <script is:inline>
-  document.getElementById('mobile-toggle')?.addEventListener('click', () => {
-    document.getElementById('nav-links')?.classList.toggle('open');
-  });
-  document.addEventListener('astro:after-swap', () => {
-    document.getElementById('nav-links')?.classList.remove('open');
-  });
+  (function () {
+    document.getElementById('mobile-toggle')?.addEventListener('click', function () {
+      document.getElementById('nav-links')?.classList.toggle('open');
+    });
+    if (!window.__navSwapListenerAdded) {
+      window.__navSwapListenerAdded = true;
+      document.addEventListener('astro:after-swap', function () {
+        document.getElementById('nav-links')?.classList.remove('open');
+      });
+    }
+  })();
 </script>
