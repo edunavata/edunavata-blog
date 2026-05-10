@@ -1,0 +1,98 @@
+---
+// src/layouts/BaseLayout.astro
+import '@/styles/global.css';
+import { ClientRouter } from 'astro:transitions'; // Navegación fluida tipo SPA
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+import type { ui } from '@/i18n/ui';
+
+// Tipado estricto para las Props
+interface Props {
+  title: string;
+  description?: string;
+  lang?: keyof typeof ui;
+  image?: string; // Prop opcional para SEO (Open Graph)
+}
+
+const { title, image = '/og-default.jpg' } = Astro.props;
+const lang = Astro.props.lang || getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// 1. Obtenemos el valor de la prop o de la traducción
+const rawDescription = Astro.props.description || t('blog.featured'); // 
+
+// 2. Usamos una validación para asegurar que siempre sea un string
+// Esto elimina el error ts(2322)
+const description = typeof rawDescription === 'function' 
+  ? rawDescription(1) // Si es función (plural), ejecutamos con valor por defecto
+  : rawDescription;
+  
+// Generamos la URL canónica para SEO
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="canonical" href={canonicalURL} />
+
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+
+    <ClientRouter />
+
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      window.localStorage.setItem('theme', theme);
+
+      // Necesario para que el tema persista tras la navegación con ClientRouter
+      document.addEventListener('astro:after-swap', () => {
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      });
+    </script>
+  </head>
+  
+  <body class="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
+    <header class="max-w-3xl mx-auto p-4 flex justify-between items-center">
+      <a href={`/${lang}/`} class="font-bold hover:text-orange-500 transition-colors">AstroBlog</a>
+      <nav class="flex gap-4 items-center">
+        <a href={`/${lang}/`} class="hover:underline">{t('nav.home')}</a>
+        <a href={`/${lang}/about`} class="hover:underline">{t('nav.about')}</a>
+        </nav>
+    </header>
+    
+    <main class="max-w-3xl mx-auto p-4 min-h-[60vh]">
+      <slot />
+    </main>
+
+    <footer class="max-w-3xl mx-auto p-4 mt-8 border-t border-neutral-200 dark:border-neutral-800 text-sm text-neutral-500 text-center">
+      <p>{t('blog.copyright')}</p>
+    </footer>
+  </body>
+</html>

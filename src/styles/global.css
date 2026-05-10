@@ -1,6 +1,16 @@
 @import "tailwindcss";
 
-/* Aquí definiremos más adelante las variables para el Dark Mode */
 @theme {
-  /* Personalizaciones de Tailwind v4 irán aquí */
+  --color-accent: var(--color-blue-500);
+}
+
+/* Configuración para que Tailwind respete la clase .dark en el html */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
 }

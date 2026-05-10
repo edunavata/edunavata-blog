@@ -1,0 +1,32 @@
+---
+// src/pages/es/index.astro
+import '@/styles/global.css';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prueba de Entorno Astro</title>
+  </head>
+  <body class="bg-neutral-100 min-h-screen flex items-center justify-center font-sans antialiased">
+    <main class="max-w-xl w-full bg-white p-8 rounded-2xl shadow-xl border border-neutral-200">
+      
+      <div class="flex items-center gap-4 mb-6">
+        <span class="text-4xl">🚀</span>
+        <h1 class="text-3xl font-extrabold tracking-tight text-neutral-900">
+          Entorno Listo
+        </h1>
+      </div>
+
+      <p class="text-neutral-600 mb-6 leading-relaxed">
+        Si estás viendo esta caja centrada con sombras y colores, significa que <strong class="text-blue-600 font-semibold">Tailwind v4</strong> se está procesando a través de Vite correctamente con el mínimo esfuerzo.
+      </p>
+
+      <div class="bg-neutral-900 text-neutral-100 p-4 rounded-lg font-mono text-sm shadow-inner">
+        <span class="text-green-400">~/code/blog/astro-blog</span> » npm run dev
+      </div>
+      
+    </main>
+  </body>
+</html>
