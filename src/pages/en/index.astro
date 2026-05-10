@@ -4,10 +4,10 @@ import FeaturedPost from '@/components/FeaturedPost.astro';
 import PostCard from '@/components/PostCard.astro';
 import CategoryChip from '@/components/CategoryChip.astro';
 import { getCollection } from 'astro:content';
-import { useTranslations, getPostUrl, getReadingTime, formatDate } from '@/i18n/utils';
+import { useTranslations, getPostUrl, getReadingTime } from '@/i18n/utils';
 import { home } from '@/data/home';
 
-const lang = 'es';
+const lang = 'en';
 const t = useTranslations(lang);
 const data = home[lang];
 
@@ -31,15 +31,15 @@ const categories = [...allTags.entries()]
   <section class="home" style="max-width:1100px; margin:0 auto; padding:0 32px;">
 
     <!-- HERO -->
-    <section class="hero" style="padding:96px 0 80px; border-bottom:1px solid var(--border);">
-      <div class="hero-eyebrow" style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); letter-spacing:0.02em; margin-bottom:24px; display:flex; align-items:center; gap:10px;">
-        <span class="blink" style="width:8px; height:14px; background:var(--accent); display:inline-block; animation:blink 1.1s steps(1) infinite;"></span>
+    <section style="padding:96px 0 80px; border-bottom:1px solid var(--border);">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); letter-spacing:0.02em; margin-bottom:24px; display:flex; align-items:center; gap:10px;">
+        <span style="width:8px; height:14px; background:var(--accent); display:inline-block; animation:blink 1.1s steps(1) infinite;"></span>
         <span>{data.heroEyebrow}</span>
       </div>
       <h1 style="font-family:'Source Serif 4',Georgia,serif; font-weight:600; font-size:clamp(40px,5vw,64px); line-height:1.1; letter-spacing:-0.02em; color:var(--text); margin:0 0 22px; max-width:18ch; text-wrap:balance;">
-        {data.heroTitle.replace(/(\*[^*]+\*)/g, '').split(',').map((part, i, arr) => i < arr.length - 1 ? part + ',' : part).join('')} <em style="font-style:italic; color:var(--text-2); font-weight:500;">sin ruido</em>
+        {data.heroTitle.replace(/,/, ',')} <em style="font-style:italic; color:var(--text-2); font-weight:500;">without noise</em>
       </h1>
-      <p class="lead" style="font-family:'Source Serif 4',Georgia,serif; font-size:19px; line-height:1.6; color:var(--text-2); max-width:56ch; margin:0 0 36px;">
+      <p style="font-family:'Source Serif 4',Georgia,serif; font-size:19px; line-height:1.6; color:var(--text-2); max-width:56ch; margin:0 0 36px;">
         {data.heroLead}
       </p>
       <div style="display:flex; gap:12px; flex-wrap:wrap;">
@@ -82,7 +82,7 @@ const categories = [...allTags.entries()]
             <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
         </div>
-        <div class="posts-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
           {latest.map(post => (
             <PostCard
               title={post.data.title}
@@ -122,7 +122,7 @@ const categories = [...allTags.entries()]
         <span class="label" style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-3);">{t('nav.about')}</span>
       </div>
       <div style="display:grid; grid-template-columns:64px 1fr; gap:20px; align-items:center; max-width:720px;">
-        <div class="avatar" style="width:64px; height:64px; border-radius:50%; border:1px solid var(--border); overflow:hidden;">
+        <div style="width:64px; height:64px; border-radius:50%; border:1px solid var(--border); overflow:hidden;">
           <img src="/avatar.jpg" alt="Avatar" style="width:100%; height:100%; object-fit:cover;" />
         </div>
         <p style="font-family:'Source Serif 4',serif; font-size:17px; line-height:1.65; color:var(--text-2); margin:0;">
@@ -140,7 +140,4 @@ const categories = [...allTags.entries()]
 
 <style>
   @keyframes blink { 50% { opacity: 0; } }
-  @media (max-width: 880px) {
-    .posts-grid { grid-template-columns: 1fr !important; }
-  }
 </style>

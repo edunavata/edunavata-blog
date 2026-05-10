@@ -1,44 +1,39 @@
 ---
-// src/layouts/BaseLayout.astro
 import '@/styles/global.css';
-import { ClientRouter } from 'astro:transitions'; // Navegación fluida tipo SPA
-import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+import { ClientRouter } from 'astro:transitions';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import { useTranslations } from '@/i18n/utils';
 import type { ui } from '@/i18n/ui';
 
-// Tipado estricto para las Props
 interface Props {
   title: string;
   description?: string;
   lang?: keyof typeof ui;
-  image?: string; // Prop opcional para SEO (Open Graph)
+  image?: string;
 }
 
 const { title, image = '/og-default.jpg' } = Astro.props;
-const lang = Astro.props.lang || getLangFromUrl(Astro.url);
+const lang = Astro.props.lang || 'es';
 const t = useTranslations(lang);
 
-// 1. Obtenemos el valor de la prop o de la traducción
-const rawDescription = Astro.props.description || t('blog.featured'); // 
-
-// 2. Usamos una validación para asegurar que siempre sea un string
-// Esto elimina el error ts(2322)
-const description = typeof rawDescription === 'function' 
-  ? rawDescription(1) // Si es función (plural), ejecutamos con valor por defecto
-  : rawDescription;
-  
-// Generamos la URL canónica para SEO
+const rawDescription = Astro.props.description || t('blog.featured');
+const description = typeof rawDescription === 'function' ? rawDescription(1) : rawDescription;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<html lang={lang}>
+<html lang={lang} data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
-    <link rel="canonical" href={canonicalURL} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
+    <link rel="canonical" href={canonicalURL} />
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
@@ -61,38 +56,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         }
         return 'light';
       })();
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
 
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-      window.localStorage.setItem('theme', theme);
-
-      // Necesario para que el tema persista tras la navegación con ClientRouter
       document.addEventListener('astro:after-swap', () => {
-        if (localStorage.getItem('theme') === 'dark') {
-          document.documentElement.classList.add('dark');
-        }
+        const saved = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', saved);
       });
     </script>
   </head>
-  
-  <body class="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
-    <header class="max-w-3xl mx-auto p-4 flex justify-between items-center">
-      <a href={`/${lang}/`} class="font-bold hover:text-orange-500 transition-colors">AstroBlog</a>
-      <nav class="flex gap-4 items-center">
-        <a href={`/${lang}/`} class="hover:underline">{t('nav.home')}</a>
-        <a href={`/${lang}/about`} class="hover:underline">{t('nav.about')}</a>
-        </nav>
-    </header>
-    
-    <main class="max-w-3xl mx-auto p-4 min-h-[60vh]">
+
+  <body>
+    <Navbar lang={lang} currentPath={Astro.url.pathname} />
+    <main>
       <slot />
     </main>
-
-    <footer class="max-w-3xl mx-auto p-4 mt-8 border-t border-neutral-200 dark:border-neutral-800 text-sm text-neutral-500 text-center">
-      <p>{t('blog.copyright')}</p>
-    </footer>
+    <Footer lang={lang} />
   </body>
 </html>

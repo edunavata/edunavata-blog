@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  title: string;
+  href: string;
+  date: string;
+  tag: string;
+  description?: string;
+  readingTime?: number;
+  coverImage?: string;
+  coverAlt?: string;
+}
+
+const { title, href, date, tag, description, readingTime, coverImage, coverAlt } = Astro.props;
+const formattedDate = new Date(date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<a class="featured" href={href}>
+  <div class="featured-cover">
+    {coverImage ? (
+      <img src={coverImage} alt={coverAlt || ''} style="width:100%;height:100%;object-fit:cover;" />
+    ) : (
+      <div style="width:100%;height:100%;display:grid;place-items:center;color:var(--text-3);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.05em;background:repeating-linear-gradient(135deg,var(--surface) 0 12px,var(--surface-2) 12px 24px);">
+        [ COVER · 4:3 ]
+      </div>
+    )}
+  </div>
+  <div>
+    <div class="featured-meta">
+      <span class="pill">{tag}</span>
+      <span class="dot"></span>
+      <span>{formattedDate}</span>
+      <span class="dot"></span>
+      {readingTime && <span>{readingTime} min de lectura</span>}
+    </div>
+    <h3>{title}</h3>
+    {description && <p>{description}</p>}
+    <span class="read-link">
+      Leer artículo
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </span>
+  </div>
+</a>

@@ -1,0 +1,231 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PostCard from '@/components/PostCard.astro';
+import TagPill from '@/components/TagPill.astro';
+import { getCollection, render } from 'astro:content';
+import { useTranslations, getPostUrl, getReadingTime, formatDate } from '@/i18n/utils';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map(post => ({
+    params: { lang: post.data.lang, slug: post.data.slug },
+    props: { post },
+  }));
+};
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const lang = post.data.lang as 'es' | 'en';
+const t = useTranslations(lang);
+const readingTime = getReadingTime(post.body ?? '');
+
+const tocItems = headings
+  .filter((h: any) => h.depth >= 2 && h.depth <= 3)
+  .map((h: any) => ({ depth: h.depth, text: h.text, slug: h.slug }));
+
+const formattedDate = formatDate(post.data.date, lang);
+
+const allPosts = await getCollection('posts', ({ data }) => data.lang === lang && !data.draft);
+const related = allPosts
+  .filter(p => p.data.slug !== post.data.slug && p.data.tags.some(tag => post.data.tags.includes(tag)))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 2);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} lang={lang}>
+  <!-- Progress bar -->
+  <div style="position:sticky; top:0; z-index:50; height:2px; background:transparent;">
+    <div id="progress" style="height:2px; background:var(--accent); width:0%; transition:width 80ms linear;"></div>
+  </div>
+
+  <main style="max-width:1180px; margin:0 auto; padding:56px 32px 96px; display:grid; grid-template-columns:minmax(0,1fr) 280px; gap:72px;">
+    <article style="min-width:0; max-width:720px;">
+
+      <!-- Breadcrumb -->
+      <nav style="font-size:13px; color:var(--text-3); display:flex; align-items:center; gap:8px; margin-bottom:28px; font-family:'JetBrains Mono',monospace;" aria-label="breadcrumb">
+        <a href={`/${lang}/blog/`} style="color:var(--text-2); text-decoration:none;">{t('nav.blog')}</a>
+        <span style="opacity:0.4;">/</span>
+        <span style="color:var(--text-3);">{post.data.title}</span>
+      </nav>
+
+      <!-- Tags -->
+      {post.data.tags.length > 0 && (
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;">
+          {post.data.tags.map((tag: string) => (
+            <TagPill tag={tag} href={`/${lang}/tags/${tag}/`} />
+          ))}
+        </div>
+      )}
+
+      <!-- Title -->
+      <h1 style="font-family:'Source Serif 4',Georgia,serif; font-weight:600; font-size:clamp(36px,4vw,48px); line-height:1.15; letter-spacing:-0.015em; margin:0 0 22px; color:var(--text); text-wrap:balance;">{post.data.title}</h1>
+
+      <!-- Meta bar -->
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:14px; font-size:14px; color:var(--text-3); font-family:'JetBrains Mono',monospace; margin-bottom:40px; padding-bottom:24px; border-bottom:1px solid var(--border);">
+        <span>{formattedDate}</span>
+        <span class="dot" style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"></span>
+        <span>{readingTime} min de lectura</span>
+      </div>
+
+      <!-- Cover -->
+      {post.data.cover && (
+        <div style="width:100%; aspect-ratio:16/9; border-radius:10px; border:1px solid var(--border); margin-bottom:48px; overflow:hidden;">
+          <img src={`/posts/${post.id.split('/')[0]}/${post.data.cover.image}`} alt={post.data.cover.alt || ''} style="width:100%; height:100%; object-fit:cover;" />
+        </div>
+      )}
+
+      <!-- Body -->
+      <div class="body" id="body">
+        <Content />
+      </div>
+
+      <!-- Related -->
+      {related.length > 0 && (
+        <section style="margin-top:80px; padding-top:32px; border-top:1px solid var(--border);">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:20px;">{t('blog.relatedPosts')}</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            {related.map(r => (
+              <a href={getPostUrl(lang, r.data.slug)} style="display:block; padding:20px 22px; border:1px solid var(--border); border-radius:10px; background:transparent; text-decoration:none; color:var(--text); transition:all 200ms ease;" onmouseover="this.style.borderColor='var(--border-strong)'; this.style.background='var(--surface)'" onmouseout="this.style.borderColor='var(--border)'; this.style.background='transparent'">
+                <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px;">{r.data.tags[0] || ''}</div>
+                <h4 style="font-family:'Source Serif 4',serif; font-size:18px; font-weight:600; line-height:1.3; margin:0 0 8px;">{r.data.title}</h4>
+                <p style="font-size:13.5px; color:var(--text-2); margin:0; line-height:1.55;">{r.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </article>
+
+    <!-- Sidebar -->
+    <aside style="position:sticky; top:64px; align-self:start; font-size:13.5px; color:var(--text-2); max-height:calc(100vh - 80px); overflow-y:auto;">
+      {tocItems.length > 0 && (
+        <div style="margin-bottom:36px;">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:14px;">{t('blog.inThisPage')}</div>
+          <ul class="toc" id="toc" style="list-style:none; margin:0; padding:0; border-left:1px solid var(--border);">
+            {tocItems.map((item: any) => (
+              <li class:list={[item.depth === 3 && 'toc-l2']}>
+                <a href={`#${item.slug}`}>{item.text}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div style="margin-bottom:36px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:14px;">{t('blog.share')}</div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          <button class="share-btn" id="copy-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>{t('blog.shareLink')}</span>
+          </button>
+          <a class="share-btn" href={`https://x.com/intent/tweet?url=${encodeURIComponent(Astro.url.href)}&text=${encodeURIComponent(post.data.title)}`} target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <span>{t('blog.shareX')}</span>
+          </a>
+        </div>
+      </div>
+
+      {post.data.tags.length > 0 && (
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:14px;">Tags</div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            {post.data.tags.map((tag: string) => (
+              <TagPill tag={tag} href={`/${lang}/tags/${tag}/`} />
+            ))}
+          </div>
+        </div>
+      )}
+    </aside>
+  </main>
+</BaseLayout>
+
+<style>
+  .toc li a {
+    display: block;
+    padding: 6px 0 6px 14px;
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    color: var(--text-2);
+    text-decoration: none;
+    font-size: 13.5px;
+    line-height: 1.45;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+  .toc li.toc-l2 a { padding-left: 26px; font-size: 13px; }
+  .toc li a:hover { color: var(--text); }
+  .toc li.active > a {
+    color: var(--text);
+    border-left-color: var(--accent);
+    font-weight: 500;
+  }
+  .share-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-2);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Geist', sans-serif;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+  .share-btn:hover { color: var(--text); border-color: var(--border-strong); }
+  .share-btn.ok { color: var(--accent); border-color: var(--callout-info-bd); }
+
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr !important; gap: 0 !important; }
+    aside { position: static !important; max-height: none !important; }
+  }
+</style>
+
+<script is:inline>
+  // Reading progress
+  const progress = document.getElementById('progress');
+  function onScroll() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = Math.max(0, Math.min(1, scrollTop / Math.max(1, docH)));
+    if (progress) progress.style.width = (pct * 100).toFixed(2) + '%';
+
+    // Active TOC
+    const offset = 120;
+    const tocLinks = [...(document.querySelectorAll('.toc a') || [])];
+    const headings = tocLinks.map(a => document.getElementById(a.getAttribute('href')?.slice(1))).filter(Boolean);
+    let activeIdx = 0;
+    headings.forEach((h, i) => {
+      if (h.getBoundingClientRect().top - offset <= 0) activeIdx = i;
+    });
+    tocLinks.forEach((a, i) => {
+      a.parentElement?.classList.toggle('active', i === activeIdx);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Smooth scroll TOC
+  document.querySelectorAll('.toc a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const id = a.getAttribute('href')?.slice(1);
+      const target = id && document.getElementById(id);
+      if (target) {
+        const top = target.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Copy link
+  const copyBtn = document.getElementById('copy-link');
+  copyBtn?.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(location.href); } catch (e) {}
+    copyBtn.classList.add('ok');
+    const span = copyBtn.querySelector('span');
+    const old = span?.textContent || '';
+    if (span) span.textContent = '✓ Copiado';
+    setTimeout(() => { copyBtn.classList.remove('ok'); if (span) span.textContent = old; }, 1600);
+  });
+</script>

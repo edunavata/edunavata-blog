@@ -1,0 +1,11 @@
+---
+interface Props {
+  tag: string;
+  href?: string;
+  accent?: boolean;
+}
+
+const { tag, href = '#', accent = false } = Astro.props;
+---
+
+<a class:list={['tag', accent && 'accent']} href={href}>#{tag}</a>

@@ -1,0 +1,59 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageSelector from './LanguageSelector.astro';
+import { useTranslations } from '@/i18n/utils';
+import type { ui } from '@/i18n/ui';
+
+interface Props {
+  lang: keyof typeof ui;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const t = useTranslations(lang);
+
+const navItems = [
+  { key: 'nav.home', href: `/${lang}/` },
+  { key: 'nav.blog', href: `/${lang}/blog/` },
+  { key: 'nav.categories', href: `/${lang}/categories/` },
+  { key: 'nav.tags', href: `/${lang}/tags/` },
+  { key: 'nav.about', href: lang === 'es' ? `/${lang}/sobre-mi/` : `/${lang}/about/` },
+];
+---
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href={`/${lang}/`}>
+      <span class="brand-dot"></span>
+      <span>~/midominio</span>
+    </a>
+
+    <div class="nav-links" id="nav-links">
+      {navItems.map(item => (
+        <a href={item.href} class:list={[currentPath === item.href && 'active']}>
+          {t(item.key as keyof typeof ui['es'])}
+        </a>
+      ))}
+      <button class="icon-btn" aria-label={t('blog.search') as string} style="margin-left:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <LanguageSelector lang={lang} currentPath={currentPath} />
+      <ThemeToggle />
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  document.getElementById('mobile-toggle')?.addEventListener('click', () => {
+    document.getElementById('nav-links')?.classList.toggle('open');
+  });
+  document.addEventListener('astro:after-swap', () => {
+    document.getElementById('nav-links')?.classList.remove('open');
+  });
+</script>

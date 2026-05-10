@@ -1,0 +1,125 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PostCard from '@/components/PostCard.astro';
+import { getCollection } from 'astro:content';
+import { useTranslations, getPostUrl, getReadingTime } from '@/i18n/utils';
+
+const lang = 'es';
+const t = useTranslations(lang);
+
+const allPosts = await getCollection('posts', ({ data }) => data.lang === lang && !data.draft);
+const sorted = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const allTags = new Map<string, number>();
+allPosts.forEach(p => p.data.tags.forEach(tag => {
+  allTags.set(tag, (allTags.get(tag) || 0) + 1);
+}));
+const tagList = [...allTags.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title={t('nav.blog')} lang={lang}>
+  <main style="max-width:720px; margin:0 auto; padding:64px 32px 96px;">
+
+    <header style="margin-bottom:40px;">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;">/ blog</div>
+      <h1 style="font-family:'Source Serif 4',Georgia,serif; font-weight:600; font-size:clamp(36px,4vw,44px); line-height:1.15; letter-spacing:-0.015em; color:var(--text); margin:0 0 12px;">{t('nav.blog')}</h1>
+      <p style="font-family:'Source Serif 4',serif; font-size:17px; line-height:1.6; color:var(--text-2); margin:0; max-width:56ch;">
+        Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.
+      </p>
+      <div style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); margin-top:18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <span><span id="count-display">{allPosts.length}</span> {t('blog.articles')}</span>
+        <span class="dot" style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"></span>
+        <span>{t('blog.since')}</span>
+        <span class="dot" style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"></span>
+        <span>{t('blog.inSpanish')}</span>
+      </div>
+    </header>
+
+    <!-- Tag filter -->
+    <div style="position:relative; margin-bottom:56px; padding-bottom:18px; border-bottom:1px solid var(--border);">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+        <span>{t('blog.filteredBy')}</span>
+      </div>
+      <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; scrollbar-width:thin; scrollbar-color:var(--border-strong) transparent;" id="filter-scroll">
+        <button class="chip active" data-tag="all">Todos <span class="ct">{allPosts.length}</span></button>
+        {tagList.map(([tag, count]) => (
+          <button class="chip" data-tag={tag}>{tag} <span class="ct">{count}</span></button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Posts list -->
+    <div class="posts" id="posts">
+      {sorted.map(post => (
+        <PostCard
+          title={post.data.title}
+          href={getPostUrl(lang, post.data.slug)}
+          date={post.data.date.toISOString()}
+          tags={post.data.tags}
+          description={post.data.description}
+          readingTime={getReadingTime(post.body ?? '')}
+          variant="row"
+        />
+      ))}
+    </div>
+
+    <div class="empty" id="empty" style="padding:80px 0; text-align:center; color:var(--text-3); font-family:'JetBrains Mono',monospace; font-size:13px; display:none;">
+      {t('taxonomy.noArticles')}
+    </div>
+
+  </main>
+</BaseLayout>
+
+<style>
+  .chip {
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-2);
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 150ms ease;
+    white-space: nowrap;
+  }
+  .chip:hover { color: var(--text); border-color: var(--border-strong); }
+  .chip.active {
+    color: var(--bg);
+    background: var(--text);
+    border-color: var(--text);
+  }
+  .chip .ct {
+    margin-left: 6px;
+    color: var(--text-3);
+    font-size: 11px;
+  }
+  .chip.active .ct { color: var(--text-3); opacity: 0.7; }
+  .empty.show { display: block !important; }
+</style>
+
+<script is:inline>
+  const chips = document.querySelectorAll('.chip');
+  const posts = document.querySelectorAll('.post-item');
+  const empty = document.getElementById('empty');
+  const countDisplay = document.getElementById('count-display');
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const tag = chip.dataset.tag;
+      let visible = 0;
+      posts.forEach(p => {
+        const tags = (p.dataset.tags || '').split(/\s+/);
+        const show = tag === 'all' || tags.includes(tag);
+        p.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+      if (empty) empty.classList.toggle('show', visible === 0);
+      if (countDisplay) countDisplay.textContent = visible;
+    });
+  });
+</script>

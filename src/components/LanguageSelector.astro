@@ -1,0 +1,26 @@
+---
+import type { ui } from '@/i18n/ui';
+
+interface Props {
+  lang: keyof typeof ui;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+
+function switchLang(path: string, target: string): string {
+  const segments = path.split('/').filter(Boolean);
+  if (segments.length > 0 && ['es', 'en'].includes(segments[0])) {
+    segments[0] = target;
+  } else {
+    segments.unshift(target);
+  }
+  return '/' + segments.join('/') + '/';
+}
+---
+
+<div class="lang-selector">
+  <a href={switchLang(currentPath, 'es')} class:list={[lang === 'es' && 'active']}>ES</a>
+  <span style="color: var(--text-3);">|</span>
+  <a href={switchLang(currentPath, 'en')} class:list={[lang === 'en' && 'active']}>EN</a>
+</div>

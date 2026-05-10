@@ -1,0 +1,44 @@
+---
+interface Props {
+  title: string;
+  href: string;
+  date: string;
+  tags: string[];
+  description?: string;
+  readingTime?: number;
+  variant?: 'grid' | 'row';
+}
+
+const { title, href, date, tags, description, readingTime, variant = 'grid' } = Astro.props;
+const formattedDate = new Date(date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+{variant === 'grid' ? (
+  <a class="post-card" href={href}>
+    {tags.length > 0 && <div class="pc-tag">{tags[0]}</div>}
+    <h3>{title}</h3>
+    {description && <p>{description}</p>}
+    <div class="pc-meta">
+      <span>{formattedDate}</span>
+      <span class="dot"></span>
+      {readingTime && <span>{readingTime} min</span>}
+    </div>
+  </a>
+) : (
+  <a class="post-item" href={href} data-tags={tags.join(' ')}>
+    <div class="post-tags">
+      {tags.map(tag => <span class="tag">#{tag}</span>)}
+    </div>
+    <h2>{title}</h2>
+    {description && <p>{description}</p>}
+    <div class="post-meta">
+      <span>{formattedDate}</span>
+      <span class="dot"></span>
+      {readingTime && <span>{readingTime} min de lectura</span>}
+      <span class="read">
+        Leer
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </a>
+)}
