@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "astro-framework": {
+      "source": "delineas/astro-framework-agents",
+      "sourceType": "github",
+      "skillPath": "skills/astro-framework/SKILL.md",
+      "computedHash": "7d8940b3fb7dab50f8303afdb3210cc9385da3a8d243fe99efdc08ce53aed90c"
+    },
+    "frontend-design": {
+      "source": "anthropics/claude-code",
+      "sourceType": "github",
+      "skillPath": "plugins/frontend-design/skills/frontend-design/SKILL.md",
+      "computedHash": "e8118284a6365753790d44bb2758a6032b3af27fa84696428d9233f2be0f4e78"
+    },
+    "tailwind-best-practices": {
+      "source": "ofershap/tailwind-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/tailwind-best-practices/SKILL.md",
+      "computedHash": "6a6c5101bb0f507bd19b777e737fe68598d4c8bddb1313ea9d456db92580ea4b"
+    },
+    "tailwind-design-system": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md",
+      "computedHash": "988d80e52c67c3692d43cc963b6a048a239895e88b272b061de55370d0f8efc3"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
+    }
+  }
+}
