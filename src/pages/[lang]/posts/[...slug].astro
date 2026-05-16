@@ -38,22 +38,56 @@ const related = allPosts
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 2);
 
+// Find the post's translation (same folder, different language) for hreflang.
+// Posts use `filePath` like "src/content/posts/<folder>/index.<lang>.md" — the
+// folder is the implicit translation key.
+const folderOf = (p: CollectionEntry<'posts'>): string | null => {
+  const fp = (p as any).filePath as string | undefined;
+  if (!fp) return null;
+  const parts = fp.split('/');
+  const i = parts.indexOf('posts');
+  return i >= 0 && parts[i + 1] ? parts[i + 1] : null;
+};
+const currentFolder = folderOf(post);
+const allPostsAnyLang = await getCollection('posts', ({ data }) => !data.draft);
+const translation = currentFolder
+  ? allPostsAnyLang.find(
+      (p) => p.id !== post.id && p.data.lang !== lang && folderOf(p) === currentFolder
+    )
+  : undefined;
+const altUrls = translation
+  ? { [translation.data.lang]: `/${translation.data.lang}/posts/${translation.data.slug}/` }
+  : undefined;
+
 const ogImagePath = post.data.cover?.image
   ? (await getImage({ src: post.data.cover.image, format: 'jpg', width: 1200, height: 630 })).src
   : '/og-default.jpg';
 
+const modifiedDateISO = (post.data.updatedDate ?? post.data.date).toISOString();
 const blogPostingJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: post.data.title,
   description: post.data.description ?? '',
   datePublished: post.data.date.toISOString(),
-  ...(post.data.updatedDate && { dateModified: post.data.updatedDate.toISOString() }),
+  dateModified: modifiedDateISO,
   image: new URL(ogImagePath, SITE.url).toString(),
   url: new URL(`/${lang}/posts/${post.data.slug}/`, SITE.url).toString(),
-  author: { '@type': 'Person', name: post.data.author },
-  publisher: { '@type': 'Person', name: post.data.author },
-  inLanguage: lang,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': new URL(`/${lang}/posts/${post.data.slug}/`, SITE.url).toString(),
+  },
+  author: {
+    '@type': 'Person',
+    name: post.data.author,
+    sameAs: SITE.sameAs,
+  },
+  publisher: {
+    '@type': 'Person',
+    name: post.data.author,
+    sameAs: SITE.sameAs,
+  },
+  inLanguage: SITE.hreflang[lang],
   keywords: post.data.tags.join(', '),
 };
 
@@ -75,6 +109,8 @@ const breadcrumbJsonLd = {
   image={ogImagePath}
   ogType="article"
   articleDate={post.data.date}
+  articleModifiedDate={post.data.updatedDate}
+  altUrls={altUrls}
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(blogPostingJsonLd)} slot="head" />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} slot="head" />

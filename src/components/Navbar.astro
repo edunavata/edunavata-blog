@@ -2,6 +2,7 @@
 import ThemeToggle from './ThemeToggle.astro';
 import LanguageSelector from './LanguageSelector.astro';
 import { useTranslations } from '@/i18n/utils';
+import { SITE } from '@/config/site';
 import type { ui } from '@/i18n/ui';
 
 interface Props {
@@ -23,9 +24,9 @@ const navItems = [
 
 <nav class="nav">
   <div class="nav-inner">
-    <a class="brand" href={`/${lang}/`}>
+    <a class="brand" href={`/${lang}/`} aria-label={SITE.title}>
       <span class="brand-dot"></span>
-      <span>~/midominio</span>
+      <span>{SITE.brand}</span>
     </a>
 
     <div class="nav-links" id="nav-links">

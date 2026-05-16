@@ -3,7 +3,7 @@ import '@/styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
-import { useTranslations } from '@/i18n/utils';
+import { switchLangPath } from '@/i18n/utils';
 import { SITE } from '@/config/site';
 import type { ui } from '@/i18n/ui';
 
@@ -14,25 +14,86 @@ interface Props {
   image?: string;
   ogType?: 'website' | 'article';
   articleDate?: Date;
+  articleModifiedDate?: Date;
+  /**
+   * Override automatic hreflang URL computation for the alternate languages.
+   * Use when the current page has asymmetric slugs across languages (e.g. posts
+   * where the ES and EN versions live at different paths). When omitted, alt URLs
+   * are derived from the current pathname by swapping the locale prefix.
+   */
+  altUrls?: Partial<Record<keyof typeof ui, string>>;
+  /**
+   * When true, the page emits `<meta name="robots" content="noindex">` and
+   * skips emitting hreflang alternates. Use for error pages or any page that
+   * does not have a localized alternate.
+   */
+  noindex?: boolean;
 }
 
-const { title, image = '/og-default.jpg', ogType = 'website', articleDate } = Astro.props;
+const {
+  title,
+  image = SITE.ogImage.default,
+  ogType = 'website',
+  articleDate,
+  articleModifiedDate,
+  altUrls,
+  noindex = false,
+} = Astro.props;
 const lang = Astro.props.lang || 'es';
-const t = useTranslations(lang);
 
-const description = Astro.props.description || t('blog.featured');
+const description = Astro.props.description || SITE.description;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.url);
 const ogLocale = SITE.locale[lang as keyof typeof SITE.locale] ?? 'es_ES';
 const ogLocaleAlternate = lang === 'es' ? SITE.locale.en : SITE.locale.es;
+
+// Compute hreflang alternates.
+// For pages with symmetric URLs (home, blog, about, taxonomies), derive by
+// swapping the locale prefix. For pages with asymmetric URLs (posts), the
+// page itself must provide `altUrls` for non-current languages.
+const currentPath = Astro.url.pathname;
+const altPathFor = (target: keyof typeof ui): string | undefined => {
+  if (target === lang) return currentPath;
+  if (altUrls && altUrls[target]) return altUrls[target];
+  return switchLangPath(currentPath, target as string);
+};
+
+const hreflangEntries: { hreflang: string; href: string }[] = [];
+for (const code of ['es', 'en'] as const) {
+  const path = altPathFor(code);
+  if (!path) continue;
+  hreflangEntries.push({
+    hreflang: SITE.hreflang[code],
+    href: new URL(path, Astro.site).toString(),
+  });
+}
+const xDefaultPath = altPathFor(SITE.defaultLocale as keyof typeof ui);
+const xDefaultHref = xDefaultPath ? new URL(xDefaultPath, Astro.site).toString() : undefined;
+
+const inLanguage = SITE.hreflang[lang as keyof typeof SITE.hreflang];
+const feedHref = `/${lang}/feed.xml`;
+const feedTitle = `${SITE.title} — Feed (${lang.toUpperCase()})`;
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: SITE.title,
   url: SITE.url,
-  author: { '@type': 'Person', name: SITE.author },
+  description: SITE.description,
+  inLanguage,
+  author: {
+    '@type': 'Person',
+    name: SITE.author,
+    sameAs: SITE.sameAs,
+  },
+  publisher: {
+    '@type': 'Person',
+    name: SITE.author,
+    sameAs: SITE.sameAs,
+  },
 };
+
+const modifiedTimeISO = (articleModifiedDate ?? articleDate)?.toISOString();
 ---
 
 <html lang={lang}>
@@ -42,19 +103,38 @@ const websiteJsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {!noindex && hreflangEntries.map((e) => (
+      <link rel="alternate" hreflang={e.hreflang} href={e.href} />
+    ))}
+    {!noindex && xDefaultHref && <link rel="alternate" hreflang="x-default" href={xDefaultHref} />}
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={feedTitle}
+      href={feedHref}
+    />
+
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
 
     <meta property="og:type" content={ogType} />
-    <meta property="og:url" content={Astro.url} />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={String(SITE.ogImage.width)} />
+    <meta property="og:image:height" content={String(SITE.ogImage.height)} />
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:locale:alternate" content={ogLocaleAlternate} />
     {articleDate && <meta property="article:published_time" content={articleDate.toISOString()} />}
+    {ogType === 'article' && modifiedTimeISO && (
+      <meta property="article:modified_time" content={modifiedTimeISO} />
+    )}
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content={SITE.twitterHandle} />
