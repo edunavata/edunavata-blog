@@ -7,12 +7,12 @@ Objetivo: marca personal y documentación técnica de profundidad.
 
 ## Stack
 
-| Capa       | Tecnología                                      |
-|------------|-------------------------------------------------|
-| Framework  | Astro 6.0+ — modo SSG/estático por defecto      |
-| Estilos    | Tailwind CSS v4 (motor Oxide, config CSS-first) |
-| Lenguaje   | TypeScript strict                               |
-| Arquitectura | Islands — zero JS por defecto               |
+| Capa         | Tecnología                                      |
+|--------------|-------------------------------------------------|
+| Framework    | Astro 6.0+ — modo SSG/estático por defecto      |
+| Estilos      | Tailwind CSS v4 (motor Oxide, config CSS-first) |
+| Lenguaje     | TypeScript strict                               |
+| Arquitectura | Islands — zero JS por defecto                   |
 
 ---
 
@@ -51,7 +51,10 @@ npm run lint     # linting
 ### SEO
 
 - Cada página incluye: `<title>`, `description`, `canonical`, OpenGraph y JSON-LD.
+- Schema mínimo por post: `Article` + `Person` (autor). Valida contra tipos soportados por Google.
+- **Prohibido:** `HowTo` (deprecated sept. 2023), `FAQ` restringido a gov/salud, `SpecialAnnouncement` (deprecated jul. 2025).
 - Mantén `/llms.txt` actualizado con el contenido limpio de los posts.
+- Imágenes: siempre componente `<Image>` de Astro con `alt` descriptivo.
 
 ---
 
@@ -59,22 +62,33 @@ npm run lint     # linting
 
 ### Antes de cambios en el codebase
 
-1. Ejecuta `search_code` (MCP `codebase-memory-mcp`) para localizar el código relevante antes de editar.
-2. Si hay cambios recientes significativos, ejecuta `index_codebase` primero.
+1. Si hay cambios recientes significativos, ejecuta `index_codebase` (MCP `codebase-memory-mcp`).
+2. Ejecuta `search_code` para localizar el código relevante antes de editar.
 
 ### Validación de APIs
 
-- Usa `search_astro_docs` (MCP `astro-docs`) para confirmar cualquier cambio de API de Astro 6 antes de implementarlo.
+- Usa `search_astro_docs` (MCP `astro-docs`) para confirmar cambios de API de Astro 6 antes de implementarlos.
+
+### Datos reales de búsqueda
+
+- Usa el MCP **Google Search Console** para obtener datos de rendimiento reales (queries, CTR, impresiones, posición media) antes de hacer cambios de SEO on-page. Los datos de GSC prevalecen sobre suposiciones.
 
 ### Skills disponibles
 
 Actívalas según la fase del trabajo:
 
-| Skill                      | Cuándo usarla                              |
-|----------------------------|--------------------------------------------|
-| `/astro-framework`         | Nuevos componentes, rutas, layouts         |
-| `/tailwind-best-practices` | Estilos, tokens, responsividad             |
-| `/web-design-guidelines`   | Accesibilidad, UX, estructura visual       |
+| Skill                      | Cuándo usarla                                          |
+|----------------------------|--------------------------------------------------------|
+| `/astro-framework`         | Nuevos componentes, rutas, layouts                     |
+| `/tailwind-best-practices` | Estilos, tokens, responsividad                         |
+| `/tailwind-design-system`  | Sistema de diseño, tokens globales, coherencia visual  |
+| `/web-design-guidelines`   | Accesibilidad, UX, estructura visual                   |
+| `/frontend-design`         | Componentes UI, primera impresión, marca personal      |
+| `/seo`                     | Auditoría SEO completa, orchestración de subagentes    |
+| `/seo-technical`           | Core Web Vitals, crawlabilidad, rendimiento            |
+| `/seo-content`             | Calidad de contenido, E-E-A-T, estructura de posts     |
+| `/seo-schema`              | Generación y validación de Schema.org / JSON-LD        |
+| `/seo-geo`                 | Optimización para AI Overviews, Perplexity, ChatGPT    |
 
 ---
 
@@ -83,3 +97,4 @@ Actívalas según la fase del trabajo:
 - **Patrones recurrentes:** si detectas un error repetido o una preferencia no documentada, pide permiso antes de añadirlo aquí o a `CLAUDE.local.md`.
 - **Contexto semántico:** en tareas complejas, confirma el estado del índice antes de empezar.
 - **Veracidad técnica:** no asumas compatibilidad entre versiones de Astro o Tailwind — verifica con los MCPs correspondientes.
+- **Decisiones de SEO basadas en datos:** consulta GSC antes de priorizar cambios on-page. No optimices a ciegas.
