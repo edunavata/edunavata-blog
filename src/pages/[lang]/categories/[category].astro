@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import PostCard from '@/components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { getPostUrl, getReadingTime } from '@/i18n/utils';
+import { SITE } from '@/config/site';
 import type { GetStaticPaths } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 
@@ -32,9 +33,34 @@ export const getStaticPaths: GetStaticPaths = async () => {
 const { category, posts: catPosts } = Astro.props as { category: string; posts: CollectionEntry<'posts'>[] };
 const lang = Astro.params.lang as 'es' | 'en';
 const sorted = catPosts.sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
+
+const categoryDescription = lang === 'es'
+  ? `${sorted.length} ${sorted.length === 1 ? 'artículo' : 'artículos'} en la categoría ${category}.`
+  : `${sorted.length} ${sorted.length === 1 ? 'article' : 'articles'} in the ${category} category.`;
+const categoryUrl = new URL(`/${lang}/categories/${category}/`, SITE.url).toString();
+const collectionPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: category,
+  description: categoryDescription,
+  url: categoryUrl,
+  inLanguage: SITE.hreflang[lang],
+  isPartOf: { '@type': 'WebSite', name: SITE.title, url: SITE.url },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: sorted.length,
+    itemListElement: sorted.map((post, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: new URL(getPostUrl(lang, post.data.slug), SITE.url).toString(),
+      name: post.data.title,
+    })),
+  },
+};
 ---
 
-<BaseLayout title={category} lang={lang}>
+<BaseLayout title={category} description={categoryDescription} lang={lang}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionPageJsonLd)} slot="head" />
   <main style="max-width:720px; margin:0 auto; padding:64px 32px 96px;">
     <header style="margin-bottom:40px;">
       <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;">/ categorías / {category}</div>

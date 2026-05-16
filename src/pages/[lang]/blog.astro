@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import PostCard from '@/components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime } from '@/i18n/utils';
+import { SITE } from '@/config/site';
 
 export const getStaticPaths = () => [
   { params: { lang: 'es' } },
@@ -20,9 +21,37 @@ allPosts.forEach(p => p.data.tags.forEach(tag => {
   allTags.set(tag, (allTags.get(tag) || 0) + 1);
 }));
 const tagList = [...allTags.entries()].sort((a, b) => b[1] - a[1]);
+
+const blogTitle = t('nav.blog');
+const blogDescription = lang === 'es'
+  ? 'Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.'
+  : 'Technical notes about the tools I use daily. No fixed schedule — I write when something surprises me enough to document it.';
+const blogUrl = new URL(`/${lang}/blog/`, SITE.url).toString();
+
+const collectionPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: blogTitle,
+  description: blogDescription,
+  url: blogUrl,
+  inLanguage: SITE.hreflang[lang],
+  isPartOf: {
+    '@type': 'WebSite',
+    name: SITE.title,
+    url: SITE.url,
+  },
+  hasPart: sorted.slice(0, 20).map((post) => ({
+    '@type': 'BlogPosting',
+    headline: post.data.title,
+    description: post.data.description,
+    datePublished: post.data.date.toISOString(),
+    url: new URL(getPostUrl(lang, post.data.slug), SITE.url).toString(),
+  })),
+};
 ---
 
-<BaseLayout title={t('nav.blog')} lang={lang}>
+<BaseLayout title={blogTitle} description={blogDescription} lang={lang}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionPageJsonLd)} slot="head" />
   <main style="max-width:720px; margin:0 auto; padding:64px 32px 96px;">
 
     <header style="margin-bottom:40px;">

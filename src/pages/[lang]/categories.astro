@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations } from '@/i18n/utils';
+import { SITE } from '@/config/site';
 
 export const getStaticPaths = () => [
   { params: { lang: 'es' } },
@@ -20,9 +21,34 @@ allPosts.forEach(p => p.data.categories.forEach(cat => {
 
 const catTerms = [...categories.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 const maxCount = Math.max(...categories.values(), 1);
+
+const categoriesUrl = new URL(`/${lang}/categories/`, SITE.url).toString();
+const categoriesTitle = t('nav.categories');
+const categoriesDescription = t('categories.description');
+const collectionPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: categoriesTitle,
+  description: categoriesDescription,
+  url: categoriesUrl,
+  inLanguage: SITE.hreflang[lang],
+  isPartOf: { '@type': 'WebSite', name: SITE.title, url: SITE.url },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: catTerms.length,
+    itemListElement: catTerms.map(([name, count], i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name,
+      url: new URL(`/${lang}/categories/${name}/`, SITE.url).toString(),
+      description: `${count} ${count === 1 ? 'post' : 'posts'}`,
+    })),
+  },
+};
 ---
 
-<BaseLayout title={t('nav.categories')} lang={lang}>
+<BaseLayout title={categoriesTitle} description={categoriesDescription} lang={lang}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionPageJsonLd)} slot="head" />
   <main style="max-width:1000px; margin:0 auto; padding:64px 32px 96px;">
     <header style="margin-bottom:40px;">
       <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;">{t('categories.breadcrumb')}</div>

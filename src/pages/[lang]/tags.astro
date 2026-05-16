@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations } from '@/i18n/utils';
+import { SITE } from '@/config/site';
 
 export const getStaticPaths = () => [
   { params: { lang: 'es' } },
@@ -37,9 +38,34 @@ tagTerms.forEach(([name, count]) => {
 for (const [letter, terms] of [...groupMap.entries()].sort()) {
   alphaGroups.push({ letter, terms });
 }
+
+const tagsTitle = t('nav.tags');
+const tagsDescription = t('tags.description');
+const tagsUrl = new URL(`/${lang}/tags/`, SITE.url).toString();
+const collectionPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: tagsTitle,
+  description: tagsDescription,
+  url: tagsUrl,
+  inLanguage: SITE.hreflang[lang],
+  isPartOf: { '@type': 'WebSite', name: SITE.title, url: SITE.url },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: tagTerms.length,
+    itemListElement: tagTerms.map(([name, count], i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name,
+      url: new URL(`/${lang}/tags/${name}/`, SITE.url).toString(),
+      description: `${count} ${count === 1 ? 'post' : 'posts'}`,
+    })),
+  },
+};
 ---
 
-<BaseLayout title={t('nav.tags')} lang={lang}>
+<BaseLayout title={tagsTitle} description={tagsDescription} lang={lang}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionPageJsonLd)} slot="head" />
   <main style="max-width:1000px; margin:0 auto; padding:64px 32px 96px;">
 
     <header style="margin-bottom:40px;">
