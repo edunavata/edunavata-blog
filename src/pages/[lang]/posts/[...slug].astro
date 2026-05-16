@@ -3,9 +3,10 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import TagPill from '@/components/TagPill.astro';
 import { getCollection, render } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime, formatDate } from '@/i18n/utils';
+import { SITE } from '@/config/site';
 import type { GetStaticPaths } from 'astro';
 import type { CollectionEntry } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -32,9 +33,35 @@ const related = allPosts
   .filter(p => p.data.slug !== post.data.slug && p.data.tags.some(tag => post.data.tags.includes(tag)))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 2);
+
+const ogImagePath = post.data.cover?.image
+  ? (await getImage({ src: post.data.cover.image, format: 'jpg', width: 1200, height: 630 })).src
+  : '/og-default.jpg';
+
+const blogPostingJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description ?? '',
+  datePublished: post.data.date.toISOString(),
+  image: new URL(ogImagePath, SITE.url).toString(),
+  url: new URL(`/${lang}/posts/${post.data.slug}/`, SITE.url).toString(),
+  author: { '@type': 'Person', name: SITE.author },
+  publisher: { '@type': 'Person', name: SITE.author },
+  inLanguage: lang,
+  keywords: post.data.tags.join(', '),
+};
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} lang={lang}>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  lang={lang}
+  image={ogImagePath}
+  ogType="article"
+  articleDate={post.data.date}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(blogPostingJsonLd)} slot="head" />
   <!-- Progress bar -->
   <div style="position:sticky; top:0; z-index:50; height:2px; background:transparent;">
     <div id="progress" style="height:2px; background:var(--accent); width:0%; transition:width 80ms linear;"></div>

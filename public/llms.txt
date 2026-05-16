@@ -1,0 +1,42 @@
+# Edu González — Blog Técnico
+
+> Blog de ingeniería personal en español e inglés.
+> Autor: Edu González (@edunavata)
+> URL: https://edunavata-blog.pages.dev
+
+## Sobre este blog
+
+Documentación técnica de profundidad y marca personal de un ingeniero informático especializado en:
+- Cloud (AWS, GCP, Cloudflare)
+- Data Engineering (pipelines, ETL, streaming)
+- LLMs e IA aplicada
+- Linux y sistemas
+- Ciberseguridad
+
+El objetivo es compartir conocimiento técnico real, basado en experiencia práctica, sin relleno.
+
+## Posts
+
+### General
+
+- **Hola Mundo: Mi primer post** (2025-01-15)
+  URL: /es/posts/hola-mundo/ | /en/posts/hello-world/
+  El artículo de presentación del blog. Por qué escribir en público y aprender explicando.
+  Tags: personal, meta
+
+### Tech
+
+- **Cómo monté este blog con Hugo y Hextra** (2025-01-20)
+  URL: /es/posts/como-monte-este-blog/ | /en/posts/hugo-setup/
+  Guía de configuración de Hugo + tema Hextra + despliegue en Cloudflare Pages.
+  Tags: hugo, tutorial, cloudflare
+
+## Idiomas
+
+- Español (/es/): idioma principal
+- English (/en/): traducción de todos los posts
+
+## Contacto
+
+- Twitter/X: @edunavata
+- GitHub: github.com/edunavata

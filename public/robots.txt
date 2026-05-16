@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://edunavata-blog.pages.dev/sitemap-index.xml

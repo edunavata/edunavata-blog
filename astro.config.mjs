@@ -1,12 +1,17 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import expressiveCode from 'astro-expressive-code';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  // TODO: Cambia esto por tu dominio real en producción
-  site: 'https://tublog.com',
+  site: process.env.SITE_URL || 'https://edunavata-blog.pages.dev',
+
+  env: {
+    schema: {
+      SITE_URL: envField.string({ context: 'client', access: 'public', optional: true }),
+    },
+  },
 
   // Exclude unrelated directories from type checking
   exclude: ['mi-blog/**'],

@@ -7,6 +7,7 @@ import { getCollection } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime } from '@/i18n/utils';
 import { home } from '@/data/home';
 import { Image } from 'astro:assets';
+import avatarImg from '@/assets/avatar.jpg';
 
 const lang = 'en';
 const t = useTranslations(lang);
@@ -124,7 +125,7 @@ const categories = [...allTags.entries()]
       </div>
       <div style="display:grid; grid-template-columns:64px 1fr; gap:20px; align-items:center; max-width:720px;">
         <div style="width:64px; height:64px; border-radius:50%; border:1px solid var(--border); overflow:hidden;">
-          <img src="/avatar.jpg" alt="Avatar" style="width:100%; height:100%; object-fit:cover;" />
+          <Image src={avatarImg} alt="Edu González" width={64} height={64} style="width:100%; height:100%; object-fit:cover;" />
         </div>
         <p style="font-family:'Source Serif 4',serif; font-size:17px; line-height:1.65; color:var(--text-2); margin:0;">
           {data.aboutPreview.split(/(\[.*?\]\(.*?\))/g).map(part => {

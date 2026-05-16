@@ -6,6 +6,8 @@ import { timeline } from '@/data/timeline';
 import { stack } from '@/data/stack';
 import { contact } from '@/data/contact';
 import { useTranslations } from '@/i18n/utils';
+import { Image } from 'astro:assets';
+import avatarImg from '@/assets/avatar.jpg';
 
 const lang = 'es';
 const t = useTranslations(lang);
@@ -27,7 +29,7 @@ const contactIcons: Record<string, string> = {
     <!-- HERO -->
     <section style="display:grid; grid-template-columns:140px 1fr; gap:36px; align-items:center; padding-bottom:56px; border-bottom:1px solid var(--border);">
       <div class="avatar" style="width:140px; height:140px; border-radius:50%; border:1px solid var(--border); overflow:hidden;">
-        <img src="/avatar.jpg" alt="Avatar" style="width:100%; height:100%; object-fit:cover;" />
+        <Image src={avatarImg} alt="Edu González" width={140} height={140} style="width:100%; height:100%; object-fit:cover;" />
       </div>
       <div>
         <div class="eyebrow" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; display:flex; align-items:center; gap:10px;">
