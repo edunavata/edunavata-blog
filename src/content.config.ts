@@ -16,9 +16,11 @@ const posts = defineCollection({
     categories: z.array(z.string()).default([]),
     cover: z.object({
       image: image(),
-      alt: z.string().optional(),
+      alt: z.string(),
     }).optional(),
     lang: z.enum(['es', 'en']).default('es'),
+    author: z.string().default('Edu González'),
+    updatedDate: z.coerce.date().optional(),
   }),
 });
 

@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import TagPill from '@/components/TagPill.astro';
 import { getCollection, render } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime, formatDate } from '@/i18n/utils';
+import { ui } from '@/i18n/ui';
 import { SITE } from '@/config/site';
 import type { GetStaticPaths } from 'astro';
 import type { CollectionEntry } from 'astro:content';
@@ -27,6 +28,9 @@ const tocItems = headings
   .map((h: any) => ({ depth: h.depth, text: h.text, slug: h.slug }));
 
 const formattedDate = formatDate(post.data.date, lang);
+const updatedDate = post.data.updatedDate ? formatDate(post.data.updatedDate, lang) : null;
+const minuteReadFn = ui[lang]['blog.minuteRead'];
+const readingTimeLabel = typeof minuteReadFn === 'function' ? minuteReadFn(readingTime) : minuteReadFn;
 
 const allPosts = await getCollection('posts', ({ data }) => data.lang === lang && !data.draft);
 const related = allPosts
@@ -44,12 +48,23 @@ const blogPostingJsonLd = {
   headline: post.data.title,
   description: post.data.description ?? '',
   datePublished: post.data.date.toISOString(),
+  ...(post.data.updatedDate && { dateModified: post.data.updatedDate.toISOString() }),
   image: new URL(ogImagePath, SITE.url).toString(),
   url: new URL(`/${lang}/posts/${post.data.slug}/`, SITE.url).toString(),
-  author: { '@type': 'Person', name: SITE.author },
-  publisher: { '@type': 'Person', name: SITE.author },
+  author: { '@type': 'Person', name: post.data.author },
+  publisher: { '@type': 'Person', name: post.data.author },
   inLanguage: lang,
   keywords: post.data.tags.join(', '),
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: t('nav.home'), item: new URL(`/${lang}/`, SITE.url).toString() },
+    { '@type': 'ListItem', position: 2, name: t('nav.blog'), item: new URL(`/${lang}/blog/`, SITE.url).toString() },
+    { '@type': 'ListItem', position: 3, name: post.data.title, item: new URL(`/${lang}/posts/${post.data.slug}/`, SITE.url).toString() },
+  ],
 };
 ---
 
@@ -61,7 +76,8 @@ const blogPostingJsonLd = {
   ogType="article"
   articleDate={post.data.date}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(blogPostingJsonLd)} slot="head" />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(blogPostingJsonLd)} slot="head" />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} slot="head" />
   <!-- Progress bar -->
   <div style="position:sticky; top:0; z-index:50; height:2px; background:transparent;">
     <div id="progress" style="height:2px; background:var(--accent); width:0%; transition:width 80ms linear;"></div>
@@ -87,13 +103,19 @@ const blogPostingJsonLd = {
       )}
 
       <!-- Title -->
-      <h1 style="font-family:'Source Serif 4',Georgia,serif; font-weight:600; font-size:clamp(36px,4vw,48px); line-height:1.15; letter-spacing:-0.015em; margin:0 0 22px; color:var(--text); text-wrap:balance;">{post.data.title}</h1>
+      <h1 style="font-family:'Source Serif 4 Variable',Georgia,serif; font-weight:600; font-size:clamp(36px,4vw,48px); line-height:1.15; letter-spacing:-0.015em; margin:0 0 22px; color:var(--text); text-wrap:balance;">{post.data.title}</h1>
 
       <!-- Meta bar -->
       <div style="display:flex; flex-wrap:wrap; align-items:center; gap:14px; font-size:14px; color:var(--text-3); font-family:'JetBrains Mono',monospace; margin-bottom:40px; padding-bottom:24px; border-bottom:1px solid var(--border);">
         <span>{formattedDate}</span>
         <span class="dot" style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"></span>
-        <span>{readingTime} min de lectura</span>
+        <span>{readingTimeLabel}</span>
+        {updatedDate && (
+          <>
+            <span class="dot" style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"></span>
+            <span>{t('blog.updateAt')} {updatedDate}</span>
+          </>
+        )}
       </div>
 
       <!-- Cover -->
@@ -120,7 +142,7 @@ const blogPostingJsonLd = {
             {related.map(r => (
               <a href={getPostUrl(lang, r.data.slug)} style="display:block; padding:20px 22px; border:1px solid var(--border); border-radius:10px; background:transparent; text-decoration:none; color:var(--text); transition:all 200ms ease;" onmouseover="this.style.borderColor='var(--border-strong)'; this.style.background='var(--surface)'" onmouseout="this.style.borderColor='var(--border)'; this.style.background='transparent'">
                 <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px;">{r.data.tags[0] || ''}</div>
-                <h4 style="font-family:'Source Serif 4',serif; font-size:18px; font-weight:600; line-height:1.3; margin:0 0 8px;">{r.data.title}</h4>
+                <h4 style="font-family:'Source Serif 4 Variable',serif; font-size:18px; font-weight:600; line-height:1.3; margin:0 0 8px;">{r.data.title}</h4>
                 <p style="font-size:13.5px; color:var(--text-2); margin:0; line-height:1.55;">{r.data.description}</p>
               </a>
             ))}
@@ -199,7 +221,7 @@ const blogPostingJsonLd = {
     color: var(--text-2);
     border-radius: 8px;
     cursor: pointer;
-    font-family: 'Geist', sans-serif;
+    font-family: 'Geist Variable', sans-serif;
     font-size: 13px;
     text-decoration: none;
     transition: all 150ms ease;
