@@ -6,9 +6,25 @@ export const SITE = {
   title: 'Edu González — Blog Técnico',
   description: 'Cloud, Data Engineering, LLMs, Linux y Ciberseguridad.',
   author: 'Edu González',
+  brand: '~edunavata',
   twitterHandle: '@edunavata',
+  defaultLocale: 'es',
   locale: {
     es: 'es_ES',
     en: 'en_US',
   },
+  hreflang: {
+    es: 'es-ES',
+    en: 'en-US',
+  },
+  ogImage: {
+    default: '/og-default.jpg',
+    width: 1200,
+    height: 630,
+  },
+  sameAs: [
+    'https://github.com/edunavata',
+    'https://x.com/edunavata',
+    'https://mastodon.social/@edunavata',
+  ],
 } as const;
