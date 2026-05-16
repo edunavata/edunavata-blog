@@ -4,7 +4,12 @@ import PostCard from '@/components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime } from '@/i18n/utils';
 
-const lang = 'es';
+export const getStaticPaths = () => [
+  { params: { lang: 'es' } },
+  { params: { lang: 'en' } },
+];
+
+const { lang } = Astro.params as { lang: 'es' | 'en' };
 const t = useTranslations(lang);
 
 const allPosts = await getCollection('posts', ({ data }) => data.lang === lang && !data.draft);
@@ -22,16 +27,22 @@ const tagList = [...allTags.entries()].sort((a, b) => b[1] - a[1]);
 
     <header style="margin-bottom:40px;">
       <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;">/ blog</div>
-      <h1 style="font-family:'Source Serif 4',Georgia,serif; font-weight:600; font-size:clamp(36px,4vw,44px); line-height:1.15; letter-spacing:-0.015em; color:var(--text); margin:0 0 12px;">{t('nav.blog')}</h1>
-      <p style="font-family:'Source Serif 4',serif; font-size:17px; line-height:1.6; color:var(--text-2); margin:0; max-width:56ch;">
-        Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.
+      <h1 style="font-family:'Source Serif 4 Variable',Georgia,serif; font-weight:600; font-size:clamp(36px,4vw,44px); line-height:1.15; letter-spacing:-0.015em; color:var(--text); margin:0 0 12px;">{t('nav.blog')}</h1>
+      <p style="font-family:'Source Serif 4 Variable',serif; font-size:17px; line-height:1.6; color:var(--text-2); margin:0; max-width:56ch;">
+        {lang === 'es'
+          ? 'Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.'
+          : 'Technical notes about the tools I use daily. No fixed schedule — I write when something surprises me enough to document it.'}
       </p>
       <div style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); margin-top:18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
         <span><span id="count-display">{allPosts.length}</span> {t('blog.articles')}</span>
         <span class="dot" style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"></span>
         <span>{t('blog.since')}</span>
-        <span class="dot" style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"></span>
-        <span>{t('blog.inSpanish')}</span>
+        {lang === 'es' && (
+          <>
+            <span class="dot" style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"></span>
+            <span>{t('blog.inSpanish')}</span>
+          </>
+        )}
       </div>
     </header>
 
@@ -42,7 +53,7 @@ const tagList = [...allTags.entries()].sort((a, b) => b[1] - a[1]);
         <span>{t('blog.filteredBy')}</span>
       </div>
       <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; scrollbar-width:thin; scrollbar-color:var(--border-strong) transparent;" id="filter-scroll">
-        <button class="chip active" data-tag="all">Todos <span class="ct">{allPosts.length}</span></button>
+        <button class="chip active" data-tag="all">{t('blog.allCategories')} <span class="ct">{allPosts.length}</span></button>
         {tagList.map(([tag, count]) => (
           <button class="chip" data-tag={tag}>{tag} <span class="ct">{count}</span></button>
         ))}
