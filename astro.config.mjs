@@ -26,10 +26,6 @@ export default defineConfig({
     }
   },
 
-  redirects: {
-    '/es/sobre-mi/': '/es/about/',
-  },
-
   // Tailwind v4 se inyecta a través de Vite
   vite: {
     plugins: [tailwindcss()],
