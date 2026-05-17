@@ -167,7 +167,7 @@ export default defineConfig({
       // Excluye RSS feeds (no son HTML) y páginas de tags (noindex por política: < 8 posts/tag).
       filter: (page) => {
         const path = new URL(page).pathname;
-        if (path.endsWith('/feed.xml')) return false;
+        if (path.endsWith('/rss.xml')) return false;
         if (path.includes('/tags/')) return false;
         return true;
       },
