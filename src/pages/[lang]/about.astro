@@ -10,10 +10,7 @@ import { SITE } from '@/config/site';
 import { Image } from 'astro:assets';
 import avatarImg from '@/assets/avatar.jpg';
 
-export const getStaticPaths = () => [
-  { params: { lang: 'es' } },
-  { params: { lang: 'en' } },
-];
+export const getStaticPaths = () => [{ params: { lang: 'es' } }, { params: { lang: 'en' } }];
 
 const { lang } = Astro.params as { lang: 'es' | 'en' };
 const t = useTranslations(lang);
@@ -34,103 +31,201 @@ const personJsonLd = {
   name: SITE.author,
   url: SITE.url,
   jobTitle: data.heroRole,
-  sameAs: contact
-    .filter(c => ['github', 'x', 'mastodon'].includes(c.icon))
-    .map(c => c.href),
+  sameAs: contact.filter((c) => ['github', 'x', 'mastodon'].includes(c.icon)).map((c) => c.href),
 };
 ---
 
 <BaseLayout title={t('nav.about')} lang={lang}>
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(personJsonLd)} slot="head" />
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(personJsonLd)}
+    slot="head"
+  />
 
-  <main style="max-width:920px; margin:0 auto; padding:64px 32px 96px;">
-
+  <div style="max-width:920px; margin:0 auto; padding:64px 32px 96px;">
     <!-- HERO -->
-    <section style="display:grid; grid-template-columns:140px 1fr; gap:36px; align-items:center; padding-bottom:56px; border-bottom:1px solid var(--border);">
-      <div class="avatar" style="width:140px; height:140px; border-radius:50%; border:1px solid var(--border); overflow:hidden;">
-        <Image src={avatarImg} alt="Edu González" width={140} height={140} style="width:100%; height:100%; object-fit:cover;" />
+    <section
+      style="display:grid; grid-template-columns:140px 1fr; gap:36px; align-items:center; padding-bottom:56px; border-bottom:1px solid var(--border);"
+    >
+      <div
+        class="avatar"
+        style="width:140px; height:140px; border-radius:50%; border:1px solid var(--border); overflow:hidden;"
+      >
+        <Image
+          src={avatarImg}
+          alt="Edu González"
+          width={140}
+          height={140}
+          style="width:100%; height:100%; object-fit:cover;"
+        />
       </div>
       <div>
-        <div class="eyebrow" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; display:flex; align-items:center; gap:10px;">
-          <span class="status-dot" style="width:7px; height:7px; border-radius:50%; background:oklch(0.74 0.14 145); box-shadow:0 0 0 3px oklch(0.74 0.14 145 / 0.18);"></span>
+        <div
+          class="eyebrow"
+          style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; display:flex; align-items:center; gap:10px;"
+        >
+          <span
+            class="status-dot"
+            style="width:7px; height:7px; border-radius:50%; background:oklch(0.74 0.14 145); box-shadow:0 0 0 3px oklch(0.74 0.14 145 / 0.18);"
+          ></span>
           <span>{data.heroEyebrow}</span>
         </div>
-        <h1 style="font-family:'Source Serif 4 Variable',serif; font-weight:600; font-size:clamp(34px,4vw,44px); line-height:1.1; letter-spacing:-0.02em; margin:0 0 8px; color:var(--text);">
-          {data.heroName} <em style="font-style:italic; color:var(--text-2); font-weight:500;">— {data.heroTagline}</em>
+        <h1
+          style="font-family:'Source Serif 4 Variable',serif; font-weight:600; font-size:clamp(34px,4vw,44px); line-height:1.1; letter-spacing:-0.02em; margin:0 0 8px; color:var(--text);"
+        >
+          {data.heroName}
+          <em style="font-style:italic; color:var(--text-2); font-weight:500;"
+            >— {data.heroTagline}</em
+          >
         </h1>
-        <p style="font-family:'Source Serif 4 Variable',serif; font-size:17px; color:var(--text-2); margin:0;">
+        <p
+          style="font-family:'Source Serif 4 Variable',serif; font-size:17px; color:var(--text-2); margin:0;"
+        >
           {data.heroRole}
         </p>
       </div>
     </section>
 
     <!-- INTRO -->
-    <section style="padding:56px 0; border-bottom:1px solid var(--border); font-family:'Source Serif 4 Variable',serif; font-size:19px; line-height:1.72; color:var(--text); max-width:64ch;">
-      {data.introParagraphs.map(p => <p style="margin:0;">{
-        p.split(/(\[.*?\]\(.*?\))/g).map(part => {
-          const match = part.match(/\[(.*?)\]\((.*?)\)/);
-          if (match) return <a href={match[2]} style="color:var(--accent); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; text-decoration-color:color-mix(in oklch, var(--accent), transparent 60%);">{match[1]}</a>;
-          return part;
-        })
-      }</p>)}
+    <section
+      style="padding:56px 0; border-bottom:1px solid var(--border); font-family:'Source Serif 4 Variable',serif; font-size:19px; line-height:1.72; color:var(--text); max-width:64ch;"
+    >
+      {
+        data.introParagraphs.map((p) => (
+          <p style="margin:0;">
+            {p.split(/(\[.*?\]\(.*?\))/g).map((part) => {
+              const match = part.match(/\[(.*?)\]\((.*?)\)/);
+              if (match)
+                return (
+                  <a
+                    href={match[2]}
+                    style="color:var(--accent); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; text-decoration-color:color-mix(in oklch, var(--accent), transparent 60%);"
+                  >
+                    {match[1]}
+                  </a>
+                );
+              return part;
+            })}
+          </p>
+        ))
+      }
     </section>
 
     <!-- TIMELINE / NOW -->
     <section style="padding:56px 0; border-bottom:1px solid var(--border);">
-      <div style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;">{t('about.now')}</div>
-      <div style="display:flex; flex-direction:column; font-family:'Source Serif 4 Variable',serif; font-size:17px; line-height:1.55;">
-        {timeline.map(item => (
-          <div style="display:grid; grid-template-columns:100px 1fr; gap:28px; padding:18px 0; border-bottom:1px solid var(--border); align-items:baseline;">
-            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.06em;">{item.when}</span>
-            <div set:html={item.what.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/<(.*?)>/g, '<em>&lt;$1&gt;</em>')} />
-          </div>
-        ))}
+      <div
+        style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;"
+      >
+        {t('about.now')}
+      </div>
+      <div
+        style="display:flex; flex-direction:column; font-family:'Source Serif 4 Variable',serif; font-size:17px; line-height:1.55;"
+      >
+        {
+          timeline.map((item) => (
+            <div style="display:grid; grid-template-columns:100px 1fr; gap:28px; padding:18px 0; border-bottom:1px solid var(--border); align-items:baseline;">
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.06em;">
+                {item.when}
+              </span>
+              <div
+                set:html={item.what
+                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                  .replace(/<(.*?)>/g, '<em>&lt;$1&gt;</em>')}
+              />
+            </div>
+          ))
+        }
       </div>
     </section>
 
     <!-- STACK / USES -->
     <section style="padding:56px 0; border-bottom:1px solid var(--border);">
-      <div style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;">{t('about.setup')}</div>
-      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:0; border:1px solid var(--border); border-radius:10px; overflow:hidden;">
-        {stack.map(item => (
-          <div style="display:grid; grid-template-columns:140px 1fr; gap:18px; padding:16px 20px; border-bottom:1px solid var(--border); align-items:baseline;">
-            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.06em;">{item.key}</span>
-            <span style="font-family:'Geist Variable',sans-serif; font-size:14.5px; color:var(--text);">
-              {item.val} {item.detail && <span style="color:var(--text-3); margin-left:6px; font-size:13px;">{item.detail}</span>}
-            </span>
-          </div>
-        ))}
+      <div
+        style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;"
+      >
+        {t('about.setup')}
+      </div>
+      <div
+        style="display:grid; grid-template-columns:repeat(2,1fr); gap:0; border:1px solid var(--border); border-radius:10px; overflow:hidden;"
+      >
+        {
+          stack.map((item) => (
+            <div style="display:grid; grid-template-columns:140px 1fr; gap:18px; padding:16px 20px; border-bottom:1px solid var(--border); align-items:baseline;">
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.06em;">
+                {item.key}
+              </span>
+              <span style="font-family:'Geist Variable',sans-serif; font-size:14.5px; color:var(--text);">
+                {item.val}{' '}
+                {item.detail && (
+                  <span style="color:var(--text-3); margin-left:6px; font-size:13px;">
+                    {item.detail}
+                  </span>
+                )}
+              </span>
+            </div>
+          ))
+        }
       </div>
     </section>
 
     <!-- WRITES ABOUT -->
     <section style="padding:56px 0; border-bottom:1px solid var(--border);">
-      <div style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;">{t('about.writesAbout')}</div>
+      <div
+        style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;"
+      >
+        {t('about.writesAbout')}
+      </div>
       <div style="display:flex; flex-wrap:wrap; gap:8px;">
-        {data.topics.map(topic => (
-          <TagPill tag={topic.name} href={topic.url} />
-        ))}
+        {data.topics.map((topic) => <TagPill tag={topic.name} href={topic.url} />)}
       </div>
     </section>
 
     <!-- CONTACT -->
     <section style="padding:56px 0;">
-      <div style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;">{t('about.contact')}</div>
+      <div
+        style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;"
+      >
+        {t('about.contact')}
+      </div>
       <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
-        {contact.map(c => (
-          <a href={c.href} style="display:flex; align-items:center; gap:14px; padding:18px 20px; border:1px solid var(--border); border-radius:10px; text-decoration:none; color:inherit; transition:all 200ms ease;" onmouseover="this.style.borderColor='var(--border-strong)'; this.style.background='var(--surface)'" onmouseout="this.style.borderColor='var(--border)'; this.style.background='transparent'">
-            <span class="ic" style="width:36px; height:36px; display:grid; place-items:center; color:var(--text-2); border:1px solid var(--border); border-radius:8px; flex-shrink:0;" set:html={contactIcons[c.icon] || ''} />
-            <span style="display:flex; flex-direction:column; gap:2px; min-width:0;">
-              <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.06em;">{c.label}</span>
-              <span style="font-family:'Geist Variable',sans-serif; font-size:14.5px; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{c.value}</span>
-            </span>
-          </a>
-        ))}
+        {
+          contact.map((c) => (
+            <a
+              href={c.href}
+              style="display:flex; align-items:center; gap:14px; padding:18px 20px; border:1px solid var(--border); border-radius:10px; text-decoration:none; color:inherit; transition:all 200ms ease;"
+              onmouseover="this.style.borderColor='var(--border-strong)'; this.style.background='var(--surface)'"
+              onmouseout="this.style.borderColor='var(--border)'; this.style.background='transparent'"
+              onfocus="this.style.borderColor='var(--border-strong)'; this.style.background='var(--surface)'"
+              onblur="this.style.borderColor='var(--border)'; this.style.background='transparent'"
+            >
+              <span
+                class="ic"
+                style="width:36px; height:36px; display:grid; place-items:center; color:var(--text-2); border:1px solid var(--border); border-radius:8px; flex-shrink:0;"
+                set:html={contactIcons[c.icon] || ''}
+              />
+              <span style="display:flex; flex-direction:column; gap:2px; min-width:0;">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.06em;">
+                  {c.label}
+                </span>
+                <span style="font-family:'Geist Variable',sans-serif; font-size:14.5px; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                  {c.value}
+                </span>
+              </span>
+            </a>
+          ))
+        }
       </div>
 
       <!-- PGP -->
-      <div style="margin-top:24px; padding:16px 18px; border:1px solid var(--border); border-radius:10px; background:var(--surface); font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--text-2); display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-        <span class="label" style="color:var(--text-3); text-transform:uppercase; font-size:10.5px; letter-spacing:0.08em;">PGP</span>
+      <div
+        style="margin-top:24px; padding:16px 18px; border:1px solid var(--border); border-radius:10px; background:var(--surface); font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--text-2); display:flex; align-items:center; gap:14px; flex-wrap:wrap;"
+      >
+        <span
+          class="label"
+          style="color:var(--text-3); text-transform:uppercase; font-size:10.5px; letter-spacing:0.08em;"
+          >PGP</span
+        >
         <code id="pgp-key" style="color:var(--text);">{data.pgp}</code>
         <button
           class="copy-btn"
@@ -138,11 +233,11 @@ const personJsonLd = {
           data-copy={t('about.pgpCopy')}
           data-copied={`✓ ${t('about.pgpCopied')}`}
           style="margin-left:auto; background:transparent; border:1px solid var(--border-strong); color:var(--text-2); border-radius:6px; padding:5px 10px; font-family:'JetBrains Mono',monospace; font-size:11px; cursor:pointer; transition:all 150ms ease;"
-        >{t('about.pgpCopy')}</button>
+          >{t('about.pgpCopy')}</button
+        >
       </div>
     </section>
-
-  </main>
+  </div>
 </BaseLayout>
 
 <script is:inline>
@@ -151,12 +246,20 @@ const personJsonLd = {
     if (pgpBtn) {
       pgpBtn.addEventListener('click', async function () {
         var key = (document.getElementById('pgp-key') || {}).textContent || '';
-        try { await navigator.clipboard.writeText(key); } catch (e) {}
+        try {
+          await navigator.clipboard.writeText(key);
+        } catch {
+          /* clipboard unsupported */
+        }
         var old = pgpBtn.dataset.copy;
         pgpBtn.style.color = 'var(--accent)';
         pgpBtn.style.borderColor = 'var(--callout-info-bd)';
         pgpBtn.textContent = pgpBtn.dataset.copied;
-        setTimeout(function () { pgpBtn.style.color = ''; pgpBtn.style.borderColor = ''; pgpBtn.textContent = old; }, 1600);
+        setTimeout(function () {
+          pgpBtn.style.color = '';
+          pgpBtn.style.borderColor = '';
+          pgpBtn.textContent = old;
+        }, 1600);
       });
     }
   })();
@@ -164,10 +267,22 @@ const personJsonLd = {
 
 <style>
   @media (max-width: 720px) {
-    section[style*="grid-template-columns: 140px 1fr"] { grid-template-columns: 1fr !important; gap: 24px !important; }
-    section[style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
-    section[style*="grid-template-columns:repeat(2"] { grid-template-columns: 1fr !important; }
-    div[style*="grid-template-columns: 100px"] { grid-template-columns: 1fr !important; gap: 6px !important; }
-    div[style*="grid-template-columns:140px"] { border-right: none !important; }
+    section[style*='grid-template-columns: 140px 1fr'] {
+      grid-template-columns: 1fr !important;
+      gap: 24px !important;
+    }
+    section[style*='grid-template-columns:repeat(3'] {
+      grid-template-columns: 1fr !important;
+    }
+    section[style*='grid-template-columns:repeat(2'] {
+      grid-template-columns: 1fr !important;
+    }
+    div[style*='grid-template-columns: 100px'] {
+      grid-template-columns: 1fr !important;
+      gap: 6px !important;
+    }
+    div[style*='grid-template-columns:140px'] {
+      border-right: none !important;
+    }
   }
 </style>

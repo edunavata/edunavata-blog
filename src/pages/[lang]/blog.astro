@@ -5,10 +5,7 @@ import { getCollection } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime } from '@/i18n/utils';
 import { SITE } from '@/config/site';
 
-export const getStaticPaths = () => [
-  { params: { lang: 'es' } },
-  { params: { lang: 'en' } },
-];
+export const getStaticPaths = () => [{ params: { lang: 'es' } }, { params: { lang: 'en' } }];
 
 const { lang } = Astro.params as { lang: 'es' | 'en' };
 const t = useTranslations(lang);
@@ -17,15 +14,18 @@ const allPosts = await getCollection('posts', ({ data }) => data.lang === lang &
 const sorted = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const allTags = new Map<string, number>();
-allPosts.forEach(p => p.data.tags.forEach(tag => {
-  allTags.set(tag, (allTags.get(tag) || 0) + 1);
-}));
+allPosts.forEach((p) =>
+  p.data.tags.forEach((tag) => {
+    allTags.set(tag, (allTags.get(tag) || 0) + 1);
+  })
+);
 const tagList = [...allTags.entries()].sort((a, b) => b[1] - a[1]);
 
 const blogTitle = t('nav.blog');
-const blogDescription = lang === 'es'
-  ? 'Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.'
-  : 'Technical notes about the tools I use daily. No fixed schedule — I write when something surprises me enough to document it.';
+const blogDescription =
+  lang === 'es'
+    ? 'Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.'
+    : 'Technical notes about the tools I use daily. No fixed schedule — I write when something surprises me enough to document it.';
 const blogUrl = new URL(`/${lang}/blog/`, SITE.url).toString();
 
 const collectionPageJsonLd = {
@@ -51,64 +51,115 @@ const collectionPageJsonLd = {
 ---
 
 <BaseLayout title={blogTitle} description={blogDescription} lang={lang}>
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(collectionPageJsonLd)} slot="head" />
-  <main style="max-width:720px; margin:0 auto; padding:64px 32px 96px;">
-
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(collectionPageJsonLd)}
+    slot="head"
+  />
+  <div style="max-width:720px; margin:0 auto; padding:64px 32px 96px;">
     <header style="margin-bottom:40px;">
-      <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;">/ blog</div>
-      <h1 style="font-family:'Source Serif 4 Variable',Georgia,serif; font-weight:600; font-size:clamp(36px,4vw,44px); line-height:1.15; letter-spacing:-0.015em; color:var(--text); margin:0 0 12px;">{t('nav.blog')}</h1>
-      <p style="font-family:'Source Serif 4 Variable',serif; font-size:17px; line-height:1.6; color:var(--text-2); margin:0; max-width:56ch;">
-        {lang === 'es'
-          ? 'Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.'
-          : 'Technical notes about the tools I use daily. No fixed schedule — I write when something surprises me enough to document it.'}
+      <div
+        style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;"
+      >
+        / blog
+      </div>
+      <h1
+        style="font-family:'Source Serif 4 Variable',Georgia,serif; font-weight:600; font-size:clamp(36px,4vw,44px); line-height:1.15; letter-spacing:-0.015em; color:var(--text); margin:0 0 12px;"
+      >
+        {t('nav.blog')}
+      </h1>
+      <p
+        style="font-family:'Source Serif 4 Variable',serif; font-size:17px; line-height:1.6; color:var(--text-2); margin:0; max-width:56ch;"
+      >
+        {
+          lang === 'es'
+            ? 'Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.'
+            : 'Technical notes about the tools I use daily. No fixed schedule — I write when something surprises me enough to document it.'
+        }
       </p>
-      <div style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); margin-top:18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+      <div
+        style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); margin-top:18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;"
+      >
         <span><span id="count-display">{allPosts.length}</span> {t('blog.articles')}</span>
-        <span class="dot" style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"></span>
+        <span
+          class="dot"
+          style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"
+        ></span>
         <span>{t('blog.since')}</span>
-        {lang === 'es' && (
-          <>
-            <span class="dot" style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"></span>
-            <span>{t('blog.inSpanish')}</span>
-          </>
-        )}
+        {
+          lang === 'es' && (
+            <>
+              <span
+                class="dot"
+                style="width:3px; height:3px; border-radius:50%; background:var(--text-3); opacity:0.6;"
+              />
+              <span>{t('blog.inSpanish')}</span>
+            </>
+          )
+        }
       </div>
     </header>
 
     <!-- Tag filter -->
-    <div style="position:relative; margin-bottom:56px; padding-bottom:18px; border-bottom:1px solid var(--border);">
-      <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+    <div
+      style="position:relative; margin-bottom:56px; padding-bottom:18px; border-bottom:1px solid var(--border);"
+    >
+      <div
+        style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px; display:flex; align-items:center; gap:8px;"
+      >
+        <svg
+          width="11"
+          height="11"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"></path></svg
+        >
         <span>{t('blog.filteredBy')}</span>
       </div>
-      <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; scrollbar-width:thin; scrollbar-color:var(--border-strong) transparent;" id="filter-scroll">
-        <button class="chip active" data-tag="all">{t('blog.allCategories')} <span class="ct">{allPosts.length}</span></button>
-        {tagList.map(([tag, count]) => (
-          <button class="chip" data-tag={tag}>{tag} <span class="ct">{count}</span></button>
-        ))}
+      <div
+        style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; scrollbar-width:thin; scrollbar-color:var(--border-strong) transparent;"
+        id="filter-scroll"
+      >
+        <button class="chip active" data-tag="all"
+          >{t('blog.allCategories')} <span class="ct">{allPosts.length}</span></button
+        >
+        {
+          tagList.map(([tag, count]) => (
+            <button class="chip" data-tag={tag}>
+              {tag} <span class="ct">{count}</span>
+            </button>
+          ))
+        }
       </div>
     </div>
 
     <!-- Posts list -->
     <div class="posts" id="posts">
-      {sorted.map(post => (
-        <PostCard
-          title={post.data.title}
-          href={getPostUrl(lang, post.data.slug)}
-          date={post.data.date.toISOString()}
-          tags={post.data.tags}
-          description={post.data.description}
-          readingTime={getReadingTime(post.body ?? '')}
-          variant="row"
-        />
-      ))}
+      {
+        sorted.map((post) => (
+          <PostCard
+            title={post.data.title}
+            href={getPostUrl(lang, post.data.slug)}
+            date={post.data.date.toISOString()}
+            tags={post.data.tags}
+            description={post.data.description}
+            readingTime={getReadingTime(post.body ?? '')}
+            variant="row"
+          />
+        ))
+      }
     </div>
 
-    <div class="empty" id="empty" style="padding:80px 0; text-align:center; color:var(--text-3); font-family:'JetBrains Mono',monospace; font-size:13px; display:none;">
+    <div
+      class="empty"
+      id="empty"
+      style="padding:80px 0; text-align:center; color:var(--text-3); font-family:'JetBrains Mono',monospace; font-size:13px; display:none;"
+    >
       {t('taxonomy.noArticles')}
     </div>
-
-  </main>
+  </div>
 </BaseLayout>
 
 <style>
@@ -125,7 +176,10 @@ const collectionPageJsonLd = {
     transition: all 150ms ease;
     white-space: nowrap;
   }
-  .chip:hover { color: var(--text); border-color: var(--border-strong); }
+  .chip:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
   .chip.active {
     color: var(--bg);
     background: var(--text);
@@ -136,8 +190,13 @@ const collectionPageJsonLd = {
     color: var(--text-3);
     font-size: 11px;
   }
-  .chip.active .ct { color: var(--text-3); opacity: 0.7; }
-  .empty.show { display: block !important; }
+  .chip.active .ct {
+    color: var(--text-3);
+    opacity: 0.7;
+  }
+  .empty.show {
+    display: block !important;
+  }
 </style>
 
 <script is:inline>
@@ -148,7 +207,9 @@ const collectionPageJsonLd = {
     var countDisplay = document.getElementById('count-display');
     chips.forEach(function (chip) {
       chip.addEventListener('click', function () {
-        chips.forEach(function (c) { c.classList.remove('active'); });
+        chips.forEach(function (c) {
+          c.classList.remove('active');
+        });
         chip.classList.add('active');
         var tag = chip.dataset.tag;
         var visible = 0;
