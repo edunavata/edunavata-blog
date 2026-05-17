@@ -7,6 +7,7 @@ export default [
     ignores: [
       'dist/**',
       '.astro/**',
+      '.claude/**',
       'node_modules/**',
       'mi-blog/**',
       'public/**',

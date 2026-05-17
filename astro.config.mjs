@@ -5,6 +5,7 @@ import expressiveCode from 'astro-expressive-code';
 import tailwindcss from '@tailwindcss/vite';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeExternalLinks from 'rehype-external-links';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -90,7 +91,7 @@ export default defineConfig({
     },
   },
 
-    markdown: {
+  markdown: {
     rehypePlugins: [
       rehypeSlug,
       [
