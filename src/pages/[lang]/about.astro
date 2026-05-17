@@ -29,7 +29,7 @@ const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: SITE.author,
-  url: SITE.url,
+  url: new URL(`/${lang}/about/`, SITE.url).toString(),
   jobTitle: data.heroRole,
   sameAs: contact.filter((c) => ['github', 'x', 'mastodon'].includes(c.icon)).map((c) => c.href),
 };
