@@ -207,6 +207,8 @@ lang: "es"
 
 Las cabeceras h4 aparecen en el cuerpo del artículo pero no en el TOC de la barra lateral.
 
+### Demostración de h4
+
 #### Configuración básica de Astro
 
 La configuración mínima para un blog estático vive en `astro.config.mjs`.

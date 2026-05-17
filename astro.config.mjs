@@ -6,6 +6,24 @@ import tailwindcss from '@tailwindcss/vite';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
+
+function rehypeAccessibleTaskList() {
+  return function (tree) {
+    function walk(node) {
+      if (
+        node.type === 'element' &&
+        node.tagName === 'input' &&
+        node.properties?.type === 'checkbox'
+      ) {
+        node.properties['aria-label'] = node.properties.checked
+          ? 'Tarea completada'
+          : 'Tarea pendiente';
+      }
+      (node.children || []).forEach(walk);
+    }
+    walk(tree);
+  };
+}
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -129,6 +147,7 @@ export default defineConfig({
         },
       ],
       [rehypeExternalLinks, { rel: ['noopener', 'noreferrer'] }],
+      rehypeAccessibleTaskList,
     ],
   },
 

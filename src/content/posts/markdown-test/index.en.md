@@ -207,6 +207,8 @@ lang: "en"
 
 h4 headings appear in the article body but are not included in the sidebar TOC.
 
+### h4 example
+
 #### Basic Astro configuration
 
 The minimal configuration for a static blog lives in `astro.config.mjs`.
