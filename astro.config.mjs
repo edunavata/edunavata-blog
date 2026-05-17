@@ -29,6 +29,7 @@ function buildPostTranslationMap() {
   for (const folder of folders) {
     const folderPath = join(POSTS_DIR, folder);
     const slugByLang = {};
+    const lastmodByLang = {};
     let files;
     try {
       files = readdirSync(folderPath);
@@ -46,11 +47,26 @@ function buildPostTranslationMap() {
       if (slugMatch) {
         slugByLang[lang] = slugMatch[1].trim();
       }
+      const updatedMatch = content.match(/^updatedDate:\s*(.+?)\s*$/m);
+      const dateMatch = content.match(/^date:\s*(.+?)\s*$/m);
+      const rawDate = updatedMatch?.[1] || dateMatch?.[1];
+      if (rawDate) {
+        const d = new Date(rawDate);
+        if (!isNaN(d.getTime())) lastmodByLang[lang] = d;
+      }
     }
 
     if (slugByLang.es && slugByLang.en) {
-      map[`/es/posts/${slugByLang.es}/`] = { es: slugByLang.es, en: slugByLang.en };
-      map[`/en/posts/${slugByLang.en}/`] = { es: slugByLang.es, en: slugByLang.en };
+      map[`/es/posts/${slugByLang.es}/`] = {
+        es: slugByLang.es,
+        en: slugByLang.en,
+        lastmod: lastmodByLang.es,
+      };
+      map[`/en/posts/${slugByLang.en}/`] = {
+        es: slugByLang.es,
+        en: slugByLang.en,
+        lastmod: lastmodByLang.en,
+      };
     }
   }
 
@@ -129,16 +145,23 @@ export default defineConfig({
         defaultLocale: DEFAULT_LOCALE,
         locales: LOCALES,
       },
+      // Excluye RSS feeds (no son HTML) y páginas de tags (noindex por política: < 8 posts/tag).
+      filter: (page) => {
+        const path = new URL(page).pathname;
+        if (path.endsWith('/feed.xml')) return false;
+        if (path.includes('/tags/')) return false;
+        return true;
+      },
       // Inyecta hreflang alternates manualmente para posts con slugs asimétricos,
-      // y x-default global apuntando al defaultLocale.
+      // y x-default global apuntando al defaultLocale. Añade lastmod real de cada post.
       serialize(item) {
         const url = new URL(item.url);
         const pathname = url.pathname;
         const origin = url.origin;
 
-        // 1) Posts con slugs asimétricos: inyecta alternates manualmente.
+        // 1) Posts con slugs asimétricos: inyecta alternates y lastmod manualmente.
         if (postTranslations[pathname]) {
-          const { es, en } = postTranslations[pathname];
+          const { es, en, lastmod } = postTranslations[pathname];
           const esUrl = `${origin}/es/posts/${es}/`;
           const enUrl = `${origin}/en/posts/${en}/`;
           item.links = [
@@ -146,6 +169,7 @@ export default defineConfig({
             { lang: LOCALES.en, url: enUrl },
             { lang: 'x-default', url: esUrl },
           ];
+          if (lastmod) item.lastmod = lastmod;
           return item;
         }
 

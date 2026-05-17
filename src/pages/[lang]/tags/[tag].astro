@@ -60,7 +60,7 @@ const collectionPageJsonLd = {
 };
 ---
 
-<BaseLayout title={`#${tag}`} description={tagDescription} lang={lang}>
+<BaseLayout title={`#${tag}`} description={tagDescription} lang={lang} noindex={sorted.length < 8}>
   <script
     is:inline
     type="application/ld+json"
