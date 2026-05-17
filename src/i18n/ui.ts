@@ -40,8 +40,10 @@ export const ui = {
     'about.pgpCopied': 'Copiado',
     'about.available': 'disponible',
     'categories.breadcrumb': '/ categorías',
-    'categories.description': 'Agrupaciones temáticas amplias. Menos granulares que los tags, útiles para una visión general.',
-    'tags.description': 'Todos los temas que aparecen en el blog. Ordenados alfabéticamente o por número de artículos. Útil para navegar cuando ya sabes qué buscas — si no, empieza por el listado completo.',
+    'categories.description':
+      'Agrupaciones temáticas amplias. Menos granulares que los tags, útiles para una visión general.',
+    'tags.description':
+      'Todos los temas que aparecen en el blog. Ordenados alfabéticamente o por número de artículos. Útil para navegar cuando ya sabes qué buscas — si no, empieza por el listado completo.',
     'taxonomy.alpha': 'A → Z',
     'taxonomy.frequency': 'Frecuencia',
     'taxonomy.filterPlaceholder': 'Filtrar tags…',
@@ -54,6 +56,7 @@ export const ui = {
     'footer.rss': 'RSS',
     'footer.github': 'GitHub',
     'footer.email': 'Email',
+    'a11y.skipToMain': 'Saltar al contenido principal',
   },
   en: {
     'nav.home': 'Home',
@@ -89,8 +92,10 @@ export const ui = {
     'about.pgpCopied': 'Copied',
     'about.available': 'available',
     'categories.breadcrumb': '/ categories',
-    'categories.description': 'Broad topic groupings. Less granular than tags, useful for an overview.',
-    'tags.description': 'All the topics that appear in the blog. Sorted alphabetically or by article count. Useful for navigating when you know what you\'re looking for — if not, start with the full listing.',
+    'categories.description':
+      'Broad topic groupings. Less granular than tags, useful for an overview.',
+    'tags.description':
+      "All the topics that appear in the blog. Sorted alphabetically or by article count. Useful for navigating when you know what you're looking for — if not, start with the full listing.",
     'taxonomy.alpha': 'A → Z',
     'taxonomy.frequency': 'Frequency',
     'taxonomy.filterPlaceholder': 'Filter tags…',
@@ -103,5 +108,6 @@ export const ui = {
     'footer.rss': 'RSS',
     'footer.github': 'GitHub',
     'footer.email': 'Email',
+    'a11y.skipToMain': 'Skip to main content',
   },
 } as const;
