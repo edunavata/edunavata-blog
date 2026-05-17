@@ -189,7 +189,7 @@ const personJsonLd = {
           contact.map((c) => (
             <a
               href={c.href}
-              style="display:flex; align-items:center; gap:14px; padding:18px 20px; border:1px solid var(--border); border-radius:10px; text-decoration:none; color:inherit; transition:all 200ms ease;"
+              style="display:flex; align-items:center; gap:14px; padding:18px 20px; border:1px solid var(--border); border-radius:10px; text-decoration:none; color:inherit; transition:border-color 200ms ease, background-color 200ms ease;"
               onmouseover="this.style.borderColor='var(--border-strong)'; this.style.background='var(--surface)'"
               onmouseout="this.style.borderColor='var(--border)'; this.style.background='transparent'"
               onfocus="this.style.borderColor='var(--border-strong)'; this.style.background='var(--surface)'"
@@ -230,7 +230,7 @@ const personJsonLd = {
           id="pgp-copy"
           data-copy={t('about.pgpCopy')}
           data-copied={`✓ ${t('about.pgpCopied')}`}
-          style="margin-left:auto; background:transparent; border:1px solid var(--border-strong); color:var(--text-2); border-radius:6px; padding:5px 10px; font-family:'JetBrains Mono',monospace; font-size:11px; cursor:pointer; transition:all 150ms ease;"
+          style="margin-left:auto; background:transparent; border:1px solid var(--border-strong); color:var(--text-2); border-radius:6px; padding:5px 10px; font-family:'JetBrains Mono',monospace; font-size:11px; cursor:pointer; transition:color 150ms ease, border-color 150ms ease, background-color 150ms ease;"
           >{t('about.pgpCopy')}</button
         >
       </div>
