@@ -541,6 +541,27 @@ const breadcrumbJsonLd = {
 <script is:inline>
   (function () {
     var progress = document.getElementById('progress');
+    var activeHash = window.location.hash || '';
+
+    function setActiveTocLink(id) {
+      document.querySelectorAll('.toc a').forEach(function (a) {
+        var isActive = a.getAttribute('href') === '#' + id;
+        if (a.parentElement) a.parentElement.classList.toggle('active', isActive);
+      });
+    }
+
+    function updateHash(id, mode) {
+      if (!id) return;
+      var nextHash = '#' + id;
+      if (activeHash === nextHash) return;
+      activeHash = nextHash;
+      if (mode === 'push') {
+        window.history.pushState(null, '', nextHash);
+      } else {
+        window.history.replaceState(null, '', nextHash);
+      }
+    }
+
     function onScroll() {
       var scrollTop = window.scrollY || document.documentElement.scrollTop;
       var docH = document.documentElement.scrollHeight - window.innerHeight;
@@ -548,19 +569,27 @@ const breadcrumbJsonLd = {
       if (progress) progress.style.width = (pct * 100).toFixed(2) + '%';
 
       var offset = 120;
-      var tocLinks = [].slice.call(document.querySelectorAll('.toc a') || []);
-      var headings = tocLinks
+      var ids = [].slice
+        .call(document.querySelectorAll('.toc a') || [])
         .map(function (a) {
-          return document.getElementById((a.getAttribute('href') || '').slice(1));
+          return (a.getAttribute('href') || '').slice(1);
+        })
+        .filter(function (id, index, all) {
+          return id && all.indexOf(id) === index;
+        });
+      var headings = ids
+        .map(function (id) {
+          return document.getElementById(id);
         })
         .filter(Boolean);
-      var activeIdx = 0;
-      headings.forEach(function (h, i) {
-        if (h.getBoundingClientRect().top - offset <= 0) activeIdx = i;
+      var activeHeading = headings[0];
+      headings.forEach(function (h) {
+        if (h.getBoundingClientRect().top - offset <= 0) activeHeading = h;
       });
-      tocLinks.forEach(function (a, i) {
-        if (a.parentElement) a.parentElement.classList.toggle('active', i === activeIdx);
-      });
+      if (activeHeading && activeHeading.id) {
+        setActiveTocLink(activeHeading.id);
+        updateHash(activeHeading.id, 'replace');
+      }
     }
     if (window.__postScrollHandler) {
       window.removeEventListener('scroll', window.__postScrollHandler);
@@ -576,6 +605,8 @@ const breadcrumbJsonLd = {
         var target = id && document.getElementById(id);
         if (target) {
           var top = target.getBoundingClientRect().top + window.scrollY - 80;
+          setActiveTocLink(id);
+          updateHash(id, 'push');
           window.scrollTo({ top: top, behavior: 'smooth' });
         }
       });
