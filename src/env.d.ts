@@ -2,8 +2,8 @@
 
 interface Window {
   __themeToggleController?: AbortController;
+  __mobileMenuController?: AbortController;
   __themeSwapListenerAdded?: boolean;
-  __navSwapListenerAdded?: boolean;
   __tagsKeydown?: boolean;
   __postScrollHandler?: EventListener;
 }
