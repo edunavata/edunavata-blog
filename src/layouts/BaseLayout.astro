@@ -55,7 +55,8 @@ const description = Astro.props.description || SITE.description;
 const ogImageAlt = imageAlt ?? title;
 const canonicalPath = normalizeCanonicalPath(Astro.url.pathname);
 const canonicalURL = new URL(canonicalPath, Astro.site);
-const ogImage = new URL(image, Astro.url);
+const ogImage = new URL(image, Astro.site);
+const ogImageType = image.endsWith('.png') ? 'image/png' : 'image/jpeg';
 const ogLocale = SITE.locale[lang as keyof typeof SITE.locale] ?? 'es_ES';
 const ogLocaleAlternate = lang === 'es' ? SITE.locale.en : SITE.locale.es;
 
@@ -151,6 +152,7 @@ function normalizeCanonicalPath(pathname: string) {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content={ogImageType} />
     <meta property="og:image:width" content={String(SITE.ogImage.width)} />
     <meta property="og:image:height" content={String(SITE.ogImage.height)} />
     <meta property="og:image:alt" content={ogImageAlt} />
