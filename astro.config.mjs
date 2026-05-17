@@ -90,7 +90,7 @@ export default defineConfig({
     },
   },
 
-  markdown: {
+    markdown: {
     rehypePlugins: [
       rehypeSlug,
       [
@@ -110,6 +110,7 @@ export default defineConfig({
           },
         },
       ],
+      [rehypeExternalLinks, { rel: ['noopener', 'noreferrer'] }],
     ],
   },
 
