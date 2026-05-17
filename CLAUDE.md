@@ -64,13 +64,15 @@ pnpm run lint     # linting
 
 - **Usa siempre `pnpm`** para instalar dependencias, ejecutar scripts y gestionar el lockfile. Usa `npm` solo si es estrictamente necesario y deja explícita la razón.
 
-### Git y trabajo en paralelo
+### Git — Flujo de trabajo
 
-- **Sigue siempre buenas prácticas de Git:** revisa el estado del repositorio antes de editar, mantén cambios pequeños y atómicos, separa documentación/refactors/comportamiento y usa mensajes descriptivos al commitear.
-- **Una tarea, una rama:** cada tarea debe realizarse en su rama correspondiente (`feature/...`, `fix/...`, `chore/...`, `refactor/...`) salvo que el usuario indique explícitamente lo contrario. Si ya estás en una rama de tarea, confirma que corresponde al trabajo actual antes de tocar archivos.
-- **Asume agentes en paralelo:** da por hecho que otros agentes pueden estar trabajando al mismo tiempo en otras ramas, worktrees o archivos. No sobrescribas cambios ajenos, no reviertas trabajo que no hiciste y coordina si el mismo archivo tiene cambios no relacionados.
-- **Evita mezclar contextos:** no arrastres cambios de otra tarea a tu rama o commit. Si detectas trabajo pendiente ajeno, déjalo fuera del alcance y menciónalo en el resumen.
-- **Antes de cerrar:** muestra el estado de Git y resume archivos tocados, validaciones ejecutadas y riesgos pendientes.
+- **Rama por tarea:** crea una rama nueva antes de tocar código (`feature/...`, `fix/...`, `chore/...`, `refactor/...`). Confirma que corresponde a la tarea actual.
+- **Agentes en paralelo:** asume que otros agentes trabajan en simultáneo. No sobrescribas ni reviertas cambios ajenos.
+- **Commits atómicos:** mensajes en imperativo, ≤50 chars en el título. No mezcles contextos de tareas distintas.
+- **Al terminar:** haz commit de todos los cambios y crea un PR con `gh pr create`:
+  - Título: ≤70 chars, imperativo, descriptivo.
+  - Body: 2–3 bullets de qué y por qué + checklist de test plan. Sin texto de relleno.
+- **Antes de cerrar:** muestra `git status` y menciona cualquier trabajo ajeno detectado.
 
 ### Antes de cambios en el codebase
 
@@ -81,13 +83,9 @@ pnpm run lint     # linting
 
 - Usa `search_astro_docs` (MCP `astro-docs`) para confirmar cambios de API de Astro 6 antes de implementarlos.
 
-### Datos reales de búsqueda
-
-- Usa el MCP **Google Search Console** para obtener datos de rendimiento reales (queries, CTR, impresiones, posición media) antes de hacer cambios de SEO on-page. Los datos de GSC prevalecen sobre suposiciones.
-
 ### Skills disponibles
 
-Actívalas según la fase del trabajo. No cargues todas por defecto: usa la mínima skill que desbloquee la tarea y resume sus reglas en memoria de trabajo.
+Carga la mínima skill que desbloquee la tarea:
 
 | Skill                      | Cuándo usarla                                          |
 |----------------------------|--------------------------------------------------------|
@@ -102,32 +100,10 @@ Actívalas según la fase del trabajo. No cargues todas por defecto: usa la mín
 | `/seo-schema`              | Generación y validación de Schema.org / JSON-LD        |
 | `/seo-geo`                 | Optimización para AI Overviews, Perplexity, ChatGPT    |
 
-Skills globales instaladas desde `addyosmani/agent-skills`; úsalas de forma pragmática:
-
-| Skill                                  | Cuándo usarla                                      |
-|----------------------------------------|----------------------------------------------------|
-| `/using-agent-skills`                  | Dudas sobre qué skill aplicar                      |
-| `/context-engineering`                 | Preparar o ajustar contexto del agente             |
-| `/spec-driven-development`             | Features ambiguas o nuevas sin especificación      |
-| `/interview-me`                        | Requisitos vagos que necesitan aclaración          |
-| `/source-driven-development`           | APIs/librerías donde conviene verificar docs       |
-| `/debugging-and-error-recovery`        | Tests rotos, builds fallidos, errores inesperados  |
-| `/browser-testing-with-devtools`       | Verificación real en navegador                     |
-| `/frontend-ui-engineering`             | UI productiva, layouts, estado, componentes        |
-| `/code-review-and-quality`             | Revisión antes de mergear o cerrar una tarea       |
-| `/code-simplification`                 | Refactors de claridad sin cambiar comportamiento   |
-| `/performance-optimization`            | Core Web Vitals, profiling, cuellos de botella     |
-| `/security-and-hardening`              | Inputs, auth, sesiones, datos o integraciones      |
-| `/documentation-and-adrs`              | Decisiones técnicas o cambios de API pública       |
-| `/deprecation-and-migration`           | Migraciones, retirada de APIs o sistemas antiguos  |
-| `/doubt-driven-development`            | Decisiones críticas que conviene verificar         |
-| `/git-workflow-and-versioning`         | Cambios versionados, ramas, commits, PRs           |
-
 ---
 
 ## Comportamiento del Agente
 
-- **Patrones recurrentes:** si detectas un error repetido o una preferencia no documentada, pide permiso antes de añadirlo aquí o a `CLAUDE.local.md`.
-- **Contexto semántico:** en tareas complejas, confirma el estado del índice antes de empezar.
-- **Veracidad técnica:** no asumas compatibilidad entre versiones de Astro o Tailwind — verifica con los MCPs correspondientes.
-- **Decisiones de SEO basadas en datos:** consulta GSC antes de priorizar cambios on-page. No optimices a ciegas.
+- No asumas compatibilidad entre versiones de Astro/Tailwind — verifica con los MCPs.
+- Si detectas un patrón de error repetido o preferencia no documentada, pide permiso antes de actualizar este archivo o `CLAUDE.local.md`.
+- **SEO basado en datos:** consulta GSC (MCP `gsc`) antes de priorizar cambios on-page. Los datos prevalecen sobre suposiciones.
