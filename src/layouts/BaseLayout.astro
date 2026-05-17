@@ -43,7 +43,8 @@ const lang = Astro.props.lang || 'es';
 const t = useTranslations(lang);
 
 const description = Astro.props.description || SITE.description;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalPath = normalizeCanonicalPath(Astro.url.pathname);
+const canonicalURL = new URL(canonicalPath, Astro.site);
 const ogImage = new URL(image, Astro.url);
 const ogLocale = SITE.locale[lang as keyof typeof SITE.locale] ?? 'es_ES';
 const ogLocaleAlternate = lang === 'es' ? SITE.locale.en : SITE.locale.es;
@@ -52,7 +53,7 @@ const ogLocaleAlternate = lang === 'es' ? SITE.locale.en : SITE.locale.es;
 // For pages with symmetric URLs (home, blog, about, taxonomies), derive by
 // swapping the locale prefix. For pages with asymmetric URLs (posts), the
 // page itself must provide `altUrls` for non-current languages.
-const currentPath = Astro.url.pathname;
+const currentPath = canonicalPath;
 const altPathFor = (target: keyof typeof ui): string | undefined => {
   if (target === lang) return currentPath;
   if (altUrls && altUrls[target]) return altUrls[target];
@@ -95,6 +96,17 @@ const websiteJsonLd = {
 };
 
 const modifiedTimeISO = (articleModifiedDate ?? articleDate)?.toISOString();
+
+function normalizeCanonicalPath(pathname: string) {
+  const lastSegment = pathname.split('/').pop() ?? '';
+  const hasFileExtension = lastSegment.includes('.');
+
+  if (pathname === '/' || pathname.endsWith('/') || hasFileExtension) {
+    return pathname;
+  }
+
+  return `${pathname}/`;
+}
 ---
 
 <html lang={lang}>

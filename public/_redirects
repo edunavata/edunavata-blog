@@ -1,0 +1,18 @@
+/es /es/ 301
+/en /en/ 301
+
+/es/about /es/about/ 301
+/en/about /en/about/ 301
+/es/blog /es/blog/ 301
+/en/blog /en/blog/ 301
+/es/categories /es/categories/ 301
+/en/categories /en/categories/ 301
+/es/tags /es/tags/ 301
+/en/tags /en/tags/ 301
+
+/es/posts/:slug /es/posts/:slug/ 301
+/en/posts/:slug /en/posts/:slug/ 301
+/es/categories/:category /es/categories/:category/ 301
+/en/categories/:category /en/categories/:category/ 301
+/es/tags/:tag /es/tags/:tag/ 301
+/en/tags/:tag /en/tags/:tag/ 301
