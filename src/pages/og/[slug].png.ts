@@ -1,6 +1,7 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import sharp from 'sharp';
+import { wrapTitle, escXml } from '@/utils/og';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -23,22 +24,6 @@ export const GET: APIRoute = async ({ props }) => {
   const buf = await sharp(Buffer.from(svg)).png({ compressionLevel: 8 }).toBuffer();
   return new Response(buf, { headers: { 'Content-Type': 'image/png' } });
 };
-
-function wrapTitle(text: string, maxChars: number): string[] {
-  const words = text.split(' ');
-  const lines: string[] = [];
-  let current = '';
-  for (const word of words) {
-    if ((current + ' ' + word).trim().length > maxChars && current) {
-      lines.push(current.trim());
-      current = word;
-    } else {
-      current = (current + ' ' + word).trim();
-    }
-  }
-  if (current) lines.push(current.trim());
-  return lines.slice(0, 3);
-}
 
 function buildSvg(
   W: number,
@@ -76,12 +61,4 @@ function buildSvg(
   <text x="${W - 60}" y="${H - 48}" font-family="Courier New,monospace" font-size="13" fill="#2d3748" text-anchor="end" letter-spacing="0.04em">edunavata-blog.pages.dev</text>
   <circle cx="${W - 60}" cy="${H - 30}" r="3" fill="#4a90d9" opacity="0.4"/>
 </svg>`;
-}
-
-function escXml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }
