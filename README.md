@@ -110,6 +110,23 @@ Para una guía detallada de cómo se generan posts, ver [`docs/AUTHORING.md`](do
 
 Edita este archivo para cambiar dominio, título, autor, redes (`sameAs`), `hreflang` y `ogImage`. Lo demás se inyecta automáticamente desde `BaseLayout`.
 
+### Consistencia de URLs
+
+El blog usa un sistema redundante de tres capas para evitar que Google vea varias URLs como páginas distintas:
+
+| Mecanismo                 | Función                                                                                          |
+| ------------------------- | ------------------------------------------------------------------------------------------------ |
+| `trailingSlash: 'always'` | Previene: Astro genera siempre URLs con slash final.                                             |
+| Redirect `301`            | Corrige: `public/_redirects` redirige variantes sin slash a la URL canónica en Cloudflare Pages. |
+| `<link rel="canonical">`  | Seguro final: `BaseLayout` declara la URL oficial normalizada bajo `SITE_URL`.                   |
+
+El redirect de `www` a dominio apex no se puede versionar completamente en `_redirects` porque Cloudflare Pages no permite redirects por hostname ahí. Configúralo en Cloudflare como Bulk Redirect:
+
+- De: `https://www.<dominio>/*`
+- A: `https://<dominio>/:path`
+- Código: `301`
+- Mantener path y query string.
+
 ### Variables de entorno
 
 | Variable   | Uso                                            | Default                            |

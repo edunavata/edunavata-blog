@@ -41,6 +41,7 @@ function buildPostTranslationMap() {
       if (!m) continue;
       const lang = m[1];
       const content = readFileSync(join(folderPath, file), 'utf-8');
+      if (/^draft:\s*true\s*$/m.test(content)) continue;
       const slugMatch = content.match(/^slug:\s*["']?([^"'\n]+?)["']?\s*$/m);
       if (slugMatch) {
         slugByLang[lang] = slugMatch[1].trim();
