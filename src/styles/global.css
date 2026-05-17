@@ -773,6 +773,10 @@ a {
   color: var(--text);
 }
 .body table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
   width: 100%;
   border-collapse: collapse;
   font-family: 'Geist Variable', sans-serif;
@@ -804,6 +808,22 @@ a {
     grid-template-columns: 1fr;
   }
   .posts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .posts-grid {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .body {
+    font-size: 16px;
+  }
+  .body h2 {
+    font-size: 22px;
+  }
+  .body h3 {
+    font-size: 18px;
   }
 }

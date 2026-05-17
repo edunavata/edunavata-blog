@@ -67,16 +67,25 @@ const navItems = [
   </div>
 </nav>
 
-<script is:inline>
-  (function () {
-    document.getElementById('mobile-toggle')?.addEventListener('click', function () {
-      document.getElementById('nav-links')?.classList.toggle('open');
-    });
-    if (!window.__navSwapListenerAdded) {
-      window.__navSwapListenerAdded = true;
-      document.addEventListener('astro:after-swap', function () {
-        document.getElementById('nav-links')?.classList.remove('open');
-      });
+<script>
+  function setupMobileMenu() {
+    const toggle = document.getElementById('mobile-toggle');
+    const navLinks = document.getElementById('nav-links');
+    if (!toggle || !navLinks) return;
+
+    if (window.__mobileMenuController) {
+      window.__mobileMenuController.abort();
     }
-  })();
+    window.__mobileMenuController = new AbortController();
+
+    toggle.addEventListener('click', () => navLinks.classList.toggle('open'), {
+      signal: window.__mobileMenuController.signal,
+    });
+  }
+
+  document.addEventListener('astro:after-swap', () => {
+    document.getElementById('nav-links')?.classList.remove('open');
+  });
+
+  document.addEventListener('astro:page-load', setupMobileMenu);
 </script>
