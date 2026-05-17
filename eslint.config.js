@@ -10,6 +10,7 @@ export default [
       'node_modules/**',
       'mi-blog/**',
       'public/**',
+      'design/**',
       '**/*.md',
       '**/*.mdx',
       'package-lock.json',

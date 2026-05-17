@@ -32,9 +32,9 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
 ---
 
 <BaseLayout title={data.heroTitle} lang={lang}>
-  <section class="home" style="max-width:1100px; margin:0 auto; padding:0 32px;">
+  <section class="home">
     <!-- HERO -->
-    <section class="hero" style="padding:96px 0 80px; border-bottom:1px solid var(--border);">
+    <section class="hero" style="border-bottom:1px solid var(--border);">
       <div
         class="hero-eyebrow"
         style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); letter-spacing:0.02em; margin-bottom:24px; display:flex; align-items:center; gap:10px;"
@@ -127,10 +127,7 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
               </svg>
             </a>
           </div>
-          <div
-            class="posts-grid"
-            style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;"
-          >
+          <div class="posts-grid">
             {latest.map((post) => (
               <PostCard
                 title={post.data.title}
@@ -190,9 +187,7 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
           >{t('nav.about')}</span
         >
       </div>
-      <div
-        style="display:grid; grid-template-columns:64px 1fr; gap:20px; align-items:center; max-width:720px;"
-      >
+      <div class="about-preview">
         <div
           class="avatar"
           style="width:64px; height:64px; border-radius:50%; border:1px solid var(--border); overflow:hidden;"
@@ -235,9 +230,48 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
       opacity: 0;
     }
   }
-  @media (max-width: 880px) {
+
+  /* ───────── Layout — mobile-first ───────── */
+  .home {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .hero {
+    padding: 56px 0 48px;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .about-preview {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 16px;
+    align-items: center;
+    max-width: 720px;
+  }
+
+  @media (min-width: 640px) {
+    .home {
+      padding: 0 32px;
+    }
     .posts-grid {
-      grid-template-columns: 1fr !important;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      padding: 96px 0 80px;
+    }
+    .posts-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 </style>

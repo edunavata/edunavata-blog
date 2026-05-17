@@ -151,10 +151,8 @@ const breadcrumbJsonLd = {
     </div>
   </div>
 
-  <div
-    style="max-width:1180px; margin:0 auto; padding:56px 32px 96px; display:grid; grid-template-columns:minmax(0,1fr) 280px; gap:72px;"
-  >
-    <article style="min-width:0; max-width:720px;">
+  <div class="post-layout">
+    <article class="post-article">
       <!-- Breadcrumb -->
       <nav
         style="font-size:13px; color:var(--text-3); display:flex; align-items:center; gap:8px; margin-bottom:28px; font-family:'JetBrains Mono',monospace;"
@@ -235,7 +233,7 @@ const breadcrumbJsonLd = {
             <div style="font-family:'JetBrains Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:20px;">
               {t('blog.relatedPosts')}
             </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="related-grid">
               {related.map((r) => (
                 <a
                   href={getPostUrl(lang, r.data.slug)}
@@ -263,9 +261,7 @@ const breadcrumbJsonLd = {
     </article>
 
     <!-- Sidebar -->
-    <aside
-      style="position:sticky; top:64px; align-self:start; font-size:13.5px; color:var(--text-2); max-height:calc(100vh - 80px); overflow-y:auto;"
-    >
+    <aside class="post-aside">
       {
         tocItems.length > 0 && (
           <div style="margin-bottom:36px;">
@@ -391,14 +387,58 @@ const breadcrumbJsonLd = {
     border-color: var(--callout-info-bd);
   }
 
-  @media (max-width: 900px) {
-    main {
-      grid-template-columns: 1fr !important;
-      gap: 0 !important;
+  /* ───────── Layout — mobile-first ───────── */
+  .post-layout {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 40px 20px 64px;
+  }
+  .post-article {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .post-aside {
+    font-size: 13.5px;
+    color: var(--text-2);
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  @media (min-width: 640px) {
+    .post-layout {
+      padding: 48px 32px 80px;
     }
-    aside {
-      position: static !important;
-      max-height: none !important;
+    .related-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .post-layout {
+      max-width: 1180px;
+      padding: 56px 32px 96px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 72px;
+    }
+    .post-article {
+      max-width: 720px;
+    }
+    .post-aside {
+      position: sticky;
+      top: 64px;
+      align-self: start;
+      max-height: calc(100vh - 80px);
+      overflow-y: auto;
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
     }
   }
 </style>

@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mockup 1 — Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ───────── tokens (shared with article page) ───────── */
+  :root[data-theme="dark"] {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface-2: #161616;
+    --border: #1e1e1e;
+    --border-strong: #2a2a2a;
+    --text: #e8e8e8;
+    --text-2: #a1a1a1;
+    --text-3: #6b6b6b;
+    --accent: oklch(0.72 0.13 235);
+    --accent-soft: oklch(0.72 0.13 235 / 0.12);
+    --selection: oklch(0.72 0.13 235 / 0.35);
+    --callout-info-bd: oklch(0.72 0.13 235 / 0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --surface-2: #f5f5f4;
+    --border: #e7e5e4;
+    --border-strong: #d6d3d1;
+    --text: #111111;
+    --text-2: #525252;
+    --text-3: #8a8a8a;
+    --accent: oklch(0.52 0.15 235);
+    --accent-soft: oklch(0.52 0.15 235 / 0.08);
+    --selection: oklch(0.52 0.15 235 / 0.20);
+    --callout-info-bd: oklch(0.52 0.15 235 / 0.25);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #18181a;
+    font-family: 'Geist', system-ui, sans-serif;
+    color: #e8e8e8;
+    min-height: 100vh;
+    padding: 28px;
+  }
+  .frame, .mockup-label, .notes { margin-left: auto; margin-right: auto; }
+
+  /* browser frame */
+  .frame {
+    width: min(1320px, 100%);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
+    background: #1d1d20;
+  }
+  .chrome-bar {
+    display: flex; align-items: center; gap: 14px;
+    height: 42px; padding: 0 16px;
+    background: #1d1d20;
+    border-bottom: 1px solid #000;
+  }
+  .lights { display: flex; gap: 8px; }
+  .light { width: 12px; height: 12px; border-radius: 50%; }
+  .light.red { background: #ff5f57; }
+  .light.yellow { background: #febc2e; }
+  .light.green { background: #28c840; }
+  .url-bar {
+    flex: 1; max-width: 560px;
+    display: flex; align-items: center; gap: 8px;
+    height: 26px; padding: 0 12px;
+    background: #2a2a2e; border-radius: 13px;
+    color: #c5c5c8; font-size: 12px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  .browser-actions { display: flex; gap: 6px; opacity: 0.7; }
+
+  /* page */
+  .page {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Geist', system-ui, sans-serif;
+    transition: background-color 200ms ease, color 200ms ease;
+    min-height: 800px;
+  }
+  ::selection { background: var(--selection); }
+
+  /* ───────── nav (same as article) ───────── */
+  .nav { border-bottom: 1px solid var(--border); }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+  }
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-weight: 500;
+    color: var(--text);
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .brand-dot {
+    width: 8px; height: 8px; border-radius: 2px;
+    background: var(--accent);
+  }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a {
+    color: var(--text-2);
+    text-decoration: none; font-size: 14px;
+    transition: color 150ms ease;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a.active { font-weight: 500; }
+  .icon-btn {
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    border: 1px solid var(--border);
+    background: transparent;
+    border-radius: 8px;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--border-strong); }
+
+  /* ───────── home content ───────── */
+  .home {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* hero */
+  .hero {
+    padding: 96px 0 80px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-3);
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-eyebrow .blink {
+    width: 8px; height: 14px;
+    background: var(--accent);
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 0 0 22px;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--text-2);
+    font-weight: 500;
+  }
+  .hero p.lead {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--text-2);
+    max-width: 56ch;
+    margin: 0 0 36px;
+  }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    color: var(--text);
+    font-family: 'Geist', sans-serif;
+    font-size: 14.5px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 150ms ease;
+    cursor: pointer;
+  }
+  .btn:hover { border-color: var(--text); }
+  .btn.primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+  .btn.primary:hover { background: var(--text-2); border-color: var(--text-2); }
+  .btn .arrow { transition: transform 200ms ease; }
+  .btn:hover .arrow { transform: translateX(3px); }
+
+  /* section heading */
+  .section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 24px; margin-bottom: 36px;
+  }
+  .section-head h2 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--text);
+  }
+  .section-head .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-3);
+  }
+  .section-head .more {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-2);
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color 150ms ease;
+  }
+  .section-head .more:hover { color: var(--text); }
+  .section-head .more .arrow { transition: transform 200ms ease; }
+  .section-head .more:hover .arrow { transform: translateX(3px); }
+
+  /* featured */
+  .featured {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+  }
+  .featured-cover {
+    aspect-ratio: 4 / 3;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background:
+      repeating-linear-gradient(135deg,
+        var(--surface) 0 12px,
+        var(--surface-2) 12px 24px);
+    display: grid; place-items: center;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    transition: border-color 200ms ease;
+  }
+  .featured:hover .featured-cover { border-color: var(--border-strong); }
+  .featured-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-3);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 18px;
+  }
+  .featured-meta .pill {
+    color: var(--accent);
+    border: 1px solid var(--callout-info-bd);
+    background: var(--accent-soft);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .featured-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-3); opacity: 0.6; }
+  .featured h3 {
+    font-family: 'Source Serif 4', serif;
+    font-size: clamp(26px, 3vw, 34px);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    color: var(--text);
+    transition: color 150ms ease;
+  }
+  .featured:hover h3 { color: var(--accent); }
+  .featured p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text-2);
+    margin: 0 0 18px;
+  }
+  .featured .read {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+
+  /* posts grid */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .post-card {
+    display: flex; flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    padding: 24px 24px 26px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: transparent;
+    transition: border-color 200ms ease, background-color 200ms ease;
+  }
+  .post-card:hover { border-color: var(--border-strong); background: var(--surface); }
+  .post-card .pc-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+  }
+  .post-card h3 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 10px;
+    color: var(--text);
+    text-wrap: balance;
+  }
+  .post-card p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text-2);
+    margin: 0 0 22px;
+    flex: 1;
+  }
+  .post-card .pc-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-3);
+    display: flex; align-items: center; gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .post-card .pc-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-3); opacity: 0.6; }
+
+  /* categories */
+  .cat-row {
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .cat-chip {
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    padding: 9px 16px 9px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 150ms ease;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .cat-chip .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-3);
+    background: var(--surface-2);
+    padding: 2px 7px;
+    border-radius: 999px;
+  }
+  .cat-chip:hover {
+    border-color: var(--border-strong);
+    background: var(--surface);
+  }
+  .cat-chip:hover .count { color: var(--text-2); }
+
+  /* about preview */
+  .about-strip {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 20px;
+    align-items: center;
+    max-width: 720px;
+  }
+  .avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background:
+      repeating-linear-gradient(135deg,
+        var(--surface) 0 8px,
+        var(--surface-2) 8px 16px);
+    display: grid; place-items: center;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+  }
+  .about-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text-2);
+  }
+  .about-text a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in oklch, var(--text), transparent 65%);
+  }
+  .about-text a:hover { text-decoration-color: var(--text); }
+
+  /* footer */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 36px 32px 32px;
+  }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--text-3); font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-links { display: flex; gap: 22px; }
+  .footer-links a {
+    color: var(--text-2); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color 150ms ease;
+  }
+  .footer-links a:hover { color: var(--text); }
+
+  /* mockup label */
+  .mockup-label {
+    text-align: center;
+    margin-top: 18px;
+    color: #6b6b6b;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  .notes {
+    max-width: 760px;
+    margin: 28px auto 0;
+    padding: 22px 26px;
+    background: #1a1a1d;
+    border: 1px solid #28282c;
+    border-radius: 10px;
+    color: #b8b8bd;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .notes h3 {
+    margin: 0 0 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8a8a90;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+  .notes p { margin: 0 0 8px; }
+  .notes p:last-child { margin: 0; }
+  .notes code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: #232326; padding: 1px 6px; border-radius: 4px;
+  }
+
+  @media (max-width: 880px) {
+    .featured { grid-template-columns: 1fr; }
+    .posts-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <div class="chrome-bar">
+    <div class="lights">
+      <div class="light red"></div>
+      <div class="light yellow"></div>
+      <div class="light green"></div>
+    </div>
+    <div class="url-bar">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span>blog.midominio.dev</span>
+    </div>
+    <div class="browser-actions">
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" style="border-color: transparent;">
+        <svg id="ic-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg id="ic-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="page" id="page">
+    <!-- nav -->
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="#"><span class="brand-dot"></span><span>~/midominio</span></a>
+        <div class="nav-links">
+          <a href="#" class="active">Inicio</a>
+          <a href="#">Blog</a>
+          <a href="#">Categorías</a>
+          <a href="#">Tags</a>
+          <a href="#">Sobre mí</a>
+          <button class="icon-btn" aria-label="Buscar" style="margin-left:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="home">
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-eyebrow">
+          <span class="blink"></span>
+          <span>blog.midominio.dev — desde 2018</span>
+        </div>
+        <h1>Notas técnicas, <em>sin ruido</em>, en español.</h1>
+        <p class="lead">Soy Daniel. Escribo sobre las herramientas que uso a diario — Hugo, Cloudflare, infraestructura mínima, Linux, scripts que ahorran tiempo. Sin paywalls, sin trackers, sin posts de relleno.</p>
+        <div class="cta-row">
+          <a href="#" class="btn primary">
+            Leer el blog
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#" class="btn">
+            Sobre mí
+          </a>
+        </div>
+      </section>
+
+      <!-- FEATURED -->
+      <section class="section">
+        <div class="section-head">
+          <span class="label">Destacado</span>
+        </div>
+        <a class="featured" href="#">
+          <div class="featured-cover">[ COVER · 4:3 — captura del último post ]</div>
+          <div>
+            <div class="featured-meta">
+              <span class="pill">Hugo</span>
+              <span class="dot"></span>
+              <span>20 enero 2025</span>
+              <span class="dot"></span>
+              <span>8 min de lectura</span>
+            </div>
+            <h3>Configurar Hugo + Hextra y desplegar en Cloudflare Pages</h3>
+            <p>Migré de Ghost a Hugo. El build pasó de 40 segundos a 3, el sitio se sirve desde 300 ubicaciones, y por fin tengo control total del HTML que envío al navegador. Aquí está el setup completo.</p>
+            <span class="read">
+              Leer artículo
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </a>
+      </section>
+
+      <!-- ÚLTIMOS POSTS -->
+      <section class="section">
+        <div class="section-head">
+          <h2>Últimos artículos</h2>
+          <a href="#" class="more">
+            Ver todos
+            <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="posts-grid">
+          <a class="post-card" href="#">
+            <div class="pc-tag">Cloudflare</div>
+            <h3>Cloudflare Pages vs Workers Sites: cuándo usar cada uno</h3>
+            <p>Comparativa práctica entre los dos productos de hosting estático. Qué cambia en build, en runtime y en facturación.</p>
+            <div class="pc-meta">
+              <span>14 enero 2025</span>
+              <span class="dot"></span>
+              <span>6 min</span>
+            </div>
+          </a>
+          <a class="post-card" href="#">
+            <div class="pc-tag">Linux</div>
+            <h3>Mi setup de tmux: una sola pestaña, varios proyectos</h3>
+            <p>Pasé tres años con un layout barroco de paneles. Lo simplifiqué a esto, y trabajo más rápido. La configuración cabe en 40 líneas.</p>
+            <div class="pc-meta">
+              <span>2 enero 2025</span>
+              <span class="dot"></span>
+              <span>4 min</span>
+            </div>
+          </a>
+          <a class="post-card" href="#">
+            <div class="pc-tag">DevOps</div>
+            <h3>Backups que de verdad funcionan: restic + Backblaze B2</h3>
+            <p>Llevaba años con scripts caseros que solo se ejecutaban a medias. Cambié a restic. Cinco euros al mes, restauración en minutos.</p>
+            <div class="pc-meta">
+              <span>22 diciembre 2024</span>
+              <span class="dot"></span>
+              <span>9 min</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- CATEGORÍAS -->
+      <section class="section">
+        <div class="section-head">
+          <h2>Explorar por categoría</h2>
+          <a href="#" class="more">
+            Todas
+            <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="cat-row">
+          <a class="cat-chip" href="#">Hugo <span class="count">12</span></a>
+          <a class="cat-chip" href="#">Cloudflare <span class="count">8</span></a>
+          <a class="cat-chip" href="#">Linux <span class="count">21</span></a>
+          <a class="cat-chip" href="#">DevOps <span class="count">14</span></a>
+          <a class="cat-chip" href="#">Bash <span class="count">9</span></a>
+          <a class="cat-chip" href="#">Git <span class="count">11</span></a>
+          <a class="cat-chip" href="#">Kubernetes <span class="count">5</span></a>
+          <a class="cat-chip" href="#">Postgres <span class="count">7</span></a>
+          <a class="cat-chip" href="#">Notas <span class="count">18</span></a>
+        </div>
+      </section>
+
+      <!-- ABOUT preview -->
+      <section class="section">
+        <div class="section-head">
+          <span class="label">Sobre mí</span>
+        </div>
+        <div class="about-strip">
+          <div class="avatar">[ AVATAR ]</div>
+          <p class="about-text">Ingeniero de software en Madrid, especializado en infraestructura y herramientas de desarrollo. Antes en startup-cosa, ahora en producto-grande. Si quieres contactarme, <a href="#">aquí está mi email</a> o <a href="#">mi GitHub</a>.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- footer -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>© 2025 — escrito con Hugo + Hextra</span>
+        <div class="footer-links">
+          <a href="#">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg>
+            RSS
+          </a>
+          <a href="#">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57v-2.07c-3.345.72-4.05-1.605-4.05-1.605-.54-1.395-1.335-1.755-1.335-1.755-1.08-.735.09-.72.09-.72 1.2.09 1.83 1.23 1.83 1.23 1.065 1.83 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.475-1.335-5.475-5.94 0-1.32.465-2.385 1.23-3.225-.12-.3-.54-1.515.12-3.165 0 0 1.005-.33 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.865.12 3.165.765.84 1.23 1.905 1.23 3.225 0 4.62-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22v3.285c0 .315.225.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="#">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Email
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<div class="mockup-label">MOCKUP 1 / 5 — HOME · alterna dark / light con el icono de luna arriba a la derecha</div>
+
+<div class="notes">
+  <h3>Decisiones de diseño</h3>
+  <p><strong>Sin fondos de color por sección.</strong> Las cinco zonas (hero, destacado, últimos posts, categorías, about) se separan con whitespace generoso (~72-96px) y un único <code>1px solid var(--border)</code>. Ningún bloque tiene background distinto del fondo base — coherente con la regla "no usar fondos de color en secciones".</p>
+  <p><strong>Hero austero.</strong> Eyebrow tipográfico tipo terminal con un cursor que parpadea (único elemento "vivo" de la página), título serif a 64px en una línea balanceada, lead a 19px, dos CTAs sólidos (primario invertido en blanco / secundario fantasma). Sin imagen decorativa.</p>
+  <p><strong>Featured con peso visual.</strong> El post destacado ocupa media página con cover 4:3 a la izquierda y el contenido tipográfico a la derecha — más espacio que las cards del grid, pero mismo lenguaje visual (tag en accent, meta en mono).</p>
+  <p><strong>Las cards de últimos posts</strong> son contenedores con borde de 1px y radius 10px (mismo que en el artículo). Hover sutil: el borde se oscurece y aparece un fondo <code>var(--surface)</code>. La meta vive bajo un separador interno para crear estructura sin colores.</p>
+  <p><strong>Categorías</strong> como chips con contador inline. El contador en monospace y un tono atenuado (<code>var(--surface-2)</code>) — útil para descubrimiento sin que las cifras compitan con el nombre.</p>
+  <p><strong>Hugo + Hextra.</strong> El bloque destacado y los últimos N posts se generan con <code>{{ range first N (where .Site.RegularPages "Section" "posts") }}</code>. Las categorías se sacan de <code>.Site.Taxonomies.categories</code>. Para evitar el header de hero default de Hextra, hay que setear <code>params.page.layout = "wide"</code> y crear un <code>layouts/index.html</code> custom.</p>
+</div>
+
+<script>
+  // theme toggle
+  const root = document.documentElement;
+  const stored = localStorage.getItem('mockup-theme') || 'dark';
+  root.setAttribute('data-theme', stored);
+  syncIcons();
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('mockup-theme', next);
+    syncIcons();
+  });
+  function syncIcons() {
+    const dark = root.getAttribute('data-theme') === 'dark';
+    document.getElementById('ic-sun').style.display = dark ? 'block' : 'none';
+    document.getElementById('ic-moon').style.display = dark ? 'none' : 'block';
+  }
+</script>
+
+</body>
+</html>
