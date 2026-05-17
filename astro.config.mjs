@@ -106,8 +106,8 @@ export default defineConfig({
           content: {
             type: 'element',
             tagName: 'span',
-            properties: { ariaHidden: 'true' },
-            children: [{ type: 'text', value: '#' }],
+            properties: { ariaHidden: 'true', className: ['heading-anchor__symbol'] },
+            children: [],
           },
         },
       ],

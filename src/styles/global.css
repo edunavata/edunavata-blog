@@ -753,6 +753,9 @@ a {
     opacity 150ms ease,
     color 150ms ease;
 }
+.body :is(h2, h3) .heading-anchor__symbol::before {
+  content: '#';
+}
 .body :is(h2, h3):hover .heading-anchor,
 .body :is(h2, h3) .heading-anchor:focus-visible {
   opacity: 1;
