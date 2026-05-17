@@ -30,13 +30,23 @@ const navItems = [
     </a>
 
     <div class="nav-links" id="nav-links">
-      {navItems.map(item => (
-        <a href={item.href} class:list={[currentPath === item.href && 'active']}>
-          {t(item.key as keyof typeof ui['es'])}
-        </a>
-      ))}
+      {
+        navItems.map((item) => (
+          <a href={item.href} class:list={[currentPath === item.href && 'active']}>
+            {t(item.key as keyof (typeof ui)['es'])}
+          </a>
+        ))
+      }
       <button class="icon-btn" aria-label={t('blog.search') as string} style="margin-left:8px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          ><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg
+        >
       </button>
     </div>
 
@@ -44,7 +54,14 @@ const navItems = [
       <LanguageSelector lang={lang} currentPath={currentPath} />
       <ThemeToggle />
       <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"></path></svg
+        >
       </button>
     </div>
   </div>

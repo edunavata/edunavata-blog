@@ -9,10 +9,7 @@ import { home } from '@/data/home';
 import { Image } from 'astro:assets';
 import avatarImg from '@/assets/avatar.jpg';
 
-export const getStaticPaths = () => [
-  { params: { lang: 'es' } },
-  { params: { lang: 'en' } },
-];
+export const getStaticPaths = () => [{ params: { lang: 'es' } }, { params: { lang: 'en' } }];
 
 const { lang } = Astro.params as { lang: 'es' | 'en' };
 const t = useTranslations(lang);
@@ -25,34 +22,53 @@ const featured = sorted[0];
 const latest = sorted.slice(1, 4);
 
 const allTags = new Map<string, number>();
-allPosts.forEach(p => p.data.tags.forEach(tag => {
-  allTags.set(tag, (allTags.get(tag) || 0) + 1);
-}));
+allPosts.forEach((p) =>
+  p.data.tags.forEach((tag) => {
+    allTags.set(tag, (allTags.get(tag) || 0) + 1);
+  })
+);
 
-const categories = [...allTags.entries()]
-  .sort((a, b) => b[1] - a[1])
-  .slice(0, 9);
+const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9);
 ---
 
 <BaseLayout title={data.heroTitle} lang={lang}>
   <section class="home" style="max-width:1100px; margin:0 auto; padding:0 32px;">
-
     <!-- HERO -->
     <section class="hero" style="padding:96px 0 80px; border-bottom:1px solid var(--border);">
-      <div class="hero-eyebrow" style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); letter-spacing:0.02em; margin-bottom:24px; display:flex; align-items:center; gap:10px;">
-        <span class="blink" style="width:8px; height:14px; background:var(--accent); display:inline-block; animation:blink 1.1s steps(1) infinite;"></span>
+      <div
+        class="hero-eyebrow"
+        style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); letter-spacing:0.02em; margin-bottom:24px; display:flex; align-items:center; gap:10px;"
+      >
+        <span
+          class="blink"
+          style="width:8px; height:14px; background:var(--accent); display:inline-block; animation:blink 1.1s steps(1) infinite;"
+        ></span>
         <span>{data.heroEyebrow}</span>
       </div>
-      <h1 style="font-family:'Source Serif 4 Variable',Georgia,serif; font-weight:600; font-size:clamp(40px,5vw,64px); line-height:1.1; letter-spacing:-0.02em; color:var(--text); margin:0 0 22px; max-width:18ch; text-wrap:balance;">
-        {data.heroTitle} <em style="font-style:italic; color:var(--text-2); font-weight:500;">{data.heroNoise}</em>
+      <h1
+        style="font-family:'Source Serif 4 Variable',Georgia,serif; font-weight:600; font-size:clamp(40px,5vw,64px); line-height:1.1; letter-spacing:-0.02em; color:var(--text); margin:0 0 22px; max-width:18ch; text-wrap:balance;"
+      >
+        {data.heroTitle}
+        <em style="font-style:italic; color:var(--text-2); font-weight:500;">{data.heroNoise}</em>
       </h1>
-      <p class="lead" style="font-family:'Source Serif 4 Variable',Georgia,serif; font-size:19px; line-height:1.6; color:var(--text-2); max-width:56ch; margin:0 0 36px;">
+      <p
+        class="lead"
+        style="font-family:'Source Serif 4 Variable',Georgia,serif; font-size:19px; line-height:1.6; color:var(--text-2); max-width:56ch; margin:0 0 36px;"
+      >
         {data.heroLead}
       </p>
       <div style="display:flex; gap:12px; flex-wrap:wrap;">
         <a href={data.ctaPrimary.href} class="btn primary">
           {data.ctaPrimary.text}
-          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          <svg
+            class="arrow"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"></path></svg
+          >
         </a>
         <a href={data.ctaSecondary.href} class="btn">
           {data.ctaSecondary.text}
@@ -61,93 +77,167 @@ const categories = [...allTags.entries()]
     </section>
 
     <!-- FEATURED -->
-    {featured && (
-      <section style="padding:72px 0; border-bottom:1px solid var(--border);">
-        <div class="section-head">
-          <span class="label" style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-3);">{t('blog.featured')}</span>
-        </div>
-        <FeaturedPost
-          title={featured.data.title}
-          href={getPostUrl(lang, featured.data.slug)}
-          date={featured.data.date.toISOString()}
-          tag={featured.data.tags[0] || ''}
-          description={featured.data.description}
-          readingTime={getReadingTime(featured.body ?? '')}
-          coverImage={featured.data.cover?.image}
-          coverAlt={featured.data.cover?.alt}
-        />
-      </section>
-    )}
+    {
+      featured && (
+        <section style="padding:72px 0; border-bottom:1px solid var(--border);">
+          <div class="section-head">
+            <span
+              class="label"
+              style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-3);"
+            >
+              {t('blog.featured')}
+            </span>
+          </div>
+          <FeaturedPost
+            title={featured.data.title}
+            href={getPostUrl(lang, featured.data.slug)}
+            date={featured.data.date.toISOString()}
+            tag={featured.data.tags[0] || ''}
+            description={featured.data.description}
+            readingTime={getReadingTime(featured.body ?? '')}
+            coverImage={featured.data.cover?.image}
+            coverAlt={featured.data.cover?.alt}
+          />
+        </section>
+      )
+    }
 
     <!-- LATEST POSTS -->
-    {latest.length > 0 && (
-      <section style="padding:72px 0; border-bottom:1px solid var(--border);">
-        <div class="section-head">
-          <h2>{t('blog.latestPosts')}</h2>
-          <a href={`/${lang}/blog/`} class="more" style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-2); text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-            {t('blog.viewAll')}
-            <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-        <div class="posts-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
-          {latest.map(post => (
-            <PostCard
-              title={post.data.title}
-              href={getPostUrl(lang, post.data.slug)}
-              date={post.data.date.toISOString()}
-              tags={post.data.tags}
-              description={post.data.description}
-              readingTime={getReadingTime(post.body ?? '')}
-              variant="grid"
-            />
-          ))}
-        </div>
-      </section>
-    )}
+    {
+      latest.length > 0 && (
+        <section style="padding:72px 0; border-bottom:1px solid var(--border);">
+          <div class="section-head">
+            <h2>{t('blog.latestPosts')}</h2>
+            <a
+              href={`/${lang}/blog/`}
+              class="more"
+              style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-2); text-decoration:none; display:inline-flex; align-items:center; gap:6px;"
+            >
+              {t('blog.viewAll')}
+              <svg
+                class="arrow"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+          <div
+            class="posts-grid"
+            style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;"
+          >
+            {latest.map((post) => (
+              <PostCard
+                title={post.data.title}
+                href={getPostUrl(lang, post.data.slug)}
+                date={post.data.date.toISOString()}
+                tags={post.data.tags}
+                description={post.data.description}
+                readingTime={getReadingTime(post.body ?? '')}
+                variant="grid"
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <!-- CATEGORIES -->
-    {categories.length > 0 && (
-      <section style="padding:72px 0; border-bottom:1px solid var(--border);">
-        <div class="section-head">
-          <h2>{t('blog.exploreByCategory')}</h2>
-          <a href={`/${lang}/tags/`} class="more" style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-2); text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-            {t('blog.allCategories')}
-            <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-        <div style="display:flex; flex-wrap:wrap; gap:10px;">
-          {categories.map(([name, count]) => (
-            <CategoryChip name={name} count={count} href={`/${lang}/tags/${name}/`} />
-          ))}
-        </div>
-      </section>
-    )}
+    {
+      categories.length > 0 && (
+        <section style="padding:72px 0; border-bottom:1px solid var(--border);">
+          <div class="section-head">
+            <h2>{t('blog.exploreByCategory')}</h2>
+            <a
+              href={`/${lang}/tags/`}
+              class="more"
+              style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-2); text-decoration:none; display:inline-flex; align-items:center; gap:6px;"
+            >
+              {t('blog.allCategories')}
+              <svg
+                class="arrow"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:10px;">
+            {categories.map(([name, count]) => (
+              <CategoryChip name={name} count={count} href={`/${lang}/tags/${name}/`} />
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <!-- ABOUT PREVIEW -->
     <section style="padding:72px 0;">
       <div class="section-head">
-        <span class="label" style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-3);">{t('nav.about')}</span>
+        <span
+          class="label"
+          style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-3);"
+          >{t('nav.about')}</span
+        >
       </div>
-      <div style="display:grid; grid-template-columns:64px 1fr; gap:20px; align-items:center; max-width:720px;">
-        <div class="avatar" style="width:64px; height:64px; border-radius:50%; border:1px solid var(--border); overflow:hidden;">
-          <Image src={avatarImg} alt="Edu González" width={64} height={64} style="width:100%; height:100%; object-fit:cover;" />
+      <div
+        style="display:grid; grid-template-columns:64px 1fr; gap:20px; align-items:center; max-width:720px;"
+      >
+        <div
+          class="avatar"
+          style="width:64px; height:64px; border-radius:50%; border:1px solid var(--border); overflow:hidden;"
+        >
+          <Image
+            src={avatarImg}
+            alt="Edu González"
+            width={64}
+            height={64}
+            style="width:100%; height:100%; object-fit:cover;"
+          />
         </div>
-        <p style="font-family:'Source Serif 4 Variable',serif; font-size:17px; line-height:1.65; color:var(--text-2); margin:0;">
-          {data.aboutPreview.split(/(\[.*?\]\(.*?\))/g).map(part => {
-            const match = part.match(/\[(.*?)\]\((.*?)\)/);
-            if (match) return <a href={match[2]} style="color:var(--text); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; text-decoration-color:color-mix(in oklch, var(--text), transparent 65%);">{match[1]}</a>;
-            return part;
-          })}
+        <p
+          style="font-family:'Source Serif 4 Variable',serif; font-size:17px; line-height:1.65; color:var(--text-2); margin:0;"
+        >
+          {
+            data.aboutPreview.split(/(\[.*?\]\(.*?\))/g).map((part) => {
+              const match = part.match(/\[(.*?)\]\((.*?)\)/);
+              if (match)
+                return (
+                  <a
+                    href={match[2]}
+                    style="color:var(--text); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; text-decoration-color:color-mix(in oklch, var(--text), transparent 65%);"
+                  >
+                    {match[1]}
+                  </a>
+                );
+              return part;
+            })
+          }
         </p>
       </div>
     </section>
-
   </section>
 </BaseLayout>
 
 <style>
-  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
   @media (max-width: 880px) {
-    .posts-grid { grid-template-columns: 1fr !important; }
+    .posts-grid {
+      grid-template-columns: 1fr !important;
+    }
   }
 </style>

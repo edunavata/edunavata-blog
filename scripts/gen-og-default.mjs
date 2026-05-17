@@ -52,8 +52,6 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
 
 const dest = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public/og-default.jpg');
 
-await sharp(Buffer.from(svg))
-  .jpeg({ quality: 92, mozjpeg: true })
-  .toFile(dest);
+await sharp(Buffer.from(svg)).jpeg({ quality: 92, mozjpeg: true }).toFile(dest);
 
 console.log(`Generated: public/og-default.jpg (${W}x${H}px)`);

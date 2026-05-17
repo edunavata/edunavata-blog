@@ -7,7 +7,7 @@ export function getLangFromUrl(url: URL) {
 }
 
 export function useTranslations(lang: keyof typeof ui) {
-  return function t(key: keyof typeof ui[typeof defaultLang]): string {
+  return function t(key: keyof (typeof ui)[typeof defaultLang]): string {
     const val = ui[lang][key] || ui[defaultLang][key];
     return typeof val === 'function' ? val(1) : val;
   };
@@ -28,7 +28,10 @@ export function getPostUrl(lang: string, slug: string): string {
 }
 
 export function getReadingTime(content: string): number {
-  const words = content.replace(/[#*`\[\]()>|-]/g, '').split(/\s+/).filter(Boolean).length;
+  const words = content
+    .replace(/[#*`\[\]()>|-]/g, '')
+    .split(/\s+/)
+    .filter(Boolean).length;
   return Math.max(1, Math.round(words / 230));
 }
 

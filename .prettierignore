@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.cache/
+package-lock.json
+public/
+mi-blog/
+.agents/
+.tasks/
+.claude/
+src/content/**/*.md
+CLAUDE.md
