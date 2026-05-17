@@ -160,6 +160,7 @@ export default defineConfig({
     expressiveCode(), // Debe ir ANTES de mdx()
     mdx(),
     sitemap({
+      namespaces: { news: false, image: false, video: false },
       i18n: {
         defaultLocale: DEFAULT_LOCALE,
         locales: LOCALES,
@@ -188,7 +189,7 @@ export default defineConfig({
             { lang: LOCALES.en, url: enUrl },
             { lang: 'x-default', url: esUrl },
           ];
-          if (lastmod) item.lastmod = lastmod;
+          if (lastmod) item.lastmod = lastmod.toISOString();
           return item;
         }
 
