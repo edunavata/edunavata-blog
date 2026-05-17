@@ -84,7 +84,7 @@ const xDefaultPath = altPathFor(SITE.defaultLocale as keyof typeof ui);
 const xDefaultHref = xDefaultPath ? new URL(xDefaultPath, Astro.site).toString() : undefined;
 
 const inLanguage = SITE.hreflang[lang as keyof typeof SITE.hreflang];
-const feedHref = `/${lang}/feed.xml`;
+const feedHref = `/${lang}/rss.xml`;
 const feedTitle = `${SITE.title} — Feed (${lang.toUpperCase()})`;
 
 const websiteJsonLd = {
