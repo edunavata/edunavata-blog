@@ -62,9 +62,10 @@ npm run lint     # linting
 
 ### Git y trabajo en paralelo
 
-- **Empieza siempre en una rama propia** antes de editar (`feature/...`, `fix/...`, `chore/...`). Si ya estás en una rama de tarea, confirma que es la correcta.
-- **Asume agentes en paralelo:** revisa `git status` antes de tocar archivos, no sobrescribas cambios ajenos y coordina si el mismo archivo ya tiene trabajo no relacionado.
-- **Cambios pequeños y atómicos:** separa documentación, refactors y cambios de comportamiento. Haz commits descriptivos cuando el usuario lo pida o la tarea lo requiera.
+- **Sigue siempre buenas prácticas de Git:** revisa el estado del repositorio antes de editar, mantén cambios pequeños y atómicos, separa documentación/refactors/comportamiento y usa mensajes descriptivos al commitear.
+- **Una tarea, una rama:** cada tarea debe realizarse en su rama correspondiente (`feature/...`, `fix/...`, `chore/...`, `refactor/...`) salvo que el usuario indique explícitamente lo contrario. Si ya estás en una rama de tarea, confirma que corresponde al trabajo actual antes de tocar archivos.
+- **Asume agentes en paralelo:** da por hecho que otros agentes pueden estar trabajando al mismo tiempo en otras ramas, worktrees o archivos. No sobrescribas cambios ajenos, no reviertas trabajo que no hiciste y coordina si el mismo archivo tiene cambios no relacionados.
+- **Evita mezclar contextos:** no arrastres cambios de otra tarea a tu rama o commit. Si detectas trabajo pendiente ajeno, déjalo fuera del alcance y menciónalo en el resumen.
 - **Antes de cerrar:** muestra el estado de Git y resume archivos tocados, validaciones ejecutadas y riesgos pendientes.
 
 ### Antes de cambios en el codebase
