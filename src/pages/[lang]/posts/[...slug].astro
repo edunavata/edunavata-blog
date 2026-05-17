@@ -89,17 +89,20 @@ const blogPostingJsonLd = {
   author: {
     '@type': 'Person',
     name: post.data.author,
+    url: new URL(`/${lang}/about/`, SITE.url).toString(),
     sameAs: SITE.sameAs,
   },
   publisher: {
     '@type': 'Person',
     name: post.data.author,
+    url: new URL(`/${lang}/about/`, SITE.url).toString(),
     sameAs: SITE.sameAs,
   },
   inLanguage: SITE.hreflang[lang],
   keywords: post.data.tags.join(', '),
 };
 
+const primaryCategory = post.data.categories[0] ?? null;
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -116,9 +119,19 @@ const breadcrumbJsonLd = {
       name: t('nav.blog'),
       item: new URL(`/${lang}/blog/`, SITE.url).toString(),
     },
+    ...(primaryCategory
+      ? [
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: primaryCategory,
+            item: new URL(`/${lang}/categories/${primaryCategory}/`, SITE.url).toString(),
+          },
+        ]
+      : []),
     {
       '@type': 'ListItem',
-      position: 3,
+      position: primaryCategory ? 4 : 3,
       name: post.data.title,
       item: new URL(`/${lang}/posts/${post.data.slug}/`, SITE.url).toString(),
     },
