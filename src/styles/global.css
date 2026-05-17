@@ -742,6 +742,22 @@ a {
   margin: 1.8em 0 0.4em;
   scroll-margin-top: 80px;
 }
+.body :is(h2, h3) .heading-anchor {
+  opacity: 0;
+  color: var(--text-3);
+  text-decoration: none;
+  font-weight: 400;
+  margin-right: 0.3em;
+  font-size: 0.85em;
+  transition:
+    opacity 150ms ease,
+    color 150ms ease;
+}
+.body :is(h2, h3):hover .heading-anchor,
+.body :is(h2, h3) .heading-anchor:focus-visible {
+  opacity: 1;
+  color: var(--accent);
+}
 .body strong {
   color: var(--text);
   font-weight: 600;
