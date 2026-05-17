@@ -75,7 +75,7 @@ npm run lint     # linting
 
 ### Skills disponibles
 
-Actívalas según la fase del trabajo:
+Actívalas según la fase del trabajo. No cargues todas por defecto: usa la mínima skill que desbloquee la tarea y resume sus reglas en memoria de trabajo.
 
 | Skill                      | Cuándo usarla                                          |
 |----------------------------|--------------------------------------------------------|
@@ -89,6 +89,27 @@ Actívalas según la fase del trabajo:
 | `/seo-content`             | Calidad de contenido, E-E-A-T, estructura de posts     |
 | `/seo-schema`              | Generación y validación de Schema.org / JSON-LD        |
 | `/seo-geo`                 | Optimización para AI Overviews, Perplexity, ChatGPT    |
+
+Skills globales instaladas desde `addyosmani/agent-skills`; úsalas de forma pragmática:
+
+| Skill                                  | Cuándo usarla                                      |
+|----------------------------------------|----------------------------------------------------|
+| `/using-agent-skills`                  | Dudas sobre qué skill aplicar                      |
+| `/context-engineering`                 | Preparar o ajustar contexto del agente             |
+| `/spec-driven-development`             | Features ambiguas o nuevas sin especificación      |
+| `/interview-me`                        | Requisitos vagos que necesitan aclaración          |
+| `/source-driven-development`           | APIs/librerías donde conviene verificar docs       |
+| `/debugging-and-error-recovery`        | Tests rotos, builds fallidos, errores inesperados  |
+| `/browser-testing-with-devtools`       | Verificación real en navegador                     |
+| `/frontend-ui-engineering`             | UI productiva, layouts, estado, componentes        |
+| `/code-review-and-quality`             | Revisión antes de mergear o cerrar una tarea       |
+| `/code-simplification`                 | Refactors de claridad sin cambiar comportamiento   |
+| `/performance-optimization`            | Core Web Vitals, profiling, cuellos de botella     |
+| `/security-and-hardening`              | Inputs, auth, sesiones, datos o integraciones      |
+| `/documentation-and-adrs`              | Decisiones técnicas o cambios de API pública       |
+| `/deprecation-and-migration`           | Migraciones, retirada de APIs o sistemas antiguos  |
+| `/doubt-driven-development`            | Decisiones críticas que conviene verificar         |
+| `/git-workflow-and-versioning`         | Cambios versionados, ramas, commits, PRs           |
 
 ---
 
