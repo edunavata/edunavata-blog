@@ -66,7 +66,7 @@ pnpm run lint     # linting
 
 ### Git — Flujo de trabajo
 
-- **Rama por tarea:** crea una rama nueva antes de tocar código (`feature/...`, `fix/...`, `chore/...`, `refactor/...`). Confirma que corresponde a la tarea actual.
+- **Rama por tarea:** crea una rama nueva desde `main` antes de tocar código (`feature/...`, `fix/...`, `chore/...`, `refactor/...`), salvo que se indique otra base. Confirma que corresponde a la tarea actual.
 - **Agentes en paralelo:** asume que otros agentes trabajan en simultáneo. No sobrescribas ni reviertas cambios ajenos.
 - **Commits atómicos:** mensajes en imperativo, ≤50 chars en el título. No mezcles contextos de tareas distintas.
 - **Al terminar:** haz commit de todos los cambios y crea un PR con `gh pr create`:
