@@ -68,7 +68,9 @@ const altUrls = translation
 
 const ogImagePath = post.data.cover?.image
   ? (await getImage({ src: post.data.cover.image, format: 'jpg', width: 1200, height: 630 })).src
-  : '/og-default.jpg';
+  : `/og/${lang}-${post.data.slug}.png`;
+
+const ogImageAlt = post.data.cover?.alt ?? post.data.title;
 
 const modifiedDateISO = (post.data.updatedDate ?? post.data.date).toISOString();
 const blogPostingJsonLd = {
@@ -129,6 +131,7 @@ const breadcrumbJsonLd = {
   description={post.data.description}
   lang={lang}
   image={ogImagePath}
+  imageAlt={ogImageAlt}
   ogType="article"
   articleDate={post.data.date}
   articleModifiedDate={post.data.updatedDate}
