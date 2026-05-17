@@ -3,6 +3,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import expressiveCode from 'astro-expressive-code';
 import tailwindcss from '@tailwindcss/vite';
+import rehypeExternalLinks from 'rehype-external-links';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -86,6 +87,10 @@ export default defineConfig({
       // urls simétricas (/es/post y /en/post)
       prefixDefaultLocale: true,
     },
+  },
+
+  markdown: {
+    rehypePlugins: [[rehypeExternalLinks, { rel: ['noopener', 'noreferrer'] }]],
   },
 
   // Tailwind v4 se inyecta a través de Vite
