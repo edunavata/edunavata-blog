@@ -20,11 +20,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.1.2
+
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
-          cache: npm
+          cache: pnpm
 
       - name: Cache Astro build artifacts
         uses: actions/cache@v5
@@ -32,17 +37,17 @@ jobs:
           path: |
             .astro
             node_modules/.astro
-          key: astro-${{ runner.os }}-${{ hashFiles('astro.config.mjs', 'package-lock.json') }}
+          key: astro-${{ runner.os }}-${{ hashFiles('astro.config.mjs', 'pnpm-lock.yaml') }}
           restore-keys: |
             astro-${{ runner.os }}-
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Type-check, lint & format
-        run: npm run check
+        run: pnpm run check
 
       - name: Build site
-        run: npm run build
+        run: pnpm run build
         env:
           SITE_URL: ${{ vars.SITE_URL || 'https://edunavata-blog.pages.dev' }}

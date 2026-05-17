@@ -2,9 +2,10 @@
   "name": "astro-blog",
   "type": "module",
   "version": "0.1.0",
+  "packageManager": "pnpm@11.1.2",
   "engines": {
     "node": "22.22.2",
-    "npm": ">=10.9.0"
+    "pnpm": ">=10.0.0"
   },
   "scripts": {
     "dev": "astro dev",
@@ -16,7 +17,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run type-check && npm run lint && npm run format:check",
+    "check": "pnpm run type-check && pnpm run lint && pnpm run format:check",
     "gen-og": "node scripts/gen-og-default.mjs",
     "prepare": "husky"
   },
@@ -50,5 +51,11 @@
     "prettier": "3.8.3",
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-tailwindcss": "0.6.14"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
