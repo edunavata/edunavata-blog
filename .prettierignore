@@ -8,5 +8,6 @@ mi-blog/
 .agents/
 .tasks/
 .claude/
+design/
 src/content/**/*.md
 CLAUDE.md
