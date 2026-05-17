@@ -46,6 +46,7 @@ const personJsonLd = {
   <div style="max-width:920px; margin:0 auto; padding:64px 32px 96px;">
     <!-- HERO -->
     <section
+      class="about-hero"
       style="display:grid; grid-template-columns:140px 1fr; gap:36px; align-items:center; padding-bottom:56px; border-bottom:1px solid var(--border);"
     >
       <div
@@ -124,7 +125,10 @@ const personJsonLd = {
       >
         {
           timeline.map((item) => (
-            <div style="display:grid; grid-template-columns:100px 1fr; gap:28px; padding:18px 0; border-bottom:1px solid var(--border); align-items:baseline;">
+            <div
+              class="timeline-row"
+              style="display:grid; grid-template-columns:100px 1fr; gap:28px; padding:18px 0; border-bottom:1px solid var(--border); align-items:baseline;"
+            >
               <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.06em;">
                 {item.when}
               </span>
@@ -147,11 +151,15 @@ const personJsonLd = {
         {t('about.setup')}
       </div>
       <div
+        class="stack-grid"
         style="display:grid; grid-template-columns:repeat(2,1fr); gap:0; border:1px solid var(--border); border-radius:10px; overflow:hidden;"
       >
         {
           stack.map((item) => (
-            <div style="display:grid; grid-template-columns:140px 1fr; gap:18px; padding:16px 20px; border-bottom:1px solid var(--border); align-items:baseline;">
+            <div
+              class="stack-item"
+              style="display:grid; grid-template-columns:140px 1fr; gap:18px; padding:16px 20px; border-bottom:1px solid var(--border); align-items:baseline;"
+            >
               <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.06em;">
                 {item.key}
               </span>
@@ -188,7 +196,10 @@ const personJsonLd = {
       >
         {t('about.contact')}
       </div>
-      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
+      <div
+        class="contact-grid"
+        style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;"
+      >
         {
           contact.map((c) => (
             <a
@@ -226,7 +237,9 @@ const personJsonLd = {
           style="color:var(--text-3); text-transform:uppercase; font-size:10.5px; letter-spacing:0.08em;"
           >PGP</span
         >
-        <code id="pgp-key" style="color:var(--text);">{data.pgp}</code>
+        <code id="pgp-key" style="color:var(--text); word-break:break-all; overflow-wrap:anywhere;"
+          >{data.pgp}</code
+        >
         <button
           class="copy-btn"
           id="pgp-copy"
@@ -267,22 +280,40 @@ const personJsonLd = {
 
 <style>
   @media (max-width: 720px) {
-    section[style*='grid-template-columns: 140px 1fr'] {
-      grid-template-columns: 1fr !important;
-      gap: 24px !important;
+    .about-hero {
+      grid-template-columns: 1fr;
+      text-align: center;
     }
-    section[style*='grid-template-columns:repeat(3'] {
-      grid-template-columns: 1fr !important;
+    .about-hero .avatar {
+      margin: 0 auto;
     }
-    section[style*='grid-template-columns:repeat(2'] {
-      grid-template-columns: 1fr !important;
+    .timeline-row {
+      grid-template-columns: 1fr;
+      gap: 6px;
     }
-    div[style*='grid-template-columns: 100px'] {
-      grid-template-columns: 1fr !important;
-      gap: 6px !important;
+    .stack-grid {
+      grid-template-columns: 1fr;
     }
-    div[style*='grid-template-columns:140px'] {
-      border-right: none !important;
+    .stack-item {
+      border-right: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stack-item {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
