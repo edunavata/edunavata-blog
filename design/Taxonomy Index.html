@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mockup — Índice de taxonomía</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root[data-theme="dark"] {
+    --bg: #0a0a0a; --surface: #111111; --surface-2: #161616;
+    --border: #1e1e1e; --border-strong: #2a2a2a;
+    --text: #e8e8e8; --text-2: #a1a1a1; --text-3: #6b6b6b;
+    --accent: oklch(0.72 0.13 235);
+    --accent-soft: oklch(0.72 0.13 235 / 0.12);
+    --selection: oklch(0.72 0.13 235 / 0.35);
+    --callout-info-bd: oklch(0.72 0.13 235 / 0.35);
+    --bar: oklch(0.72 0.13 235 / 0.35);
+    --bar-track: #161616;
+  }
+  :root[data-theme="light"] {
+    --bg: #fafaf9; --surface: #ffffff; --surface-2: #f5f5f4;
+    --border: #e7e5e4; --border-strong: #d6d3d1;
+    --text: #111111; --text-2: #525252; --text-3: #8a8a8a;
+    --accent: oklch(0.52 0.15 235);
+    --accent-soft: oklch(0.52 0.15 235 / 0.08);
+    --selection: oklch(0.52 0.15 235 / 0.20);
+    --callout-info-bd: oklch(0.52 0.15 235 / 0.25);
+    --bar: oklch(0.52 0.15 235 / 0.30);
+    --bar-track: #efece7;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #18181a;
+    font-family: 'Geist', system-ui, sans-serif;
+    color: #e8e8e8; min-height: 100vh; padding: 28px;
+  }
+  .frame, .mockup-label, .notes { margin-left: auto; margin-right: auto; }
+  .frame {
+    width: min(1320px, 100%);
+    border-radius: 14px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
+    background: #1d1d20;
+  }
+  .chrome-bar {
+    display: flex; align-items: center; gap: 14px;
+    height: 42px; padding: 0 16px;
+    background: #1d1d20; border-bottom: 1px solid #000;
+  }
+  .lights { display: flex; gap: 8px; }
+  .light { width: 12px; height: 12px; border-radius: 50%; }
+  .light.red { background: #ff5f57; }
+  .light.yellow { background: #febc2e; }
+  .light.green { background: #28c840; }
+  .url-bar {
+    flex: 1; max-width: 560px;
+    display: flex; align-items: center; gap: 8px;
+    height: 26px; padding: 0 12px;
+    background: #2a2a2e; border-radius: 13px;
+    color: #c5c5c8; font-size: 12px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  .browser-actions { display: flex; gap: 6px; opacity: 0.7; }
+
+  .page {
+    background: var(--bg); color: var(--text);
+    font-family: 'Geist', system-ui, sans-serif;
+    transition: background-color 200ms ease, color 200ms ease;
+    min-height: 800px;
+  }
+  ::selection { background: var(--selection); }
+
+  /* nav */
+  .nav { border-bottom: 1px solid var(--border); }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-weight: 500;
+    color: var(--text);
+    display: flex; align-items: center; gap: 10px; text-decoration: none;
+  }
+  .brand-dot { width: 8px; height: 8px; border-radius: 2px; background: var(--accent); }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a {
+    color: var(--text-2); text-decoration: none; font-size: 14px;
+    transition: color 150ms ease;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a.active { font-weight: 500; }
+  .icon-btn {
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    border: 1px solid var(--border);
+    background: transparent;
+    border-radius: 8px;
+    color: var(--text-2); cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--border-strong); }
+
+  /* layout */
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 64px 32px 96px; }
+
+  .head { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--text-3);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+  .head h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600; font-size: clamp(36px, 4vw, 44px);
+    line-height: 1.15; letter-spacing: -0.015em;
+    color: var(--text); margin: 0 0 12px;
+  }
+  .head p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px; line-height: 1.6;
+    color: var(--text-2); margin: 0; max-width: 60ch;
+  }
+  .head .meta-counts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--text-3);
+    margin-top: 18px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .head .meta-counts .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-3); opacity: 0.6; }
+
+  /* taxonomy switcher tabs */
+  .tax-tabs {
+    display: flex; gap: 6px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tax-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-2);
+    padding: 10px 14px 12px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    cursor: pointer;
+    transition: all 150ms ease;
+    text-decoration: none;
+    display: inline-flex; align-items: baseline; gap: 8px;
+  }
+  .tax-tab .ct { color: var(--text-3); font-size: 11px; }
+  .tax-tab:hover { color: var(--text); }
+  .tax-tab.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+
+  /* toolbar */
+  .toolbar {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .search {
+    flex: 1; min-width: 240px;
+    display: flex; align-items: center; gap: 10px;
+    height: 40px; padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    transition: border-color 150ms ease;
+  }
+  .search:focus-within { border-color: var(--border-strong); }
+  .search svg { color: var(--text-3); flex-shrink: 0; }
+  .search input {
+    flex: 1; background: transparent; border: none;
+    color: var(--text);
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    outline: none;
+  }
+  .search input::placeholder { color: var(--text-3); }
+  .search kbd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-3);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--surface);
+  }
+
+  .sort-group {
+    display: flex; gap: 4px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px;
+  }
+  .sort-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-2);
+    padding: 7px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 150ms ease;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .sort-btn:hover { color: var(--text); }
+  .sort-btn.active {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  /* alpha view: grouped by initial letter */
+  .alpha-list { display: flex; flex-direction: column; }
+  .alpha-group {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 32px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .alpha-letter {
+    font-family: 'Source Serif 4', serif;
+    font-size: 32px; font-weight: 600;
+    line-height: 1; color: var(--text-2);
+    letter-spacing: -0.02em;
+  }
+  .alpha-letter::after {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--border-strong);
+    margin-top: 12px;
+  }
+  .alpha-terms {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px 24px;
+  }
+  .term-row {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 10px 0;
+    text-decoration: none;
+    color: inherit;
+    transition: color 150ms ease;
+  }
+  .term-row:hover .term-name { color: var(--accent); }
+  .term-row:hover .term-arrow { opacity: 1; transform: translateX(0); }
+  .term-name {
+    font-family: 'Geist', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    transition: color 150ms ease;
+  }
+  .term-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-3);
+    margin-left: auto;
+  }
+  .term-arrow {
+    color: var(--accent);
+    opacity: 0; transform: translateX(-4px);
+    transition: all 200ms ease;
+  }
+
+  /* frequency view */
+  .freq-list { display: none; }
+  body.view-freq .alpha-list { display: none; }
+  body.view-freq .freq-list { display: flex; flex-direction: column; }
+  .freq-row {
+    display: grid;
+    grid-template-columns: 32px minmax(140px, 220px) 1fr 56px;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+  }
+  .freq-rank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-3);
+    text-align: right;
+  }
+  .freq-name {
+    font-family: 'Geist', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    transition: color 150ms ease;
+  }
+  .freq-row:hover .freq-name { color: var(--accent); }
+  .freq-bar {
+    position: relative;
+    height: 6px;
+    background: var(--bar-track);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .freq-bar .fill {
+    height: 100%;
+    background: var(--bar);
+    border-radius: 3px;
+    transition: width 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .freq-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-2);
+    text-align: right;
+  }
+
+  /* empty */
+  .empty {
+    padding: 80px 0; text-align: center;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; display: none;
+  }
+  .empty.show { display: block; }
+
+  /* footer */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 36px 32px 32px;
+  }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--text-3); font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-links { display: flex; gap: 22px; }
+  .footer-links a {
+    color: var(--text-2); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color 150ms ease;
+  }
+  .footer-links a:hover { color: var(--text); }
+
+  .mockup-label {
+    text-align: center; margin-top: 18px;
+    color: #6b6b6b;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.04em;
+  }
+  .notes {
+    max-width: 760px; margin: 28px auto 0;
+    padding: 22px 26px;
+    background: #1a1a1d; border: 1px solid #28282c;
+    border-radius: 10px;
+    color: #b8b8bd;
+    font-family: 'Geist', sans-serif;
+    font-size: 14px; line-height: 1.65;
+  }
+  .notes h3 {
+    margin: 0 0 10px;
+    font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8a8a90;
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  }
+  .notes p { margin: 0 0 8px; }
+  .notes p:last-child { margin: 0; }
+  .notes code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: #232326; padding: 1px 6px; border-radius: 4px;
+  }
+
+  @media (max-width: 720px) {
+    .alpha-group { grid-template-columns: 1fr; gap: 14px; }
+    .alpha-terms { grid-template-columns: 1fr; }
+    .freq-row { grid-template-columns: 24px 1fr 48px; }
+    .freq-row .freq-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <div class="chrome-bar">
+    <div class="lights">
+      <div class="light red"></div>
+      <div class="light yellow"></div>
+      <div class="light green"></div>
+    </div>
+    <div class="url-bar">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span>blog.midominio.dev/tags/</span>
+    </div>
+    <div class="browser-actions">
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" style="border-color: transparent;">
+        <svg id="ic-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg id="ic-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="page" id="page">
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="#"><span class="brand-dot"></span><span>~/midominio</span></a>
+        <div class="nav-links">
+          <a href="#">Inicio</a>
+          <a href="#">Blog</a>
+          <a href="#">Categorías</a>
+          <a href="#" class="active">Tags</a>
+          <a href="#">Sobre mí</a>
+          <button class="icon-btn" aria-label="Buscar" style="margin-left:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="wrap">
+      <header class="head">
+        <div class="eyebrow">/ tags</div>
+        <h1>Tags</h1>
+        <p>Todos los temas que aparecen en el blog. Ordenados alfabéticamente o por número de artículos. Útil para navegar cuando ya sabes qué buscas — si no, empieza por <a href="#" style="color: var(--accent); text-decoration: none;">el listado completo</a>.</p>
+        <div class="meta-counts">
+          <span><span id="terms-shown">24</span> tags</span>
+          <span class="dot"></span>
+          <span>198 artículos</span>
+          <span class="dot"></span>
+          <span>actualizado 5 may 2026</span>
+        </div>
+      </header>
+
+      <!-- Hugo taxonomy switcher (Tags / Categorías / Series) -->
+      <div class="tax-tabs">
+        <a class="tax-tab active" href="#">Tags <span class="ct">24</span></a>
+        <a class="tax-tab" href="#">Categorías <span class="ct">8</span></a>
+        <a class="tax-tab" href="#">Series <span class="ct">3</span></a>
+        <a class="tax-tab" href="#">Dificultad <span class="ct">3</span></a>
+      </div>
+
+      <div class="toolbar">
+        <label class="search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="search-input" type="text" placeholder="Filtrar tags…" />
+          <kbd>/</kbd>
+        </label>
+        <div class="sort-group">
+          <button class="sort-btn active" data-view="alpha">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h13M3 12h9M3 18h6"/></svg>
+            A → Z
+          </button>
+          <button class="sort-btn" data-view="freq">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18h4M3 12h8M3 6h13"/></svg>
+            Frecuencia
+          </button>
+        </div>
+      </div>
+
+      <!-- ALPHABETICAL VIEW -->
+      <div class="alpha-list" id="alpha-list"></div>
+
+      <!-- FREQUENCY VIEW -->
+      <div class="freq-list" id="freq-list"></div>
+
+      <div class="empty" id="empty">Sin resultados — prueba con otro nombre.</div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>© 2025 — escrito con Hugo + Hextra</span>
+        <div class="footer-links">
+          <a href="#"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg> RSS</a>
+          <a href="#"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57v-2.07c-3.345.72-4.05-1.605-4.05-1.605-.54-1.395-1.335-1.755-1.335-1.755-1.08-.735.09-.72.09-.72 1.2.09 1.83 1.23 1.83 1.23 1.065 1.83 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.475-1.335-5.475-5.94 0-1.32.465-2.385 1.23-3.225-.12-.3-.54-1.515.12-3.165 0 0 1.005-.33 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.865.12 3.165.765.84 1.23 1.905 1.23 3.225 0 4.62-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22v3.285c0 .315.225.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</a>
+          <a href="#"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Email</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<div class="mockup-label">MOCKUP 4 / 5 — ÍNDICE DE TAXONOMÍA · prueba el toggle A→Z / Frecuencia y el buscador</div>
+
+<div class="notes">
+  <h3>Decisiones de diseño</h3>
+  <p><strong>Una sola página, tres ejes de descubrimiento.</strong> El <em>switcher</em> de taxonomías arriba (Tags / Categorías / Series / Dificultad) deja claro que en Hugo cualquier eje editorial es una taxonomía más, no un tipo distinto de página. Los tabs comparten estilo con la nav del sitio pero con borde inferior accent en activo.</p>
+  <p><strong>Dos vistas, dos preguntas distintas.</strong> "Alfabético" responde "¿existe el tag X?" — agrupado por inicial con la letra grande en serif y los términos en dos columnas. "Frecuencia" responde "¿de qué se escribe más aquí?" — lista ordenada con barras horizontales sutiles y rank. Cambia entre vistas instantáneo, sin recargar.</p>
+  <p><strong>Búsqueda con teclado.</strong> Atajo <code>/</code> para enfocar el campo (igual que GitHub o Notion). El filtro afecta a ambas vistas a la vez. Si no hay resultados aparece un mensaje vacío en monospace, mismo patrón que el listado de posts.</p>
+  <p><strong>Sin "tag cloud".</strong> Decidí no usar la nube de tags clásica con tamaños proporcionales — añade ruido visual y es difícil de escanear. Prefiero la barra de la vista de frecuencia: comunica la misma información sin distorsionar la tipografía.</p>
+  <p><strong>Hugo + Hextra.</strong> Esta vista es <code>layouts/_default/taxonomy.html</code> (NO <code>terms.html</code>, ojo — terms.html lista los <em>términos individuales</em> de la taxonomía). Itera sobre <code>.Data.Terms.Alphabetical</code> para alfabético y <code>.Data.Terms.ByCount</code> para frecuencia. El switcher de arriba se construye con <code>range $name, $tax := .Site.Taxonomies</code>. Para que esta vista exista para todas las taxonomías solo hace falta declararlas en <code>hugo.toml</code> bajo <code>[taxonomies]</code>.</p>
+</div>
+
+<script>
+  // theme
+  const root = document.documentElement;
+  const stored = localStorage.getItem('mockup-theme') || 'dark';
+  root.setAttribute('data-theme', stored);
+  syncIcons();
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('mockup-theme', next);
+    syncIcons();
+  });
+  function syncIcons() {
+    const dark = root.getAttribute('data-theme') === 'dark';
+    document.getElementById('ic-sun').style.display = dark ? 'block' : 'none';
+    document.getElementById('ic-moon').style.display = dark ? 'none' : 'block';
+  }
+
+  // ───────── data ─────────
+  const TERMS = [
+    { name: 'ansible', count: 6 },
+    { name: 'astro', count: 3 },
+    { name: 'bash', count: 9 },
+    { name: 'caddy', count: 4 },
+    { name: 'cloudflare', count: 8 },
+    { name: 'devops', count: 14 },
+    { name: 'docker', count: 11 },
+    { name: 'fish', count: 2 },
+    { name: 'git', count: 11 },
+    { name: 'github actions', count: 7 },
+    { name: 'go', count: 5 },
+    { name: 'hugo', count: 12 },
+    { name: 'hextra', count: 4 },
+    { name: 'kubernetes', count: 5 },
+    { name: 'linux', count: 21 },
+    { name: 'macos', count: 6 },
+    { name: 'neovim', count: 8 },
+    { name: 'nginx', count: 4 },
+    { name: 'notas', count: 18 },
+    { name: 'postgres', count: 7 },
+    { name: 'restic', count: 3 },
+    { name: 'rust', count: 4 },
+    { name: 'tmux', count: 6 },
+    { name: 'zsh', count: 5 },
+  ];
+
+  // ───────── render alpha ─────────
+  const alphaList = document.getElementById('alpha-list');
+  const groups = {};
+  [...TERMS].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+    const letter = t.name[0].toUpperCase();
+    (groups[letter] = groups[letter] || []).push(t);
+  });
+  for (const letter of Object.keys(groups).sort()) {
+    const grp = document.createElement('div');
+    grp.className = 'alpha-group';
+    grp.dataset.letter = letter;
+    grp.innerHTML = `
+      <div class="alpha-letter">${letter}</div>
+      <div class="alpha-terms">
+        ${groups[letter].map(t => `
+          <a class="term-row" href="#" data-name="${t.name}">
+            <span class="term-name">${t.name}</span>
+            <span class="term-count">${t.count}</span>
+            <span class="term-arrow">→</span>
+          </a>
+        `).join('')}
+      </div>
+    `;
+    alphaList.appendChild(grp);
+  }
+
+  // ───────── render freq ─────────
+  const freqList = document.getElementById('freq-list');
+  const sorted = [...TERMS].sort((a, b) => b.count - a.count);
+  const max = sorted[0].count;
+  sorted.forEach((t, i) => {
+    const row = document.createElement('a');
+    row.href = '#';
+    row.className = 'freq-row';
+    row.dataset.name = t.name;
+    row.innerHTML = `
+      <span class="freq-rank">${String(i + 1).padStart(2, '0')}</span>
+      <span class="freq-name">${t.name}</span>
+      <span class="freq-bar"><span class="fill" style="width: ${(t.count / max * 100).toFixed(1)}%"></span></span>
+      <span class="freq-count">${t.count}</span>
+    `;
+    freqList.appendChild(row);
+  });
+
+  // ───────── view toggle ─────────
+  document.querySelectorAll('.sort-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.body.classList.toggle('view-freq', btn.dataset.view === 'freq');
+    });
+  });
+
+  // ───────── search ─────────
+  const search = document.getElementById('search-input');
+  const empty = document.getElementById('empty');
+  const termsShown = document.getElementById('terms-shown');
+  function applyFilter() {
+    const q = search.value.trim().toLowerCase();
+    let visible = 0;
+
+    // alpha rows
+    document.querySelectorAll('.term-row').forEach(r => {
+      const show = !q || r.dataset.name.toLowerCase().includes(q);
+      r.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    // hide empty letter groups
+    document.querySelectorAll('.alpha-group').forEach(g => {
+      const visibleInGroup = [...g.querySelectorAll('.term-row')].some(r => r.style.display !== 'none');
+      g.style.display = visibleInGroup ? '' : 'none';
+    });
+
+    // freq rows
+    document.querySelectorAll('.freq-row').forEach(r => {
+      r.style.display = (!q || r.dataset.name.toLowerCase().includes(q)) ? '' : 'none';
+    });
+
+    empty.classList.toggle('show', visible === 0);
+    termsShown.textContent = visible;
+  }
+  search.addEventListener('input', applyFilter);
+
+  // / hotkey to focus search
+  window.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement !== search) {
+      e.preventDefault();
+      search.focus();
+    }
+  });
+</script>
+
+</body>
+</html>

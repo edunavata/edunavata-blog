@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mockup — About</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root[data-theme="dark"] {
+    --bg: #0a0a0a; --surface: #111111; --surface-2: #161616;
+    --border: #1e1e1e; --border-strong: #2a2a2a;
+    --text: #e8e8e8; --text-2: #a1a1a1; --text-3: #6b6b6b;
+    --accent: oklch(0.72 0.13 235);
+    --accent-soft: oklch(0.72 0.13 235 / 0.12);
+    --selection: oklch(0.72 0.13 235 / 0.35);
+    --callout-info-bd: oklch(0.72 0.13 235 / 0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #fafaf9; --surface: #ffffff; --surface-2: #f5f5f4;
+    --border: #e7e5e4; --border-strong: #d6d3d1;
+    --text: #111111; --text-2: #525252; --text-3: #8a8a8a;
+    --accent: oklch(0.52 0.15 235);
+    --accent-soft: oklch(0.52 0.15 235 / 0.08);
+    --selection: oklch(0.52 0.15 235 / 0.20);
+    --callout-info-bd: oklch(0.52 0.15 235 / 0.25);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #18181a;
+    font-family: 'Geist', system-ui, sans-serif;
+    color: #e8e8e8; min-height: 100vh; padding: 28px;
+  }
+  .frame, .mockup-label, .notes { margin-left: auto; margin-right: auto; }
+  .frame {
+    width: min(1320px, 100%); border-radius: 14px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
+    background: #1d1d20;
+  }
+  .chrome-bar {
+    display: flex; align-items: center; gap: 14px;
+    height: 42px; padding: 0 16px;
+    background: #1d1d20; border-bottom: 1px solid #000;
+  }
+  .lights { display: flex; gap: 8px; }
+  .light { width: 12px; height: 12px; border-radius: 50%; }
+  .light.red { background: #ff5f57; }
+  .light.yellow { background: #febc2e; }
+  .light.green { background: #28c840; }
+  .url-bar {
+    flex: 1; max-width: 560px;
+    display: flex; align-items: center; gap: 8px;
+    height: 26px; padding: 0 12px;
+    background: #2a2a2e; border-radius: 13px;
+    color: #c5c5c8; font-size: 12px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  .browser-actions { display: flex; gap: 6px; opacity: 0.7; }
+
+  .page {
+    background: var(--bg); color: var(--text);
+    font-family: 'Geist', system-ui, sans-serif;
+    transition: background-color 200ms ease, color 200ms ease;
+    min-height: 800px;
+  }
+  ::selection { background: var(--selection); }
+
+  /* nav */
+  .nav { border-bottom: 1px solid var(--border); }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-weight: 500;
+    color: var(--text);
+    display: flex; align-items: center; gap: 10px; text-decoration: none;
+  }
+  .brand-dot { width: 8px; height: 8px; border-radius: 2px; background: var(--accent); }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a {
+    color: var(--text-2); text-decoration: none; font-size: 14px;
+    transition: color 150ms ease;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a.active { font-weight: 500; }
+  .icon-btn {
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    border: 1px solid var(--border);
+    background: transparent; border-radius: 8px;
+    color: var(--text-2); cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--border-strong); }
+
+  /* layout */
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 64px 32px 96px;
+  }
+
+  /* hero */
+  .about-hero {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 36px;
+    align-items: center;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .avatar {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background:
+      repeating-linear-gradient(135deg,
+        var(--surface) 0 10px,
+        var(--surface-2) 10px 20px);
+    display: grid; place-items: center;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .about-hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--text-3);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .about-hero .eyebrow .status-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: oklch(0.74 0.14 145);
+    box-shadow: 0 0 0 3px oklch(0.74 0.14 145 / 0.18);
+  }
+  .about-hero h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: clamp(34px, 4vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    color: var(--text);
+  }
+  .about-hero h1 em {
+    font-style: italic; color: var(--text-2); font-weight: 500;
+  }
+  .about-hero .role {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    color: var(--text-2);
+    margin: 0;
+  }
+
+  /* intro */
+  .intro {
+    padding: 56px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Source Serif 4', serif;
+    font-size: 19px;
+    line-height: 1.72;
+    color: var(--text);
+    max-width: 64ch;
+  }
+  .intro p { margin: 0; }
+  .intro p + p { margin-top: 1.2em; }
+  .intro a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in oklch, var(--accent), transparent 60%);
+  }
+  .intro a:hover { text-decoration-color: var(--accent); }
+  .intro em { color: var(--text-2); }
+
+  /* sections */
+  .section {
+    padding: 56px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-of-type { border-bottom: none; }
+  .section-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-3);
+    margin-bottom: 28px;
+  }
+
+  /* now / timeline */
+  .now-list {
+    display: flex; flex-direction: column;
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  .now-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 28px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+  .now-row:last-child { border-bottom: none; }
+  .now-when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .now-row strong { color: var(--text); font-weight: 600; font-style: normal; }
+  .now-row em { color: var(--text-2); font-style: normal; }
+
+  /* uses (stack) */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .stack-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 18px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+  .stack-row:nth-child(odd) { border-right: 1px solid var(--border); }
+  .stack-row:nth-last-child(-n+2) { border-bottom: none; }
+  .stack-key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .stack-val {
+    font-family: 'Geist', sans-serif;
+    font-size: 14.5px;
+    color: var(--text);
+  }
+  .stack-val .muted { color: var(--text-3); margin-left: 6px; font-size: 13px; }
+
+  /* writes about */
+  .topic-row {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .topic {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-2);
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+  .topic:hover { color: var(--accent); border-color: var(--callout-info-bd); background: var(--accent-soft); }
+
+  /* contact */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .contact-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 200ms ease;
+  }
+  .contact-card:hover {
+    border-color: var(--border-strong);
+    background: var(--surface);
+  }
+  .contact-card .ic {
+    width: 36px; height: 36px;
+    display: grid; place-items: center;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .contact-card:hover .ic { color: var(--accent); border-color: var(--callout-info-bd); }
+  .contact-card .meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .contact-card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .contact-card .value {
+    font-family: 'Geist', sans-serif;
+    font-size: 14.5px;
+    color: var(--text);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* PGP */
+  .pgp {
+    margin-top: 24px;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text-2);
+    display: flex; align-items: center; gap: 14px;
+    flex-wrap: wrap;
+  }
+  .pgp .label {
+    color: var(--text-3);
+    text-transform: uppercase;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+  }
+  .pgp code { color: var(--text); }
+  .pgp .copy-btn {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text-2);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .pgp .copy-btn:hover { color: var(--text); }
+  .pgp .copy-btn.ok { color: var(--accent); border-color: var(--callout-info-bd); }
+
+  /* footer */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 36px 32px 32px;
+  }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--text-3); font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-links { display: flex; gap: 22px; }
+  .footer-links a {
+    color: var(--text-2); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color 150ms ease;
+  }
+  .footer-links a:hover { color: var(--text); }
+
+  .mockup-label {
+    text-align: center; margin-top: 18px;
+    color: #6b6b6b;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.04em;
+  }
+  .notes {
+    max-width: 760px; margin: 28px auto 0;
+    padding: 22px 26px;
+    background: #1a1a1d; border: 1px solid #28282c;
+    border-radius: 10px;
+    color: #b8b8bd;
+    font-family: 'Geist', sans-serif;
+    font-size: 14px; line-height: 1.65;
+  }
+  .notes h3 {
+    margin: 0 0 10px; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: #8a8a90;
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  }
+  .notes p { margin: 0 0 8px; }
+  .notes p:last-child { margin: 0; }
+  .notes code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: #232326; padding: 1px 6px; border-radius: 4px;
+  }
+
+  @media (max-width: 720px) {
+    .about-hero { grid-template-columns: 1fr; gap: 24px; }
+    .stack-grid { grid-template-columns: 1fr; }
+    .stack-row { border-right: none !important; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .now-row { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <div class="chrome-bar">
+    <div class="lights">
+      <div class="light red"></div>
+      <div class="light yellow"></div>
+      <div class="light green"></div>
+    </div>
+    <div class="url-bar">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span>blog.midominio.dev/about/</span>
+    </div>
+    <div class="browser-actions">
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" style="border-color: transparent;">
+        <svg id="ic-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg id="ic-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="page" id="page">
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="#"><span class="brand-dot"></span><span>~/midominio</span></a>
+        <div class="nav-links">
+          <a href="#">Inicio</a>
+          <a href="#">Blog</a>
+          <a href="#">Categorías</a>
+          <a href="#">Tags</a>
+          <a href="#" class="active">Sobre mí</a>
+          <button class="icon-btn" aria-label="Buscar" style="margin-left:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="wrap">
+
+      <!-- hero -->
+      <section class="about-hero">
+        <div class="avatar">[ AVATAR ]</div>
+        <div>
+          <div class="eyebrow">
+            <span class="status-dot"></span>
+            <span>Madrid · GMT+1 · disponible</span>
+          </div>
+          <h1>Daniel <em>— escribe sobre infraestructura.</em></h1>
+          <p class="role">Ingeniero de software, principalmente en backend y herramientas internas. Antes en una startup pequeña, ahora en un producto que mucha gente usa.</p>
+        </div>
+      </section>
+
+      <!-- intro -->
+      <section class="intro">
+        <p>Empecé este blog en 2018 porque me cansé de dejar notas en Notion que solo yo iba a leer. Lo que escribo aquí son <em>cosas que me hubiera gustado encontrar</em> cuando estaba aprendiendo: configuraciones que funcionan, decisiones de infraestructura mal documentadas, y los detalles que siempre se omiten en los tutoriales oficiales.</p>
+        <p>No tengo calendario editorial. Publico cuando algo me sorprende lo suficiente como para querer documentarlo — eso suele ser una vez al mes, a veces más, a veces menos. Si te interesa, suscríbete <a href="#">por RSS</a>; no hay newsletter ni notificaciones.</p>
+      </section>
+
+      <!-- now -->
+      <section class="section">
+        <div class="section-head">Ahora — what I'm up to</div>
+        <div class="now-list">
+          <div class="now-row">
+            <span class="now-when">2025 →</span>
+            <div><strong>Plataforma de datos</strong> en <em>Producto Grande S.A.</em> · Postgres, dbt, Airflow.</div>
+          </div>
+          <div class="now-row">
+            <span class="now-when">2022—2024</span>
+            <div><strong>Infraestructura y DX</strong> en <em>Startup Cosa</em> · Kubernetes, Terraform, una opinión muy fuerte sobre los logs.</div>
+          </div>
+          <div class="now-row">
+            <span class="now-when">2018—2022</span>
+            <div><strong>Backend</strong> en <em>Otra Startup</em> · empecé como junior, salí siendo tech lead. Aprendí leyendo el código de los que ya estaban.</div>
+          </div>
+          <div class="now-row">
+            <span class="now-when">Personal</span>
+            <div>Mantengo <strong>tres proyectos open source</strong> de poca tracción pero usados a diario por mí. Uno está en <a href="#" style="color: var(--accent); text-decoration: underline; text-underline-offset: 3px;">GitHub</a>.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- stack -->
+      <section class="section">
+        <div class="section-head">Setup — qué uso a diario</div>
+        <div class="stack-grid">
+          <div class="stack-row">
+            <span class="stack-key">Editor</span>
+            <span class="stack-val">Neovim <span class="muted">+ LazyVim</span></span>
+          </div>
+          <div class="stack-row">
+            <span class="stack-key">Shell</span>
+            <span class="stack-val">fish <span class="muted">+ starship</span></span>
+          </div>
+          <div class="stack-row">
+            <span class="stack-key">Terminal</span>
+            <span class="stack-val">Ghostty <span class="muted">+ tmux</span></span>
+          </div>
+          <div class="stack-row">
+            <span class="stack-key">OS</span>
+            <span class="stack-val">macOS <span class="muted">para trabajo</span> · Arch <span class="muted">en casa</span></span>
+          </div>
+          <div class="stack-row">
+            <span class="stack-key">Backend</span>
+            <span class="stack-val">Go <span class="muted">y Postgres</span></span>
+          </div>
+          <div class="stack-row">
+            <span class="stack-key">Hosting</span>
+            <span class="stack-val">Cloudflare Pages <span class="muted">para esto</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- writes about -->
+      <section class="section">
+        <div class="section-head">Escribo sobre</div>
+        <div class="topic-row">
+          <a class="topic" href="#">#hugo</a>
+          <a class="topic" href="#">#cloudflare</a>
+          <a class="topic" href="#">#linux</a>
+          <a class="topic" href="#">#postgres</a>
+          <a class="topic" href="#">#devops</a>
+          <a class="topic" href="#">#neovim</a>
+          <a class="topic" href="#">#bash</a>
+          <a class="topic" href="#">#git</a>
+          <a class="topic" href="#">#docker</a>
+          <a class="topic" href="#">#go</a>
+          <a class="topic" href="#">#notas</a>
+        </div>
+      </section>
+
+      <!-- contact -->
+      <section class="section">
+        <div class="section-head">Contacto</div>
+        <div class="contact-grid">
+          <a class="contact-card" href="/cdn-cgi/l/email-protection#70181f1c11301d19141f1d191e191f5e141506">
+            <span class="ic">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            </span>
+            <span class="meta">
+              <span class="label">Email</span>
+              <span class="value"><span class="__cf_email__" data-cfemail="a9c1c6c5c8e9c4c0cdc6c4c0c7c0c687cdccdf">[email&#160;protected]</span></span>
+            </span>
+          </a>
+          <a class="contact-card" href="#">
+            <span class="ic">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57v-2.07c-3.345.72-4.05-1.605-4.05-1.605-.54-1.395-1.335-1.755-1.335-1.755-1.08-.735.09-.72.09-.72 1.2.09 1.83 1.23 1.83 1.23 1.065 1.83 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.475-1.335-5.475-5.94 0-1.32.465-2.385 1.23-3.225-.12-.3-.54-1.515.12-3.165 0 0 1.005-.33 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.865.12 3.165.765.84 1.23 1.905 1.23 3.225 0 4.62-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22v3.285c0 .315.225.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </span>
+            <span class="meta">
+              <span class="label">GitHub</span>
+              <span class="value">@daniel-md</span>
+            </span>
+          </a>
+          <a class="contact-card" href="#">
+            <span class="ic">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </span>
+            <span class="meta">
+              <span class="label">X / Twitter</span>
+              <span class="value">@daniel_md</span>
+            </span>
+          </a>
+          <a class="contact-card" href="#">
+            <span class="ic">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg>
+            </span>
+            <span class="meta">
+              <span class="label">RSS</span>
+              <span class="value">/feed.xml</span>
+            </span>
+          </a>
+          <a class="contact-card" href="#">
+            <span class="ic">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </span>
+            <span class="meta">
+              <span class="label">Sourcehut</span>
+              <span class="value">~daniel-md</span>
+            </span>
+          </a>
+          <a class="contact-card" href="#">
+            <span class="ic">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            </span>
+            <span class="meta">
+              <span class="label">Mastodon</span>
+              <span class="value">@<span class="__cf_email__" data-cfemail="97f3f6f9fef2fbd7fff6f4ffeef3f2e5fab9fef8">[email&#160;protected]</span></span>
+            </span>
+          </a>
+        </div>
+
+        <div class="pgp">
+          <span class="label">PGP</span>
+          <code id="pgp-key">D9F1 8A2C 3B7E 5F44 1AC2  9E8D 7B6A 4C13 5D02 EFAB</code>
+          <button class="copy-btn" id="pgp-copy">Copiar</button>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>© 2025 — escrito con Hugo + Hextra</span>
+        <div class="footer-links">
+          <a href="#"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg> RSS</a>
+          <a href="#"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57v-2.07c-3.345.72-4.05-1.605-4.05-1.605-.54-1.395-1.335-1.755-1.335-1.755-1.08-.735.09-.72.09-.72 1.2.09 1.83 1.23 1.83 1.23 1.065 1.83 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.475-1.335-5.475-5.94 0-1.32.465-2.385 1.23-3.225-.12-.3-.54-1.515.12-3.165 0 0 1.005-.33 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.865.12 3.165.765.84 1.23 1.905 1.23 3.225 0 4.62-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22v3.285c0 .315.225.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</a>
+          <a href="#"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Email</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<div class="mockup-label">MOCKUP — SOBRE MÍ · prueba el botón Copiar de la huella PGP</div>
+
+<div class="notes">
+  <h3>Decisiones de diseño</h3>
+  <p><strong>Ancho 920px, no 720.</strong> Las páginas de "sobre mí" del blog se benefician de algo más de aire que un artículo: el grid de stack (2 columnas) y el grid de contacto (3 columnas) piden ese espacio. La intro tipográfica sigue limitada a ~64ch para que la lectura no sea incómoda.</p>
+  <p><strong>Hero personal pero austero.</strong> Avatar circular a 140px (placeholder con líneas — el usuario sube su foto en <code>static/me.jpg</code>), eyebrow tipo terminal con <em>status dot</em> verde de "disponible" y zona horaria, título serif con la frase corta italizada. Sin tagline grandilocuente.</p>
+  <p><strong>"Ahora" como timeline.</strong> Filas con la fecha en mono a la izquierda y la descripción tipográfica a la derecha. Es el patrón "/now page" que muchos blogs técnicos usan; comunica trayectoria sin convertirse en CV.</p>
+  <p><strong>Setup como tabla, no lista.</strong> Las páginas "/uses" suelen ser listas largas que nadie lee. Esto es una rejilla compacta: clave en mono, valor en sans con un detalle <em>muted</em> opcional. Cabe en un vistazo.</p>
+  <p><strong>Contacto como cards iguales.</strong> Tres columnas, mismo tratamiento para todos los canales. El bloque de PGP debajo da el guiño "técnico" sin ocupar espacio en el grid principal — y el botón copia la huella al portapapeles.</p>
+  <p><strong>Hugo + Hextra.</strong> En Hugo, About vive como <code>content/about/_index.md</code> con <code>type: about</code> y un layout custom <code>layouts/about/single.html</code>. Los datos del stack y de la timeline mejor que estén en data files (<code>data/stack.yaml</code>, <code>data/timeline.yaml</code>) y se renderizen en el template — así editas YAML, no HTML.</p>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const root = document.documentElement;
+  const stored = localStorage.getItem('mockup-theme') || 'dark';
+  root.setAttribute('data-theme', stored);
+  syncIcons();
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('mockup-theme', next);
+    syncIcons();
+  });
+  function syncIcons() {
+    const dark = root.getAttribute('data-theme') === 'dark';
+    document.getElementById('ic-sun').style.display = dark ? 'block' : 'none';
+    document.getElementById('ic-moon').style.display = dark ? 'none' : 'block';
+  }
+
+  // pgp copy
+  const pgpBtn = document.getElementById('pgp-copy');
+  pgpBtn.addEventListener('click', async () => {
+    const key = document.getElementById('pgp-key').textContent;
+    try { await navigator.clipboard.writeText(key); } catch (e) {}
+    pgpBtn.classList.add('ok');
+    const old = pgpBtn.textContent;
+    pgpBtn.textContent = '✓ Copiado';
+    setTimeout(() => { pgpBtn.classList.remove('ok'); pgpBtn.textContent = old; }, 1600);
+  });
+</script>
+
+</body>
+</html>

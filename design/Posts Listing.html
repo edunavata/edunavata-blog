@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mockup 2 — Listado de posts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root[data-theme="dark"] {
+    --bg: #0a0a0a; --surface: #111111; --surface-2: #161616;
+    --border: #1e1e1e; --border-strong: #2a2a2a;
+    --text: #e8e8e8; --text-2: #a1a1a1; --text-3: #6b6b6b;
+    --accent: oklch(0.72 0.13 235);
+    --accent-soft: oklch(0.72 0.13 235 / 0.12);
+    --selection: oklch(0.72 0.13 235 / 0.35);
+    --callout-info-bd: oklch(0.72 0.13 235 / 0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #fafaf9; --surface: #ffffff; --surface-2: #f5f5f4;
+    --border: #e7e5e4; --border-strong: #d6d3d1;
+    --text: #111111; --text-2: #525252; --text-3: #8a8a8a;
+    --accent: oklch(0.52 0.15 235);
+    --accent-soft: oklch(0.52 0.15 235 / 0.08);
+    --selection: oklch(0.52 0.15 235 / 0.20);
+    --callout-info-bd: oklch(0.52 0.15 235 / 0.25);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #18181a;
+    font-family: 'Geist', system-ui, sans-serif;
+    color: #e8e8e8; min-height: 100vh; padding: 28px;
+  }
+  .frame, .mockup-label, .notes { margin-left: auto; margin-right: auto; }
+  .frame {
+    width: min(1320px, 100%);
+    border-radius: 14px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
+    background: #1d1d20;
+  }
+  .chrome-bar {
+    display: flex; align-items: center; gap: 14px;
+    height: 42px; padding: 0 16px;
+    background: #1d1d20; border-bottom: 1px solid #000;
+  }
+  .lights { display: flex; gap: 8px; }
+  .light { width: 12px; height: 12px; border-radius: 50%; }
+  .light.red { background: #ff5f57; }
+  .light.yellow { background: #febc2e; }
+  .light.green { background: #28c840; }
+  .url-bar {
+    flex: 1; max-width: 560px;
+    display: flex; align-items: center; gap: 8px;
+    height: 26px; padding: 0 12px;
+    background: #2a2a2e; border-radius: 13px;
+    color: #c5c5c8; font-size: 12px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  .browser-actions { display: flex; gap: 6px; opacity: 0.7; }
+
+  .page {
+    background: var(--bg); color: var(--text);
+    font-family: 'Geist', system-ui, sans-serif;
+    transition: background-color 200ms ease, color 200ms ease;
+    min-height: 800px;
+  }
+  ::selection { background: var(--selection); }
+
+  /* nav */
+  .nav { border-bottom: 1px solid var(--border); }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-weight: 500;
+    color: var(--text);
+    display: flex; align-items: center; gap: 10px; text-decoration: none;
+  }
+  .brand-dot { width: 8px; height: 8px; border-radius: 2px; background: var(--accent); }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a {
+    color: var(--text-2); text-decoration: none; font-size: 14px;
+    transition: color 150ms ease;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a.active { font-weight: 500; }
+  .icon-btn {
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    border: 1px solid var(--border);
+    background: transparent;
+    border-radius: 8px;
+    color: var(--text-2); cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--border-strong); }
+
+  /* listing layout — single column 720px */
+  .list-wrap { max-width: 720px; margin: 0 auto; padding: 64px 32px 96px; }
+
+  .list-head { margin-bottom: 40px; }
+  .list-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--text-3);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+  .list-head h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(36px, 4vw, 44px);
+    line-height: 1.15; letter-spacing: -0.015em;
+    color: var(--text); margin: 0 0 12px;
+  }
+  .list-head p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px; line-height: 1.6;
+    color: var(--text-2); margin: 0;
+    max-width: 56ch;
+  }
+  .list-head .meta-counts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--text-3);
+    margin-top: 18px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .list-head .meta-counts .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-3); opacity: 0.6; }
+
+  /* tag filter — horizontal scroll */
+  .filter-bar {
+    position: relative;
+    margin-bottom: 56px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .filter-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--text-3);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .filter-scroll {
+    display: flex; gap: 8px;
+    overflow-x: auto; padding-bottom: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+  .filter-scroll::-webkit-scrollbar { height: 4px; }
+  .filter-scroll::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+  .filter-scroll::-webkit-scrollbar-track { background: transparent; }
+  .chip {
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-2);
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 150ms ease;
+    white-space: nowrap;
+  }
+  .chip:hover { color: var(--text); border-color: var(--border-strong); }
+  .chip.active {
+    color: var(--bg);
+    background: var(--text);
+    border-color: var(--text);
+  }
+  .chip .ct {
+    margin-left: 6px;
+    color: var(--text-3);
+    font-size: 11px;
+  }
+  .chip.active .ct { color: var(--text-3); opacity: 0.7; }
+
+  /* posts */
+  .posts { display: flex; flex-direction: column; }
+  .post-item {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 200ms ease;
+  }
+  .post-item:first-child { padding-top: 8px; }
+  .post-item.hidden { display: none; }
+  .post-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 14px;
+  }
+  .post-tags .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--text-3);
+    padding: 3px 9px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    transition: all 150ms ease;
+  }
+  .post-item:hover .post-tags .tag {
+    color: var(--text-2); border-color: var(--border-strong);
+  }
+  .post-item h2 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin: 0 0 12px;
+    text-wrap: balance;
+    transition: color 150ms ease;
+  }
+  .post-item:hover h2 { color: var(--accent); }
+  .post-item p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-2);
+    margin: 0 0 18px;
+  }
+  .post-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text-3);
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .post-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-3); opacity: 0.6; }
+  .post-meta .read {
+    margin-left: auto;
+    color: var(--text-2);
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color 150ms ease, transform 200ms ease;
+  }
+  .post-item:hover .post-meta .read { color: var(--text); }
+  .post-item:hover .post-meta .read svg { transform: translateX(3px); }
+  .post-meta .read svg { transition: transform 200ms ease; }
+
+  /* empty state */
+  .empty {
+    padding: 80px 0;
+    text-align: center;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    display: none;
+  }
+  .empty.show { display: block; }
+
+  /* pagination */
+  .pagination {
+    margin-top: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .pg-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-2);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: transparent;
+    transition: all 150ms ease;
+  }
+  .pg-btn:hover { color: var(--text); border-color: var(--border-strong); }
+  .pg-btn.disabled { opacity: 0.4; pointer-events: none; }
+  .pg-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-3);
+  }
+  .pg-num strong { color: var(--text); font-weight: 500; }
+
+  /* footer */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 36px 32px 32px;
+  }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--text-3); font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-links { display: flex; gap: 22px; }
+  .footer-links a {
+    color: var(--text-2); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color 150ms ease;
+  }
+  .footer-links a:hover { color: var(--text); }
+
+  .mockup-label {
+    text-align: center; margin-top: 18px;
+    color: #6b6b6b;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.04em;
+  }
+  .notes {
+    max-width: 760px; margin: 28px auto 0;
+    padding: 22px 26px;
+    background: #1a1a1d; border: 1px solid #28282c;
+    border-radius: 10px;
+    color: #b8b8bd;
+    font-family: 'Geist', sans-serif;
+    font-size: 14px; line-height: 1.65;
+  }
+  .notes h3 {
+    margin: 0 0 10px;
+    font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8a8a90;
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  }
+  .notes p { margin: 0 0 8px; }
+  .notes p:last-child { margin: 0; }
+  .notes code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: #232326; padding: 1px 6px; border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <div class="chrome-bar">
+    <div class="lights">
+      <div class="light red"></div>
+      <div class="light yellow"></div>
+      <div class="light green"></div>
+    </div>
+    <div class="url-bar">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span>blog.midominio.dev/posts/</span>
+    </div>
+    <div class="browser-actions">
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" style="border-color: transparent;">
+        <svg id="ic-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg id="ic-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="page" id="page">
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="#"><span class="brand-dot"></span><span>~/midominio</span></a>
+        <div class="nav-links">
+          <a href="#">Inicio</a>
+          <a href="#" class="active">Blog</a>
+          <a href="#">Categorías</a>
+          <a href="#">Tags</a>
+          <a href="#">Sobre mí</a>
+          <button class="icon-btn" aria-label="Buscar" style="margin-left:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="list-wrap">
+      <header class="list-head">
+        <div class="list-eyebrow">/ blog</div>
+        <h1>Blog</h1>
+        <p>Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo, sin posts de relleno — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.</p>
+        <div class="meta-counts">
+          <span><span id="count-display">42</span> artículos</span>
+          <span class="dot"></span>
+          <span>desde enero de 2018</span>
+          <span class="dot"></span>
+          <span>en español</span>
+        </div>
+      </header>
+
+      <div class="filter-bar">
+        <div class="filter-label">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+          <span>Filtrar por tag</span>
+        </div>
+        <div class="filter-scroll" id="filter-scroll">
+          <button class="chip active" data-tag="all">Todos <span class="ct">42</span></button>
+          <button class="chip" data-tag="hugo">hugo <span class="ct">12</span></button>
+          <button class="chip" data-tag="cloudflare">cloudflare <span class="ct">8</span></button>
+          <button class="chip" data-tag="linux">linux <span class="ct">21</span></button>
+          <button class="chip" data-tag="devops">devops <span class="ct">14</span></button>
+          <button class="chip" data-tag="bash">bash <span class="ct">9</span></button>
+          <button class="chip" data-tag="git">git <span class="ct">11</span></button>
+          <button class="chip" data-tag="postgres">postgres <span class="ct">7</span></button>
+          <button class="chip" data-tag="kubernetes">kubernetes <span class="ct">5</span></button>
+          <button class="chip" data-tag="notas">notas <span class="ct">18</span></button>
+        </div>
+      </div>
+
+      <div class="posts" id="posts">
+        <a class="post-item" href="#" data-tags="hugo cloudflare deployment">
+          <div class="post-tags">
+            <span class="tag">#hugo</span>
+            <span class="tag">#cloudflare</span>
+            <span class="tag">#deployment</span>
+          </div>
+          <h2>Configurar Hugo + Hextra y desplegar en Cloudflare Pages</h2>
+          <p>Migré de Ghost a Hugo. El build pasó de 40 segundos a 3, el sitio se sirve desde 300 ubicaciones, y por fin tengo control total del HTML que envío al navegador.</p>
+          <div class="post-meta">
+            <span>20 enero 2025</span>
+            <span class="dot"></span>
+            <span>8 min de lectura</span>
+            <span class="read">Leer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+
+        <a class="post-item" href="#" data-tags="cloudflare devops">
+          <div class="post-tags">
+            <span class="tag">#cloudflare</span>
+            <span class="tag">#devops</span>
+          </div>
+          <h2>Cloudflare Pages vs Workers Sites: cuándo usar cada uno</h2>
+          <p>Comparativa práctica entre los dos productos de hosting estático de Cloudflare. Qué cambia en build, en runtime y en facturación cuando empiezas a tener tráfico real.</p>
+          <div class="post-meta">
+            <span>14 enero 2025</span>
+            <span class="dot"></span>
+            <span>6 min de lectura</span>
+            <span class="read">Leer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+
+        <a class="post-item" href="#" data-tags="linux bash">
+          <div class="post-tags">
+            <span class="tag">#linux</span>
+            <span class="tag">#bash</span>
+            <span class="tag">#tmux</span>
+          </div>
+          <h2>Mi setup de tmux: una sola pestaña, varios proyectos</h2>
+          <p>Pasé tres años con un layout barroco de paneles. Lo simplifiqué a esto, y trabajo más rápido. La configuración cabe en 40 líneas de <code>.tmux.conf</code>.</p>
+          <div class="post-meta">
+            <span>2 enero 2025</span>
+            <span class="dot"></span>
+            <span>4 min de lectura</span>
+            <span class="read">Leer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+
+        <a class="post-item" href="#" data-tags="devops linux">
+          <div class="post-tags">
+            <span class="tag">#devops</span>
+            <span class="tag">#linux</span>
+            <span class="tag">#backups</span>
+          </div>
+          <h2>Backups que de verdad funcionan: restic + Backblaze B2</h2>
+          <p>Llevaba años con scripts caseros que solo se ejecutaban a medias. Cambié a restic con B2 como almacenamiento. Cinco euros al mes y restauración en minutos.</p>
+          <div class="post-meta">
+            <span>22 diciembre 2024</span>
+            <span class="dot"></span>
+            <span>9 min de lectura</span>
+            <span class="read">Leer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+
+        <a class="post-item" href="#" data-tags="postgres devops">
+          <div class="post-tags">
+            <span class="tag">#postgres</span>
+            <span class="tag">#devops</span>
+          </div>
+          <h2>Lo que aprendí migrando 200GB de Postgres entre regiones</h2>
+          <p>La documentación oficial es buena pero asume que sabes qué buscar. Estas son las cinco cosas que me hubiera gustado leer antes de empezar la migración.</p>
+          <div class="post-meta">
+            <span>10 diciembre 2024</span>
+            <span class="dot"></span>
+            <span>12 min de lectura</span>
+            <span class="read">Leer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+
+        <a class="post-item" href="#" data-tags="git notas">
+          <div class="post-tags">
+            <span class="tag">#git</span>
+            <span class="tag">#notas</span>
+          </div>
+          <h2>Git para sentirse cómodo, no para impresionar</h2>
+          <p>No necesitas saber <code>rebase --interactive --autosquash --root</code> de memoria. Necesitas dominar siete comandos y entender de verdad qué hace cada uno.</p>
+          <div class="post-meta">
+            <span>28 noviembre 2024</span>
+            <span class="dot"></span>
+            <span>7 min de lectura</span>
+            <span class="read">Leer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+
+        <a class="post-item" href="#" data-tags="kubernetes devops">
+          <div class="post-tags">
+            <span class="tag">#kubernetes</span>
+            <span class="tag">#devops</span>
+          </div>
+          <h2>Por qué dejé de usar Kubernetes para mi blog (y para casi todo lo demás)</h2>
+          <p>Kubernetes es excelente cuando lo necesitas. Pero el 90% de los proyectos que conozco no lo necesitan, y yo era uno de esos. Lo que cambié y por qué.</p>
+          <div class="post-meta">
+            <span>15 noviembre 2024</span>
+            <span class="dot"></span>
+            <span>11 min de lectura</span>
+            <span class="read">Leer <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+      </div>
+
+      <div class="empty" id="empty">
+        Sin artículos con ese tag — prueba con otro.
+      </div>
+
+      <div class="pagination">
+        <a class="pg-btn disabled" href="#">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Anterior
+        </a>
+        <span class="pg-num">página <strong>1</strong> de <strong>6</strong></span>
+        <a class="pg-btn" href="#">
+          Siguiente
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>© 2025 — escrito con Hugo + Hextra</span>
+        <div class="footer-links">
+          <a href="#"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5" fill="currentColor"/></svg> RSS</a>
+          <a href="#"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57v-2.07c-3.345.72-4.05-1.605-4.05-1.605-.54-1.395-1.335-1.755-1.335-1.755-1.08-.735.09-.72.09-.72 1.2.09 1.83 1.23 1.83 1.23 1.065 1.83 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.475-1.335-5.475-5.94 0-1.32.465-2.385 1.23-3.225-.12-.3-.54-1.515.12-3.165 0 0 1.005-.33 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.865.12 3.165.765.84 1.23 1.905 1.23 3.225 0 4.62-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22v3.285c0 .315.225.69.825.57C20.565 21.795 24 17.31 24 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</a>
+          <a href="#"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> Email</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<div class="mockup-label">MOCKUP 2 / 5 — LISTADO DE POSTS · prueba a filtrar por tag</div>
+
+<div class="notes">
+  <h3>Decisiones de diseño</h3>
+  <p><strong>Una sola columna a 720px.</strong> Sin sidebar — ese ancho es el "ancho de lectura" que ya usamos en el artículo, así la página se siente continua entre listado e individual. El header (eyebrow / título / lead / contadores) ocupa el mismo carril que los posts.</p>
+  <p><strong>Filtro de tags como chips horizontales.</strong> Scroll horizontal nativo (con scrollbar fina), chip activo invertido en blanco para que el estado sea inequívoco sin recurrir al azul de acento — el azul lo reservamos para hover de título y enlaces. Cada chip muestra el contador de posts.</p>
+  <p><strong>Cada post como una fila tipográfica</strong>, no como una card. Tags arriba (sutiles, monospace), título serif a 26px que vira al accent en hover, descripción a 17px, meta-row con fecha · tiempo de lectura · "Leer →" alineado a la derecha. Separador inferior <code>1px solid var(--border)</code> — sin sombras, sin fondos.</p>
+  <p><strong>Filtrado client-side.</strong> Cada <code>&lt;a&gt;</code> lleva <code>data-tags="hugo cloudflare ..."</code>. Al hacer click en un chip, el JS oculta los que no contienen el tag y actualiza el contador del header. Si no queda ninguno, aparece un mensaje vacío en monospace.</p>
+  <p><strong>Paginación minimalista.</strong> Botón anterior / "página X de Y" / botón siguiente. Estado deshabilitado con <code>opacity: 0.4</code> y <code>pointer-events: none</code>.</p>
+  <p><strong>Hugo + Hextra.</strong> Esta vista es <code>layouts/posts/list.html</code>. Hextra trae un layout de listado decente pero asume sidebar; lo desactivas con <code>params.page.layout = "wide"</code> en el front-matter de la sección. El filtro y los <code>data-tags</code> se generan con un <code>{{ delimit .Params.tags " " }}</code> dentro del template.</p>
+</div>
+
+<script>
+  const root = document.documentElement;
+  const stored = localStorage.getItem('mockup-theme') || 'dark';
+  root.setAttribute('data-theme', stored);
+  syncIcons();
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('mockup-theme', next);
+    syncIcons();
+  });
+  function syncIcons() {
+    const dark = root.getAttribute('data-theme') === 'dark';
+    document.getElementById('ic-sun').style.display = dark ? 'block' : 'none';
+    document.getElementById('ic-moon').style.display = dark ? 'none' : 'block';
+  }
+
+  // tag filter
+  const chips = document.querySelectorAll('.chip');
+  const posts = document.querySelectorAll('.post-item');
+  const empty = document.getElementById('empty');
+  const countDisplay = document.getElementById('count-display');
+  const baseCount = posts.length; // for demo; in real Hugo this is .Site.RegularPages
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const tag = chip.dataset.tag;
+      let visible = 0;
+      posts.forEach(p => {
+        const tags = (p.dataset.tags || '').split(/\s+/);
+        const show = tag === 'all' || tags.includes(tag);
+        p.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+      empty.classList.toggle('show', visible === 0);
+      countDisplay.textContent = visible;
+    });
+  });
+</script>
+
+</body>
+</html>

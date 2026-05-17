@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mockup 3 — Página de artículo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ───────── tokens ───────── */
+  :root[data-theme="dark"] {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface-2: #161616;
+    --border: #1e1e1e;
+    --border-strong: #2a2a2a;
+    --text: #e8e8e8;
+    --text-2: #a1a1a1;
+    --text-3: #6b6b6b;
+    --accent: oklch(0.72 0.13 235);
+    --accent-soft: oklch(0.72 0.13 235 / 0.12);
+    --code-bg: #0e0e0e;
+    --selection: oklch(0.72 0.13 235 / 0.35);
+    --callout-info-bg: oklch(0.72 0.13 235 / 0.07);
+    --callout-info-bd: oklch(0.72 0.13 235 / 0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --surface-2: #f5f5f4;
+    --border: #e7e5e4;
+    --border-strong: #d6d3d1;
+    --text: #111111;
+    --text-2: #525252;
+    --text-3: #8a8a8a;
+    --accent: oklch(0.52 0.15 235);
+    --accent-soft: oklch(0.52 0.15 235 / 0.08);
+    --code-bg: #f6f5f2;
+    --selection: oklch(0.52 0.15 235 / 0.20);
+    --callout-info-bg: oklch(0.52 0.15 235 / 0.05);
+    --callout-info-bd: oklch(0.52 0.15 235 / 0.25);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #18181a;
+    font-family: 'Geist', system-ui, sans-serif;
+    color: #e8e8e8;
+    min-height: 100vh;
+    padding: 28px;
+  }
+  .frame, .mockup-label, .notes { margin-left: auto; margin-right: auto; }
+
+  /* ───────── browser frame ───────── */
+  .frame {
+    width: min(1320px, 100%);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
+    background: #1d1d20;
+  }
+  .chrome-bar {
+    display: flex; align-items: center; gap: 14px;
+    height: 42px; padding: 0 16px;
+    background: #1d1d20;
+    border-bottom: 1px solid #000;
+  }
+  .lights { display: flex; gap: 8px; }
+  .light { width: 12px; height: 12px; border-radius: 50%; }
+  .l1 { background: #ff5f57; } .l2 { background: #febc2e; } .l3 { background: #28c840; }
+  .url-bar {
+    flex: 1; max-width: 560px;
+    display: flex; align-items: center; gap: 8px;
+    height: 26px; padding: 0 12px;
+    background: #2a2a2e; border-radius: 13px;
+    color: #c5c5c8; font-size: 12px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  .url-bar svg { opacity: 0.7; }
+  .browser-actions { display: flex; gap: 6px; opacity: 0.7; }
+  .b-btn {
+    width: 26px; height: 26px; border-radius: 6px;
+    display: grid; place-items: center;
+  }
+
+  /* the rendered page sits below the chrome */
+  .page {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Geist', system-ui, sans-serif;
+    transition: background-color 200ms ease, color 200ms ease;
+    min-height: 800px;
+  }
+  ::selection { background: var(--selection); }
+
+  /* ───────── reading progress ───────── */
+  .progress-track {
+    position: sticky; top: 0; z-index: 50;
+    height: 2px; background: transparent;
+  }
+  .progress-fill {
+    height: 2px; background: var(--accent);
+    width: var(--p, 28%);
+    transition: width 80ms linear;
+  }
+
+  /* ───────── site nav ───────── */
+  .nav {
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .nav-inner {
+    max-width: 1180px; margin: 0 auto;
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+  }
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .brand-dot {
+    width: 8px; height: 8px; border-radius: 2px;
+    background: var(--accent);
+  }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a {
+    color: var(--text-2);
+    text-decoration: none; font-size: 14px;
+    transition: color 150ms ease;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a.active { font-weight: 500; }
+
+  .icon-btn {
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    border: 1px solid var(--border);
+    background: transparent;
+    border-radius: 8px;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--border-strong); }
+
+  /* ───────── article layout ───────── */
+  .article-wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 56px 32px 96px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 72px;
+  }
+  .article {
+    min-width: 0;
+    max-width: 720px;
+  }
+
+  .breadcrumb {
+    font-size: 13px; color: var(--text-3);
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .breadcrumb a { color: var(--text-2); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--text); }
+  .breadcrumb .sep { opacity: 0.4; }
+  .breadcrumb .current { color: var(--text-3); }
+
+  .tags-row {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 18px;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-2);
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+  .tag:hover {
+    color: var(--accent);
+    border-color: var(--callout-info-bd);
+  }
+  .tag.accent { color: var(--accent); border-color: var(--callout-info-bd); background: var(--accent-soft); }
+
+  h1.title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(36px, 4vw, 48px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin: 0 0 22px;
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  .meta-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+    font-size: 14px; color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .meta-bar .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-3); opacity: 0.6; }
+  .updated { color: var(--accent); }
+
+  .cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: 48px;
+    background:
+      repeating-linear-gradient(135deg,
+        var(--surface) 0 12px,
+        var(--surface-2) 12px 24px);
+    display: grid; place-items: center;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ───────── article body typography ───────── */
+  .body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.72;
+    color: var(--text);
+  }
+  .body > * + * { margin-top: 1.4em; }
+  .body p { margin: 0; }
+  .body h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 2.2em 0 0.6em;
+    scroll-margin-top: 80px;
+  }
+  .body h3 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.3;
+    margin: 1.8em 0 0.4em;
+    scroll-margin-top: 80px;
+  }
+  .body strong { color: var(--text); font-weight: 600; }
+  .body em { color: var(--text-2); }
+  .body a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in oklch, var(--accent), transparent 60%);
+  }
+  .body a:hover { text-decoration-color: var(--accent); }
+
+  .body :is(ul, ol) { padding-left: 1.4em; margin: 0; }
+  .body li { margin: 0.4em 0; }
+  .body :is(ul, ol) :is(ul, ol) { margin-top: 0.4em; }
+
+  /* inline code */
+  .body :not(pre) > code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    padding: 2px 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+  }
+
+  /* code block */
+  .codeblock {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--code-bg);
+    overflow: hidden;
+  }
+  .codeblock-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px 8px 14px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-3);
+  }
+  .codeblock-head .lang { display: flex; align-items: center; gap: 8px; }
+  .copy-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--border-strong); }
+  .copy-btn.ok { color: var(--accent); border-color: var(--callout-info-bd); }
+  .codeblock pre {
+    margin: 0; padding: 16px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--text);
+    overflow-x: auto;
+    tab-size: 2;
+  }
+  .codeblock .tk-kw { color: oklch(0.72 0.13 290); }
+  .codeblock .tk-st { color: oklch(0.74 0.12 145); }
+  .codeblock .tk-fn { color: oklch(0.78 0.12 75); }
+  .codeblock .tk-cm { color: var(--text-3); font-style: italic; }
+  .codeblock .tk-nm { color: oklch(0.72 0.13 25); }
+
+  /* callout */
+  .callout {
+    display: flex; gap: 14px;
+    padding: 16px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--callout-info-bd);
+    background: var(--callout-info-bg);
+    font-family: 'Geist', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .callout .ic {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    display: grid; place-items: center;
+    color: var(--accent);
+    margin-top: 1px;
+  }
+  .callout p { margin: 0; }
+
+  /* table */
+  .body table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Geist', sans-serif;
+    font-size: 15px;
+  }
+  .body thead th {
+    text-align: left; font-weight: 500;
+    color: var(--text-2);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-strong);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .body tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .body tbody tr:last-child td { border-bottom: none; }
+  .body tbody td code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+  }
+
+  /* figure */
+  figure {
+    margin: 0;
+  }
+  .fig-img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background:
+      repeating-linear-gradient(45deg,
+        var(--surface) 0 10px,
+        var(--surface-2) 10px 20px);
+    display: grid; place-items: center;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  figcaption {
+    text-align: center;
+    margin-top: 12px;
+    font-family: 'Geist', sans-serif;
+    font-size: 13px;
+    color: var(--text-3);
+  }
+
+  /* related */
+  .related {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .related-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+  .related-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .related-card {
+    display: block;
+    padding: 20px 22px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: transparent;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 200ms ease;
+  }
+  .related-card:hover {
+    border-color: var(--border-strong);
+    background: var(--surface);
+  }
+  .related-card .rc-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+  .related-card h4 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 8px;
+  }
+  .related-card p {
+    font-size: 13.5px;
+    color: var(--text-2);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ───────── sidebar ───────── */
+  .sidebar {
+    position: sticky;
+    top: 64px;
+    align-self: start;
+    font-size: 13.5px;
+    color: var(--text-2);
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+  }
+  .sb-section { margin-bottom: 36px; }
+  .sb-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-3);
+    margin-bottom: 14px;
+  }
+  .toc {
+    list-style: none; margin: 0; padding: 0;
+    border-left: 1px solid var(--border);
+  }
+  .toc li a {
+    display: block;
+    padding: 6px 0 6px 14px;
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    color: var(--text-2);
+    text-decoration: none;
+    font-size: 13.5px;
+    line-height: 1.45;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+  .toc li.toc-l2 a { padding-left: 26px; font-size: 13px; }
+  .toc li a:hover { color: var(--text); }
+  .toc li.active > a {
+    color: var(--text);
+    border-left-color: var(--accent);
+    font-weight: 500;
+  }
+
+  .share-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .share-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-2);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Geist', sans-serif;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+  .share-btn:hover { color: var(--text); border-color: var(--border-strong); }
+  .share-btn.ok { color: var(--accent); border-color: var(--callout-info-bd); }
+
+  /* footer */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 32px;
+  }
+  .site-footer-inner {
+    max-width: 1180px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--text-3); font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .site-footer-inner a { color: var(--text-2); text-decoration: none; margin-left: 16px; }
+  .site-footer-inner a:hover { color: var(--text); }
+
+  /* mockup label below frame */
+  .mockup-label {
+    text-align: center;
+    margin-top: 18px;
+    color: #6b6b6b;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  /* design notes */
+  .notes {
+    max-width: 760px;
+    margin: 28px auto 0;
+    padding: 22px 26px;
+    background: #1a1a1d;
+    border: 1px solid #28282c;
+    border-radius: 10px;
+    color: #b8b8bd;
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .notes h3 {
+    margin: 0 0 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8a8a90;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+  .notes p { margin: 0 0 8px; }
+  .notes p:last-child { margin: 0; }
+  .notes code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: #232326; padding: 1px 6px; border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <!-- chrome bar -->
+  <div class="chrome-bar">
+    <div class="lights">
+      <div class="light l1"></div>
+      <div class="light l2"></div>
+      <div class="light l3"></div>
+    </div>
+    <div class="url-bar">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span>blog.midominio.dev/posts/configurar-hugo-hextra-cloudflare/</span>
+    </div>
+    <div class="browser-actions">
+      <div class="b-btn">
+        <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" style="border-color: transparent;">
+          <svg id="ic-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg id="ic-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE PAGE -->
+  <div class="page" id="page">
+    <!-- progress bar -->
+    <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+
+    <!-- nav -->
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="#" style="text-decoration:none;">
+          <span class="brand-dot"></span>
+          <span>~/midominio</span>
+        </a>
+        <div class="nav-links">
+          <a href="#" class="active">Blog</a>
+          <a href="#">Categorías</a>
+          <a href="#">Tags</a>
+          <a href="#">Sobre mí</a>
+          <button id="search-btn" class="icon-btn" aria-label="Buscar" style="margin-left:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="article-wrap">
+      <article class="article">
+        <!-- breadcrumb -->
+        <nav class="breadcrumb" aria-label="breadcrumb">
+          <a href="#">Blog</a>
+          <span class="sep">/</span>
+          <span class="current">Configurar Hugo + Hextra en Cloudflare Pages</span>
+        </nav>
+
+        <!-- tags -->
+        <div class="tags-row">
+          <a class="tag" href="#">#hugo</a>
+          <a class="tag" href="#">#hextra</a>
+          <a class="tag" href="#">#cloudflare</a>
+          <a class="tag" href="#">#deployment</a>
+        </div>
+
+        <!-- title -->
+        <h1 class="title">Configurar Hugo + Hextra y desplegar en Cloudflare Pages</h1>
+
+        <!-- meta -->
+        <div class="meta-bar">
+          <span>20 enero 2025</span>
+          <span class="dot"></span>
+          <span>8 min de lectura</span>
+          <span class="dot"></span>
+          <span class="updated">actualizado el 3 may</span>
+        </div>
+
+        <!-- cover -->
+        <div class="cover">[ COVER · 16:9 — captura del repo o terminal ]</div>
+
+        <!-- body -->
+        <div class="body" id="body">
+          <p>Llevaba años publicando en plataformas de terceros — Medium, dev.to, un Ghost auto-hospedado — y siempre acababa frustrado por algo: el tiempo de carga, los <em>paywalls</em> ajenos, la falta de control sobre el HTML que se servía. Este enero por fin decidí migrar a algo que tuviera tres propiedades: <strong>velocidad absurda</strong>, <strong>cero mantenimiento</strong> y <strong>control total del markup</strong>.</p>
+
+          <p>La combinación a la que llegué — y que da forma al blog que estás leyendo ahora — es <a href="#">Hugo</a> con el tema <a href="#">Hextra</a>, desplegado en Cloudflare Pages. El build completo tarda menos de cuatro segundos, el sitio se sirve desde la red de Cloudflare, y nunca tengo que tocar un servidor.</p>
+
+          <h2 id="por-que-hugo">Por qué Hugo y no otro generador</h2>
+
+          <p>Probé Astro, Eleventy, Next.js como generador estático. Todos funcionan. Hugo gana en una métrica concreta: <strong>tiempo de build</strong>. Compilar 200 páginas con imágenes responsive me cuesta <code>~3.2s</code> en mi M2; con Astro, el mismo set tarda <code>~28s</code>. La diferencia se nota cuando estás iterando sobre el diseño y guardas el archivo cada veinte segundos.</p>
+
+          <p>El otro motivo es la ausencia de <code>node_modules</code>. Hugo es un binario único de ~80MB. No necesito instalar nada en el servidor de CI, no tengo árbol de dependencias que auditar, no tengo que actualizar paquetes cada semana.</p>
+
+          <h3 id="el-tema-hextra">El tema Hextra</h3>
+
+          <p>Hextra está construido sobre Tailwind y trae lo que necesito de fábrica: dark mode, búsqueda integrada con Flexsearch, soporte multi-idioma, sidebar opcional para documentación, y un set de <em>shortcodes</em> para callouts, cards, tabs y steps. La configuración inicial es esto:</p>
+
+          <!-- code block -->
+          <div class="codeblock">
+            <div class="codeblock-head">
+              <span class="lang">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                hugo.toml
+              </span>
+              <button class="copy-btn" data-copy="config">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copiar</span>
+              </button>
+            </div>
+<pre id="snippet-config"><span class="tk-cm"># hugo.toml — configuración mínima para Hextra</span>
+<span class="tk-kw">baseURL</span> = <span class="tk-st">"https://blog.midominio.dev/"</span>
+<span class="tk-kw">title</span>   = <span class="tk-st">"~/midominio"</span>
+<span class="tk-kw">theme</span>   = <span class="tk-st">"hextra"</span>
+
+[<span class="tk-fn">params</span>]
+  <span class="tk-kw">defaultTheme</span> = <span class="tk-st">"dark"</span>
+  <span class="tk-kw">editURL</span>      = <span class="tk-st">"https://github.com/me/blog/edit/main/content/"</span>
+
+[<span class="tk-fn">module</span>]
+  [[<span class="tk-fn">module.imports</span>]]
+    <span class="tk-kw">path</span> = <span class="tk-st">"github.com/imfing/hextra"</span></pre>
+          </div>
+
+          <!-- callout -->
+          <div class="callout">
+            <span class="ic">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </span>
+            <p><strong>Nota:</strong> importar Hextra como módulo de Go es lo que recomienda la documentación oficial. Evita tener que clonar el tema dentro de tu repo y permite actualizar con <code>hugo mod get -u</code> sin conflictos.</p>
+          </div>
+
+          <h2 id="estructura-del-proyecto">Estructura del proyecto</h2>
+
+          <p>La estructura final de carpetas que uso es esta. La parte importante es separar el <em>content</em> (lo que escribo) del <em>tema</em> (lo que renderiza):</p>
+
+          <ol>
+            <li><strong>content/</strong> — todos los <code>.md</code> de los posts, organizados por idioma.</li>
+            <li><strong>assets/css/</strong> — overrides de CSS por encima de Tailwind. Aquí van los tokens de color y la tipografía custom.</li>
+            <li><strong>layouts/partials/</strong> — solo los partials que sobreescribo del tema. Mantengo este directorio lo más vacío posible.</li>
+            <li><strong>config/_default/</strong> — la configuración partida en <code>hugo.toml</code>, <code>params.toml</code> y <code>menus.toml</code> para que se lea mejor.</li>
+          </ol>
+
+          <h3 id="opciones-deployment">Opciones de deployment</h3>
+
+          <p>Tres alternativas que evalué, comparadas por <strong>tiempo de build</strong>, <strong>coste mensual</strong> en mi tráfico (~10k visitas) y <strong>complejidad</strong> de la configuración:</p>
+
+          <table>
+            <thead>
+              <tr><th>Opción</th><th>Build</th><th>Coste</th><th>Setup</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cloudflare Pages</strong></td>
+                <td><code>~12s</code></td>
+                <td>$0</td>
+                <td>Bajo</td>
+              </tr>
+              <tr>
+                <td>Vercel</td>
+                <td><code>~18s</code></td>
+                <td>$0</td>
+                <td>Bajo</td>
+              </tr>
+              <tr>
+                <td>VPS + nginx</td>
+                <td><code>~4s</code></td>
+                <td>$5</td>
+                <td>Alto</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Cloudflare gana por la combinación de coste cero, red de CDN excelente y un setup que se hace en cinco minutos.</p>
+
+          <figure>
+            <div class="fig-img">[ FIGURE · panel de Cloudflare Pages tras el deploy ]</div>
+            <figcaption>Panel de Cloudflare Pages mostrando el build de producción tras hacer push a <code>main</code>.</figcaption>
+          </figure>
+
+          <h2 id="cierre">El resultado</h2>
+
+          <p>El sitio que estás leyendo ahora se sirve desde 300 ubicaciones, hace su build en ~12 segundos, no me cuesta ni un céntimo al mes, y el HTML que envía al navegador no incluye ni un solo <code>&lt;script&gt;</code> de tracking. Todo el código está en GitHub, y cada vez que hago push de un nuevo post el deploy se ejecuta automáticamente.</p>
+
+          <p>En las próximas entradas voy a entrar en detalle en cosas concretas: cómo personalizo los <em>shortcodes</em> de Hextra, qué overrides de CSS he añadido y cómo gestiono las imágenes responsive sin un servicio externo.</p>
+        </div>
+
+        <!-- related -->
+        <section class="related">
+          <div class="related-head">Artículos relacionados</div>
+          <div class="related-grid">
+            <a class="related-card" href="#">
+              <div class="rc-tag">Hugo</div>
+              <h4>Personalizando los shortcodes de Hextra sin tocar el tema</h4>
+              <p>Cómo extender callouts, cards y tabs manteniendo la posibilidad de actualizar Hextra como módulo.</p>
+            </a>
+            <a class="related-card" href="#">
+              <div class="rc-tag">Cloudflare</div>
+              <h4>Cloudflare Pages vs Workers Sites: cuándo usar cada uno</h4>
+              <p>Una comparativa práctica entre los dos productos de hosting estático de Cloudflare.</p>
+            </a>
+          </div>
+        </section>
+      </article>
+
+      <!-- sidebar -->
+      <aside class="sidebar">
+        <div class="sb-section">
+          <div class="sb-head">En esta página</div>
+          <ul class="toc" id="toc">
+            <li><a href="#por-que-hugo">Por qué Hugo y no otro generador</a></li>
+            <li class="toc-l2"><a href="#el-tema-hextra">El tema Hextra</a></li>
+            <li><a href="#estructura-del-proyecto">Estructura del proyecto</a></li>
+            <li class="toc-l2"><a href="#opciones-deployment">Opciones de deployment</a></li>
+            <li><a href="#cierre">El resultado</a></li>
+          </ul>
+        </div>
+
+        <div class="sb-section">
+          <div class="sb-head">Compartir</div>
+          <div class="share-row">
+            <button class="share-btn" id="copy-link">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              <span>Copiar enlace</span>
+            </button>
+            <a class="share-btn" href="#">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              <span>Compartir en X</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="sb-section">
+          <div class="sb-head">Tags</div>
+          <div class="tags-row" style="margin:0;">
+            <a class="tag" href="#">#hugo</a>
+            <a class="tag" href="#">#hextra</a>
+            <a class="tag" href="#">#cloudflare</a>
+            <a class="tag" href="#">#deployment</a>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- footer -->
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <span>© 2025 — escrito con Hugo + Hextra</span>
+        <div>
+          <a href="#">RSS</a>
+          <a href="#">GitHub</a>
+          <a href="#">Email</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<div class="mockup-label">MOCKUP 3 / 5 — PÁGINA DE ARTÍCULO · usa el icono de luna en la esquina superior para alternar dark / light</div>
+
+<div class="notes">
+  <h3>Decisiones de diseño</h3>
+  <p><strong>Tipografía.</strong> Pareja <code>Source Serif 4</code> (cuerpo del artículo, 18px / 1.72) + <code>Geist</code> (UI, navegación, sidebar) + <code>JetBrains Mono</code> (código y meta-datos). El serif en el cuerpo da textura de "ensayo" y reduce fatiga en lecturas largas; las sans-serif de la UI quedan al servicio del contenido, no compitiendo con él.</p>
+  <p><strong>Color de acento.</strong> Un azul desaturado en oklch <code>(0.72 0.13 235)</code> en dark, <code>(0.52 0.15 235)</code> en light. Se usa con cuentagotas: links, heading activo en TOC, fecha de actualización, tag de "leído". El resto del UI vive en escala de grises para que el código y los callouts canten cuando aparecen.</p>
+  <p><strong>Layout 68/30.</strong> Artículo a 720px máximo (medida cómoda para 18px de cuerpo) + sidebar de 280px sticky con TOC, compartir y tags. La barra de progreso de lectura ocupa 2px y vive arriba del viewport, sin distraer.</p>
+  <p><strong>Hugo + Hextra.</strong> Lo que no es CSS aquí es configuración de tema: el TOC se activa con <code>params.toc.enable = true</code> en <code>hugo.toml</code>, el botón de "editar en GitHub" con <code>params.editURL</code>, y la fecha de última modificación con <code>enableGitInfo = true</code>. Los overrides de color van en <code>assets/css/custom.css</code>.</p>
+</div>
+
+<script>
+  // ───────── theme toggle ─────────
+  const root = document.documentElement;
+  const stored = localStorage.getItem('mockup-theme') || 'dark';
+  root.setAttribute('data-theme', stored);
+  syncIcons();
+
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('mockup-theme', next);
+    syncIcons();
+  });
+
+  function syncIcons() {
+    const dark = root.getAttribute('data-theme') === 'dark';
+    document.getElementById('ic-sun').style.display = dark ? 'block' : 'none';
+    document.getElementById('ic-moon').style.display = dark ? 'none' : 'block';
+  }
+
+  // ───────── code copy ─────────
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = 'snippet-' + btn.dataset.copy;
+      const text = document.getElementById(id)?.innerText || '';
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (e) {}
+      const span = btn.querySelector('span');
+      const old = span.textContent;
+      btn.classList.add('ok');
+      span.textContent = '✓ Copiado';
+      setTimeout(() => { btn.classList.remove('ok'); span.textContent = old; }, 1600);
+    });
+  });
+
+  // share-row copy link
+  document.getElementById('copy-link').addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    try { await navigator.clipboard.writeText(location.href); } catch (e2) {}
+    btn.classList.add('ok');
+    const span = btn.querySelector('span');
+    const old = span.textContent;
+    span.textContent = '✓ Enlace copiado';
+    setTimeout(() => { btn.classList.remove('ok'); span.textContent = old; }, 1600);
+  });
+
+  // ───────── reading progress + active TOC ─────────
+  const page = document.getElementById('page');
+  const progress = document.getElementById('progress');
+  const body = document.getElementById('body');
+  const toc = document.getElementById('toc');
+  const tocLinks = [...toc.querySelectorAll('a')];
+  const headings = tocLinks.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+
+  // The page scrolls inside the .page wrapper because the browser frame is part of the layout.
+  // We use document scroll since body is just one big column.
+  function onScroll() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = Math.max(0, Math.min(1, scrollTop / Math.max(1, docH)));
+    progress.style.setProperty('--p', (pct * 100).toFixed(2) + '%');
+
+    // active TOC
+    const offset = 120;
+    let activeIdx = 0;
+    headings.forEach((h, i) => {
+      if (h.getBoundingClientRect().top - offset <= 0) activeIdx = i;
+    });
+    tocLinks.forEach((a, i) => {
+      a.parentElement.classList.toggle('active', i === activeIdx);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // smooth scroll for TOC clicks
+  tocLinks.forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if (target) {
+      const top = target.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }));
+</script>
+
+</body>
+</html>
