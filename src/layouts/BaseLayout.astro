@@ -16,12 +16,16 @@ interface Props {
   articleDate?: Date;
   articleModifiedDate?: Date;
   /**
-   * Override automatic hreflang URL computation for the alternate languages.
-   * Use when the current page has asymmetric slugs across languages (e.g. posts
-   * where the ES and EN versions live at different paths). When omitted, alt URLs
-   * are derived from the current pathname by swapping the locale prefix.
+   * Override hreflang URL computation for alternate languages.
+   * For asymmetric URLs, pass the full translation group including the current
+   * language so the layout does not invent non-existent localized paths.
    */
   altUrls?: Partial<Record<keyof typeof ui, string>>;
+  /**
+   * When true, hreflang entries are emitted only from `altUrls`. Use for posts,
+   * where a missing translation must not fall back to a guessed symmetric path.
+   */
+  manualHreflang?: boolean;
   /**
    * When true, the page emits `<meta name="robots" content="noindex">` and
    * skips emitting hreflang alternates. Use for error pages or any page that
@@ -37,6 +41,7 @@ const {
   articleDate,
   articleModifiedDate,
   altUrls,
+  manualHreflang = false,
   noindex = false,
 } = Astro.props;
 const lang = Astro.props.lang || 'es';
@@ -50,13 +55,13 @@ const ogLocale = SITE.locale[lang as keyof typeof SITE.locale] ?? 'es_ES';
 const ogLocaleAlternate = lang === 'es' ? SITE.locale.en : SITE.locale.es;
 
 // Compute hreflang alternates.
-// For pages with symmetric URLs (home, blog, about, taxonomies), derive by
-// swapping the locale prefix. For pages with asymmetric URLs (posts), the
-// page itself must provide `altUrls` for non-current languages.
+// Symmetric pages can derive alternates by swapping the locale prefix. Posts
+// use manual mode so only verified translation URLs are emitted.
 const currentPath = canonicalPath;
 const altPathFor = (target: keyof typeof ui): string | undefined => {
-  if (target === lang) return currentPath;
   if (altUrls && altUrls[target]) return altUrls[target];
+  if (manualHreflang) return undefined;
+  if (target === lang) return currentPath;
   return switchLangPath(currentPath, target as string);
 };
 
@@ -187,7 +192,7 @@ function normalizeCanonicalPath(pathname: string) {
 
   <body>
     <a class="skip-link" href="#main">{t('a11y.skipToMain')}</a>
-    <Navbar lang={lang} currentPath={Astro.url.pathname} />
+    <Navbar lang={lang} currentPath={Astro.url.pathname} languageUrls={altUrls} />
     <main id="main" tabindex="-1">
       <slot />
     </main>

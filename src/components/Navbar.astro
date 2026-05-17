@@ -8,9 +8,10 @@ import type { ui } from '@/i18n/ui';
 interface Props {
   lang: keyof typeof ui;
   currentPath: string;
+  languageUrls?: Partial<Record<keyof typeof ui, string>>;
 }
 
-const { lang, currentPath } = Astro.props;
+const { lang, currentPath, languageUrls } = Astro.props;
 const t = useTranslations(lang);
 
 const navItems = [
@@ -51,7 +52,7 @@ const navItems = [
     </div>
 
     <div class="nav-right">
-      <LanguageSelector lang={lang} currentPath={currentPath} />
+      <LanguageSelector lang={lang} currentPath={currentPath} urls={languageUrls} />
       <ThemeToggle />
       <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
         <svg

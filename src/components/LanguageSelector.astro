@@ -1,21 +1,17 @@
 ---
 import type { ui } from '@/i18n/ui';
+import { switchLangPath } from '@/i18n/utils';
 
 interface Props {
   lang: keyof typeof ui;
   currentPath: string;
+  urls?: Partial<Record<keyof typeof ui, string>>;
 }
 
-const { lang, currentPath } = Astro.props;
+const { lang, currentPath, urls = {} } = Astro.props;
 
 function switchLang(path: string, target: string): string {
-  const segments = path.split('/').filter(Boolean);
-  if (segments.length > 0 && ['es', 'en'].includes(segments[0])) {
-    segments[0] = target;
-  } else {
-    segments.unshift(target);
-  }
-  return '/' + segments.join('/') + '/';
+  return urls[target as keyof typeof ui] ?? switchLangPath(path, target);
 }
 ---
 

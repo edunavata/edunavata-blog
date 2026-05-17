@@ -58,8 +58,12 @@ const translation = currentFolder
       (p) => p.id !== post.id && p.data.lang !== lang && folderOf(p) === currentFolder
     )
   : undefined;
+const currentUrl = `/${lang}/posts/${post.data.slug}/`;
 const altUrls = translation
-  ? { [translation.data.lang]: `/${translation.data.lang}/posts/${translation.data.slug}/` }
+  ? {
+      [lang]: currentUrl,
+      [translation.data.lang]: `/${translation.data.lang}/posts/${translation.data.slug}/`,
+    }
   : undefined;
 
 const ogImagePath = post.data.cover?.image
@@ -129,6 +133,7 @@ const breadcrumbJsonLd = {
   articleDate={post.data.date}
   articleModifiedDate={post.data.updatedDate}
   altUrls={altUrls}
+  manualHreflang
 >
   <script
     is:inline
