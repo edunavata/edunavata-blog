@@ -3,6 +3,8 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import expressiveCode from 'astro-expressive-code';
 import tailwindcss from '@tailwindcss/vite';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -90,7 +92,27 @@ export default defineConfig({
   },
 
   markdown: {
-    rehypePlugins: [[rehypeExternalLinks, { rel: ['noopener', 'noreferrer'] }]],
+    rehypePlugins: [
+      rehypeSlug,
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'prepend',
+          properties: {
+            className: ['heading-anchor'],
+            ariaLabel: 'Enlace permanente a esta sección',
+            tabIndex: -1,
+          },
+          content: {
+            type: 'element',
+            tagName: 'span',
+            properties: { ariaHidden: 'true' },
+            children: [{ type: 'text', value: '#' }],
+          },
+        },
+      ],
+      [rehypeExternalLinks, { rel: ['noopener', 'noreferrer'] }],
+    ],
   },
 
   // Tailwind v4 se inyecta a través de Vite
