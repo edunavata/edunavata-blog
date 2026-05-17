@@ -151,7 +151,7 @@ const breadcrumbJsonLd = {
   <div style="position:sticky; top:0; z-index:50; height:2px; background:transparent;">
     <div
       id="progress"
-      style="height:2px; background:var(--accent); width:0%; transition:width 80ms linear;"
+      style="height:2px; background:var(--accent); width:100%; transform:scaleX(0); transform-origin:left; transition:transform 80ms linear;"
     >
     </div>
   </div>
@@ -279,7 +279,7 @@ const breadcrumbJsonLd = {
               {related.map((r) => (
                 <a
                   href={getPostUrl(lang, r.data.slug)}
-                  style="display:block; padding:20px 22px; border:1px solid var(--border); border-radius:10px; background:transparent; text-decoration:none; color:var(--text); transition:all 200ms ease;"
+                  style="display:block; padding:20px 22px; border:1px solid var(--border); border-radius:10px; background:transparent; text-decoration:none; color:var(--text); transition:border-color 200ms ease, background-color 200ms ease;"
                   onmouseover="this.style.borderColor='var(--border-strong)'; this.style.background='var(--surface)'"
                   onmouseout="this.style.borderColor='var(--border)'; this.style.background='transparent'"
                   onfocus="this.style.borderColor='var(--border-strong)'; this.style.background='var(--surface)'"
@@ -420,7 +420,9 @@ const breadcrumbJsonLd = {
     font-family: 'Geist Variable', sans-serif;
     font-size: 13px;
     text-decoration: none;
-    transition: all 150ms ease;
+    transition:
+      color 150ms ease,
+      border-color 150ms ease;
   }
   .share-btn:hover {
     color: var(--text);
@@ -571,7 +573,7 @@ const breadcrumbJsonLd = {
       var scrollTop = window.scrollY || document.documentElement.scrollTop;
       var docH = document.documentElement.scrollHeight - window.innerHeight;
       var pct = Math.max(0, Math.min(1, scrollTop / Math.max(1, docH)));
-      if (progress) progress.style.width = (pct * 100).toFixed(2) + '%';
+      if (progress) progress.style.transform = 'scaleX(' + pct.toFixed(4) + ')';
 
       var offset = 120;
       var ids = [].slice

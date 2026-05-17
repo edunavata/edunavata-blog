@@ -102,9 +102,13 @@ export default defineConfig({
     '/': '/es/',
   },
 
+  build: {
+    inlineStylesheets: 'always',
+  },
+
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: 'viewport',
+    defaultStrategy: 'hover',
   },
 
   env: {

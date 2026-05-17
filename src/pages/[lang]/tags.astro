@@ -203,7 +203,7 @@ const collectionPageJsonLd = {
                   </span>
                   <span
                     class="term-arrow"
-                    style="color:var(--accent); opacity:0; transform:translateX(-4px); transition:all 200ms ease;"
+                    style="color:var(--accent); opacity:0; transform:translateX(-4px); transition:opacity 200ms ease, transform 200ms ease;"
                   >
                     →
                   </span>
@@ -266,7 +266,9 @@ const collectionPageJsonLd = {
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     cursor: pointer;
-    transition: all 150ms ease;
+    transition:
+      color 150ms ease,
+      border-bottom-color 150ms ease;
     text-decoration: none;
     display: inline-flex;
     align-items: baseline;
@@ -292,7 +294,9 @@ const collectionPageJsonLd = {
     background: transparent;
     border-radius: 5px;
     cursor: pointer;
-    transition: all 150ms ease;
+    transition:
+      color 150ms ease,
+      background-color 150ms ease;
     display: inline-flex;
     align-items: center;
     gap: 6px;
