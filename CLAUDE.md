@@ -19,10 +19,10 @@ Objetivo: marca personal y documentación técnica de profundidad.
 ## Comandos
 
 ```bash
-npm run dev      # servidor local
-npm run build    # build de producción
-npm run preview  # preview local
-npm run lint     # linting
+pnpm run dev      # servidor local
+pnpm run build    # build de producción
+pnpm run preview  # preview local
+pnpm run lint     # linting
 ```
 
 ---
@@ -59,6 +59,10 @@ npm run lint     # linting
 ---
 
 ## Herramientas y Flujo de Trabajo
+
+### Gestor de paquetes
+
+- **Usa siempre `pnpm`** para instalar dependencias, ejecutar scripts y gestionar el lockfile. Usa `npm` solo si es estrictamente necesario y deja explícita la razón.
 
 ### Git y trabajo en paralelo
 
