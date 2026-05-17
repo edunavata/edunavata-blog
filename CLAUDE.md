@@ -60,6 +60,13 @@ npm run lint     # linting
 
 ## Herramientas y Flujo de Trabajo
 
+### Git y trabajo en paralelo
+
+- **Empieza siempre en una rama propia** antes de editar (`feature/...`, `fix/...`, `chore/...`). Si ya estás en una rama de tarea, confirma que es la correcta.
+- **Asume agentes en paralelo:** revisa `git status` antes de tocar archivos, no sobrescribas cambios ajenos y coordina si el mismo archivo ya tiene trabajo no relacionado.
+- **Cambios pequeños y atómicos:** separa documentación, refactors y cambios de comportamiento. Haz commits descriptivos cuando el usuario lo pida o la tarea lo requiera.
+- **Antes de cerrar:** muestra el estado de Git y resume archivos tocados, validaciones ejecutadas y riesgos pendientes.
+
 ### Antes de cambios en el codebase
 
 1. Si hay cambios recientes significativos, ejecuta `index_codebase` (MCP `codebase-memory-mcp`).
