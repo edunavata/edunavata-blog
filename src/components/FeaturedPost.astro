@@ -55,12 +55,14 @@ const formattedDate = new Date(date).toLocaleDateString('es-ES', {
   </div>
   <div>
     <div class="featured-meta">
-      <span class="pill">{tag}</span>
+      <div class="featured-meta-row">
+        <span class="pill">{tag}</span>
+        <span class="dot"></span>
+        <span>{formattedDate}</span>
+        <span class="dot"></span>
+        {readingTime && <span>{readingTime} min de lectura</span>}
+      </div>
       {aiGenerated && <AiBadge model={aiModel} lang={lang} />}
-      <span class="dot"></span>
-      <span>{formattedDate}</span>
-      <span class="dot"></span>
-      {readingTime && <span>{readingTime} min de lectura</span>}
     </div>
     <h2>{title}</h2>
     {description && <p>{description}</p>}
