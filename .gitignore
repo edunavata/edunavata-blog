@@ -25,4 +25,4 @@ pnpm-debug.log*
 
 .claude/
 .agents/
-.tasks/
+.tasks/.worktrees/
