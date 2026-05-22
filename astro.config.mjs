@@ -158,12 +158,6 @@ export default defineConfig({
   // Tailwind v4 se inyecta a través de Vite
   vite: {
     plugins: [tailwindcss()],
-    build: {
-      rollupOptions: {
-        // pagefind-ui.js is emitted by the pagefind CLI after astro build; not bundled
-        external: [/^\/pagefind\//],
-      },
-    },
   },
 
   integrations: [

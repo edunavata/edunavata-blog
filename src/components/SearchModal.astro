@@ -49,27 +49,30 @@ const t = useTranslations(lang);
       document.head.appendChild(link);
     }
 
-    try {
-      // @ts-expect-error — pagefind-ui.js is emitted by pagefind CLI after astro build, not a static module
-      const { PagefindUI } = await import(/* @vite-ignore */ '/pagefind/pagefind-ui.js');
-      const modal = document.getElementById('search-modal') as HTMLDialogElement | null;
-      const placeholder = modal?.dataset.placeholder ?? 'Search…';
-      const lang = document.documentElement.lang || 'es';
-
-      new PagefindUI({
-        element: '#pagefind-ui',
-        bundlePath: '/pagefind/',
-        showImages: false,
-        language: lang,
-        placeholder,
+    // pagefind-ui.js is an IIFE that sets window.PagefindUI — must load via <script>, not import()
+    if (!window.PagefindUI) {
+      await new Promise<void>((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = '/pagefind/pagefind-ui.js';
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('pagefind-ui.js not found'));
+        document.head.appendChild(script);
       });
-    } catch {
-      const container = document.getElementById('pagefind-ui');
-      if (container) {
-        container.innerHTML =
-          '<p style="padding:16px;color:var(--text-2);font-size:14px">Search index not available. Run <code>pnpm build</code> first.</p>';
-      }
     }
+
+    if (!window.PagefindUI) return;
+
+    const modal = document.getElementById('search-modal') as HTMLDialogElement | null;
+    const placeholder = modal?.dataset.placeholder ?? 'Search…';
+    const lang = document.documentElement.lang || 'es';
+
+    new window.PagefindUI({
+      element: '#pagefind-ui',
+      bundlePath: '/pagefind/',
+      showImages: false,
+      language: lang,
+      placeholder,
+    });
   }
 
   async function openSearch() {
