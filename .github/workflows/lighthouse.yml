@@ -1,0 +1,27 @@
+name: Lighthouse
+
+on:
+  deployment_status:
+
+jobs:
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: |
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment.environment != 'production'
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.deployment.sha }}
+
+      - uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: ${{ github.event.deployment_status.target_url }}
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
