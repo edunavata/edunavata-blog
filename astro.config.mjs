@@ -116,7 +116,7 @@ export default defineConfig({
       provider: fontProviders.fontsource(),
       weights: ['100 900'],
       styles: ['normal'],
-      display: 'optional',
+      display: 'swap',
       fallbacks: ['system-ui', 'sans-serif'],
     },
     {
@@ -125,7 +125,7 @@ export default defineConfig({
       provider: fontProviders.fontsource(),
       weights: ['200 900'],
       styles: ['normal', 'italic'],
-      display: 'optional',
+      display: 'swap',
       fallbacks: ['Georgia', 'serif'],
     },
     {
@@ -134,7 +134,7 @@ export default defineConfig({
       provider: fontProviders.fontsource(),
       weights: [400, 500, 600],
       styles: ['normal'],
-      display: 'optional',
+      display: 'swap',
       fallbacks: ['ui-monospace', 'monospace'],
     },
   ],
