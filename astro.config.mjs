@@ -1,4 +1,4 @@
-import { defineConfig, envField } from 'astro/config';
+import { defineConfig, envField, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import expressiveCode from 'astro-expressive-code';
@@ -105,6 +105,39 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'always',
   },
+
+  // Fuentes auto-hospedadas por Astro con métricas de fallback optimizadas.
+  // `display: 'optional'` elimina el FOUT por completo: si la fuente no llega
+  // en ~100ms, el navegador se queda con el fallback toda la sesión (sin swap).
+  fonts: [
+    {
+      name: 'Geist',
+      cssVariable: '--font-geist',
+      provider: fontProviders.fontsource(),
+      weights: ['100 900'],
+      styles: ['normal'],
+      display: 'optional',
+      fallbacks: ['system-ui', 'sans-serif'],
+    },
+    {
+      name: 'Source Serif 4',
+      cssVariable: '--font-serif',
+      provider: fontProviders.fontsource(),
+      weights: ['200 900'],
+      styles: ['normal', 'italic'],
+      display: 'optional',
+      fallbacks: ['Georgia', 'serif'],
+    },
+    {
+      name: 'JetBrains Mono',
+      cssVariable: '--font-mono',
+      provider: fontProviders.fontsource(),
+      weights: [400, 500, 600],
+      styles: ['normal'],
+      display: 'optional',
+      fallbacks: ['ui-monospace', 'monospace'],
+    },
+  ],
 
   prefetch: {
     prefetchAll: true,
