@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import AiBadge from './AiBadge.astro';
 
 interface Props {
   title: string;
@@ -11,9 +12,24 @@ interface Props {
   readingTime?: number;
   coverImage?: ImageMetadata;
   coverAlt?: string;
+  aiGenerated?: boolean;
+  aiModel?: string;
+  lang?: 'es' | 'en';
 }
 
-const { title, href, date, tag, description, readingTime, coverImage, coverAlt } = Astro.props;
+const {
+  title,
+  href,
+  date,
+  tag,
+  description,
+  readingTime,
+  coverImage,
+  coverAlt,
+  aiGenerated,
+  aiModel,
+  lang = 'es',
+} = Astro.props;
 const formattedDate = new Date(date).toLocaleDateString('es-ES', {
   day: 'numeric',
   month: 'long',
@@ -39,11 +55,14 @@ const formattedDate = new Date(date).toLocaleDateString('es-ES', {
   </div>
   <div>
     <div class="featured-meta">
-      <span class="pill">{tag}</span>
-      <span class="dot"></span>
-      <span>{formattedDate}</span>
-      <span class="dot"></span>
-      {readingTime && <span>{readingTime} min de lectura</span>}
+      <div class="featured-meta-row">
+        <span class="pill">{tag}</span>
+        <span class="dot"></span>
+        <span>{formattedDate}</span>
+        <span class="dot"></span>
+        {readingTime && <span>{readingTime} min de lectura</span>}
+      </div>
+      {aiGenerated && <AiBadge model={aiModel} lang={lang} />}
     </div>
     <h2>{title}</h2>
     {description && <p>{description}</p>}

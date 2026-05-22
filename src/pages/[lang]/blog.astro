@@ -147,6 +147,9 @@ const collectionPageJsonLd = {
             description={post.data.description}
             readingTime={getReadingTime(post.body ?? '')}
             variant="row"
+            lang={lang}
+            aiGenerated={post.data.aiGenerated}
+            aiModel={post.data.aiModel}
           />
         ))
       }

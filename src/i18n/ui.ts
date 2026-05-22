@@ -59,6 +59,11 @@ export const ui = {
     'footer.github': 'GitHub',
     'footer.email': 'Email',
     'a11y.skipToMain': 'Saltar al contenido principal',
+    'ai.badge': 'Generado con IA',
+    'ai.generatedWith': 'Generado con',
+    'ai.pageTitle': 'Artículos generados con IA',
+    'ai.pageDescription':
+      'Artículos de este blog generados íntegramente con inteligencia artificial.',
   },
   en: {
     'nav.home': 'Home',
@@ -113,5 +118,9 @@ export const ui = {
     'footer.github': 'GitHub',
     'footer.email': 'Email',
     'a11y.skipToMain': 'Skip to main content',
+    'ai.badge': 'AI Generated',
+    'ai.generatedWith': 'Generated with',
+    'ai.pageTitle': 'AI Generated Articles',
+    'ai.pageDescription': 'Articles on this blog generated entirely with artificial intelligence.',
   },
 } as const;
