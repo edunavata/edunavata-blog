@@ -2,6 +2,7 @@
 import '@/styles/global.css';
 import serifNormalUrl from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-normal.woff2?url';
 import geistNormalUrl from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import jetbrainsMonoUrl from '@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2?url';
 import { ClientRouter } from 'astro:transitions';
 import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
@@ -128,8 +129,9 @@ function normalizeCanonicalPath(pathname: string) {
     <meta name="theme-color" content="#fafaf8" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preload" href={serifNormalUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={geistNormalUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={jetbrainsMonoUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={serifNormalUrl} as="font" type="font/woff2" crossorigin />
     <meta name="generator" content={Astro.generator} />
 
     {noindex && <meta name="robots" content="noindex" />}
