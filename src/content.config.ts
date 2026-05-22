@@ -24,6 +24,8 @@ const posts = defineCollection({
       lang: z.enum(['es', 'en']).default('es'),
       author: z.string().default('Edu González'),
       updatedDate: z.coerce.date().optional(),
+      aiGenerated: z.boolean().default(false),
+      aiModel: z.string().optional(),
     }),
 });
 

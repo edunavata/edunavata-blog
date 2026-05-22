@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import TagPill from '@/components/TagPill.astro';
+import AiBadge from '@/components/AiBadge.astro';
 import { getCollection, render } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime, formatDate } from '@/i18n/utils';
 import { ui } from '@/i18n/ui';
@@ -227,6 +228,7 @@ const breadcrumbJsonLd = {
             </>
           )
         }
+        {post.data.aiGenerated && <AiBadge model={post.data.aiModel} lang={lang} />}
       </div>
 
       <!-- Cover -->
