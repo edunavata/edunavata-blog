@@ -663,6 +663,9 @@ a {
   background: var(--surface-2);
   font-weight: 500;
 }
+.nav-links .lang-selector {
+  display: none;
+}
 
 /* ───────── Mobile nav ───────── */
 .mobile-toggle {
@@ -690,6 +693,9 @@ a {
   }
   .nav-right .lang-selector {
     display: none;
+  }
+  .nav-links.open .lang-selector {
+    display: flex;
   }
   .mobile-toggle {
     display: grid;
