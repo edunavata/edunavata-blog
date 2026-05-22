@@ -1,0 +1,120 @@
+---
+import type { ui } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+
+interface Props {
+  lang: keyof typeof ui;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<dialog
+  id="search-modal"
+  class="search-modal"
+  aria-label={t('blog.search') as string}
+  data-placeholder={t('search.placeholder') as string}
+>
+  <div class="search-modal-inner">
+    <button
+      class="icon-btn search-close"
+      id="search-close"
+      aria-label={t('search.close') as string}
+    >
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M18 6 6 18M6 6l12 12"></path>
+      </svg>
+    </button>
+    <div id="pagefind-ui"></div>
+  </div>
+</dialog>
+
+<script>
+  async function initPagefind() {
+    const container = document.getElementById('pagefind-ui');
+    if (!container || container.children.length > 0) return;
+
+    if (!document.querySelector('link[href*="pagefind-ui.css"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/pagefind/pagefind-ui.css';
+      document.head.appendChild(link);
+    }
+
+    try {
+      // @ts-expect-error — pagefind-ui.js is emitted by pagefind CLI after astro build, not a static module
+      const { PagefindUI } = await import(/* @vite-ignore */ '/pagefind/pagefind-ui.js');
+      const modal = document.getElementById('search-modal') as HTMLDialogElement | null;
+      const placeholder = modal?.dataset.placeholder ?? 'Search…';
+      const lang = document.documentElement.lang || 'es';
+
+      new PagefindUI({
+        element: '#pagefind-ui',
+        bundlePath: '/pagefind/',
+        showImages: false,
+        language: lang,
+        placeholder,
+      });
+    } catch {
+      const container = document.getElementById('pagefind-ui');
+      if (container) {
+        container.innerHTML =
+          '<p style="padding:16px;color:var(--text-2);font-size:14px">Search index not available. Run <code>pnpm build</code> first.</p>';
+      }
+    }
+  }
+
+  async function openSearch() {
+    const modal = document.getElementById('search-modal') as HTMLDialogElement | null;
+    if (!modal) return;
+    await initPagefind();
+    modal.showModal();
+    modal.querySelector<HTMLInputElement>('input')?.focus();
+  }
+
+  function setupSearch() {
+    const modal = document.getElementById('search-modal') as HTMLDialogElement | null;
+    const trigger = document.getElementById('search-trigger');
+    const closeBtn = document.getElementById('search-close');
+    if (!modal || !trigger || !closeBtn) return;
+
+    if (window.__searchController) window.__searchController.abort();
+    window.__searchController = new AbortController();
+    const { signal } = window.__searchController;
+
+    trigger.addEventListener('click', openSearch, { signal });
+
+    closeBtn.addEventListener('click', () => modal.close(), { signal });
+
+    modal.addEventListener(
+      'click',
+      (e) => {
+        if (e.target === modal) modal.close();
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'keydown',
+      async (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          const tag = (document.activeElement as HTMLElement)?.tagName;
+          if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+          e.preventDefault();
+          await openSearch();
+        }
+      },
+      { signal }
+    );
+  }
+
+  document.addEventListener('astro:page-load', setupSearch);
+</script>

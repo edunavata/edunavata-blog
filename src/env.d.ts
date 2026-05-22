@@ -6,4 +6,5 @@ interface Window {
   __themeSwapListenerAdded?: boolean;
   __tagsKeydown?: boolean;
   __postScrollHandler?: EventListener;
+  __searchController?: AbortController;
 }
