@@ -1056,3 +1056,108 @@ a {
     font-size: 17px;
   }
 }
+
+/* ───────── Search modal ───────── */
+.search-modal {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  top: 10vh;
+  width: min(640px, calc(100vw - 32px));
+  max-height: 80vh;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 0;
+  overflow: hidden;
+  box-shadow:
+    0 8px 32px oklch(0 0 0 / 0.12),
+    0 2px 8px oklch(0 0 0 / 0.08);
+}
+.search-modal[open] {
+  display: flex;
+  flex-direction: column;
+}
+.search-modal::backdrop {
+  background: oklch(0 0 0 / 0.45);
+  backdrop-filter: blur(2px);
+}
+@starting-style {
+  .search-modal[open] {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  .search-modal[open]::backdrop {
+    opacity: 0;
+  }
+}
+.search-modal {
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    display 150ms ease allow-discrete;
+}
+.search-modal::backdrop {
+  transition: opacity 150ms ease;
+}
+.search-modal-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px;
+}
+.search-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+}
+
+/* Pagefind UI theme override */
+#pagefind-ui {
+  --pagefind-ui-scale: 0.9;
+  --pagefind-ui-primary: var(--accent);
+  --pagefind-ui-text: var(--text);
+  --pagefind-ui-background: var(--surface);
+  --pagefind-ui-border: var(--border);
+  --pagefind-ui-tag: var(--surface-2);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 8px;
+  --pagefind-ui-font: 'Geist Variable', system-ui, sans-serif;
+}
+/* Remove default Pagefind wrapper padding that conflicts with our layout */
+#pagefind-ui .pagefind-ui__form {
+  margin-bottom: 0;
+}
+#pagefind-ui .pagefind-ui__search-input {
+  border-radius: 8px;
+  padding-right: 48px;
+}
+#pagefind-ui .pagefind-ui__results-area {
+  margin-top: 16px;
+}
+#pagefind-ui .pagefind-ui__result {
+  border-top: 1px solid var(--border);
+  padding: 14px 0;
+}
+#pagefind-ui .pagefind-ui__result-title a {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+}
+#pagefind-ui .pagefind-ui__result-excerpt {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .search-modal {
+    top: 0;
+    border-radius: 0 0 12px 12px;
+    width: 100%;
+  }
+}
