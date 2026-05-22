@@ -1,25 +1,35 @@
 name: Lighthouse
 
 on:
-  deployment_status:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lighthouse:
     name: Lighthouse
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    if: |
-      github.event.deployment_status.state == 'success' &&
-      github.event.deployment.environment != 'production'
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.deployment.sha }}
 
-      - uses: treosh/lighthouse-ci-action@v12
+      - name: Wait for Cloudflare preview
+        id: cf
+        uses: zentered/cloudflare-preview-url@v1
         with:
-          urls: ${{ github.event.deployment_status.target_url }}
+          cloudflare_project_id: ${{ vars.CF_PAGES_PROJECT }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wait_until_ready: true
+
+      - name: Audit with Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: ${{ steps.cf.outputs.preview_url }}
           configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
