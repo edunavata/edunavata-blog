@@ -21,17 +21,43 @@ export const getStaticPaths: GetStaticPaths = async () => {
     });
   });
 
+  // Build a lookup of which languages have each tag, so hreflang only references
+  // alternate URLs that actually exist (a tag may only appear in one language).
+  const langsPerTag = new Map<string, Set<string>>();
+  tagsByLang.forEach((tags, lang) => {
+    tags.forEach((_, tag) => {
+      if (!langsPerTag.has(tag)) langsPerTag.set(tag, new Set());
+      langsPerTag.get(tag)!.add(lang);
+    });
+  });
+
   const paths: any[] = [];
   tagsByLang.forEach((tags, lang) => {
     tags.forEach((posts, tag) => {
-      paths.push({ params: { lang, tag }, props: { tag, posts } });
+      paths.push({
+        params: { lang, tag },
+        props: { tag, posts, tagLangs: [...langsPerTag.get(tag)!] },
+      });
     });
   });
   return paths;
 };
 
-const { tag, posts: tagPosts } = Astro.props as { tag: string; posts: CollectionEntry<'posts'>[] };
+const {
+  tag,
+  posts: tagPosts,
+  tagLangs,
+} = Astro.props as {
+  tag: string;
+  posts: CollectionEntry<'posts'>[];
+  tagLangs: string[];
+};
 const lang = Astro.params.lang as 'es' | 'en';
+
+// Only emit hreflang for languages where this tag actually has posts.
+const tagAltUrls = Object.fromEntries(
+  (['es', 'en'] as const).filter((l) => tagLangs.includes(l)).map((l) => [l, `/${l}/tags/${tag}/`])
+) as Partial<Record<'es' | 'en', string>>;
 const sorted = tagPosts.sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
 
 const tagDescription =
@@ -60,7 +86,14 @@ const collectionPageJsonLd = {
 };
 ---
 
-<BaseLayout title={`#${tag}`} description={tagDescription} lang={lang} noindex={sorted.length < 5}>
+<BaseLayout
+  title={`#${tag}`}
+  description={tagDescription}
+  lang={lang}
+  noindex={sorted.length < 5}
+  altUrls={tagAltUrls}
+  manualHreflang={true}
+>
   <script
     is:inline
     type="application/ld+json"
