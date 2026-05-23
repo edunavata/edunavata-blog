@@ -24,8 +24,8 @@ const tagList = [...allTags.entries()].sort((a, b) => b[1] - a[1]);
 const blogTitle = t('nav.blog');
 const blogDescription =
   lang === 'es'
-    ? 'Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.'
-    : 'Technical notes about the tools I use daily. No fixed schedule — I write when something surprises me enough to document it.';
+    ? 'Decisiones de arquitectura, trade-offs y lo que producción no perdona. Sin calendario fijo.'
+    : "Architecture decisions, trade-offs, and what production doesn't forgive. No fixed schedule.";
 const blogUrl = new URL(`/${lang}/blog/`, SITE.url).toString();
 
 const collectionPageJsonLd = {
@@ -74,8 +74,8 @@ const collectionPageJsonLd = {
       >
         {
           lang === 'es'
-            ? 'Notas técnicas sobre las herramientas que uso a diario. Sin calendario fijo — escribo cuando algo me sorprende lo suficiente como para querer documentarlo.'
-            : 'Technical notes about the tools I use daily. No fixed schedule — I write when something surprises me enough to document it.'
+            ? 'Decisiones de arquitectura, trade-offs y lo que producción no perdona. Sin calendario fijo.'
+            : "Architecture decisions, trade-offs, and what production doesn't forgive. No fixed schedule."
         }
       </p>
       <div
