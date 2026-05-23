@@ -566,7 +566,19 @@ const breadcrumbJsonLd = {
       margin-top: 0;
       padding-top: 0;
       border-top: 0;
+      scrollbar-width: thin;
+      scrollbar-color: var(--bar) transparent;
     }
+  }
+  .post-aside::-webkit-scrollbar {
+    width: 4px;
+  }
+  .post-aside::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .post-aside::-webkit-scrollbar-thumb {
+    background: var(--bar);
+    border-radius: 2px;
   }
 </style>
 
