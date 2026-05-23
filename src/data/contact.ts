@@ -19,8 +19,8 @@ export const contact = [
   },
   {
     label: 'RSS',
-    value: '/feed.xml',
-    href: '/feed.xml',
+    value: '/es/rss.xml',
+    href: '/es/rss.xml',
     icon: 'rss',
   },
   {

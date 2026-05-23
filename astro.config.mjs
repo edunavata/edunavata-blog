@@ -100,6 +100,8 @@ export default defineConfig({
 
   redirects: {
     '/': '/es/',
+    '/feed.xml': '/es/rss.xml',
+    '/rss.xml': '/es/rss.xml',
   },
 
   build: {
