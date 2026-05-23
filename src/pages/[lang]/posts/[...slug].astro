@@ -567,18 +567,28 @@ const breadcrumbJsonLd = {
       padding-top: 0;
       border-top: 0;
       scrollbar-width: thin;
-      scrollbar-color: var(--bar) transparent;
+      scrollbar-color: transparent transparent;
+      transition: scrollbar-color 0.3s ease;
+    }
+    .post-aside:hover {
+      scrollbar-color: var(--border-strong) transparent;
     }
   }
   .post-aside::-webkit-scrollbar {
-    width: 4px;
+    width: 3px;
   }
   .post-aside::-webkit-scrollbar-track {
     background: transparent;
   }
   .post-aside::-webkit-scrollbar-thumb {
-    background: var(--bar);
-    border-radius: 2px;
+    background: transparent;
+    border-radius: 3px;
+  }
+  .post-aside:hover::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+  }
+  .post-aside::-webkit-scrollbar-thumb:hover {
+    background: var(--text-3);
   }
 </style>
 
