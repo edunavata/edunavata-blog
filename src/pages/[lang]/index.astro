@@ -37,7 +37,7 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
     <section class="hero" style="border-bottom:1px solid var(--border);">
       <div
         class="hero-eyebrow"
-        style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); letter-spacing:0.02em; margin-bottom:24px; display:flex; align-items:center; gap:10px;"
+        style="font-family:var(--font-mono); font-size:13px; color:var(--text-3); letter-spacing:0.02em; margin-bottom:24px; display:flex; align-items:center; gap:10px;"
       >
         <span
           class="blink"
@@ -46,14 +46,14 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
         <span>{data.heroEyebrow}</span>
       </div>
       <h1
-        style="font-family:'Source Serif 4 Variable',Georgia,serif; font-weight:600; font-size:clamp(40px,5vw,64px); line-height:1.1; letter-spacing:-0.02em; color:var(--text); margin:0 0 22px; max-width:18ch; text-wrap:balance;"
+        style="font-family:var(--font-serif); font-weight:600; font-size:clamp(40px,5vw,64px); line-height:1.1; letter-spacing:-0.02em; color:var(--text); margin:0 0 22px; max-width:18ch; text-wrap:balance;"
       >
         {data.heroTitle}
         <em style="font-style:italic; color:var(--text-2); font-weight:500;">{data.heroNoise}</em>
       </h1>
       <p
         class="lead"
-        style="font-family:'Source Serif 4 Variable',Georgia,serif; font-size:19px; line-height:1.6; color:var(--text-2); max-width:56ch; margin:0 0 36px;"
+        style="font-family:var(--font-serif); font-size:19px; line-height:1.6; color:var(--text-2); max-width:56ch; margin:0 0 36px;"
       >
         {data.heroLead}
       </p>
@@ -83,7 +83,7 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
           <div class="section-head">
             <span
               class="label"
-              style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-3);"
+              style="font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-3);"
             >
               {t('blog.featured')}
             </span>
@@ -114,7 +114,7 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
             <a
               href={`/${lang}/blog/`}
               class="more"
-              style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-2); text-decoration:none; display:inline-flex; align-items:center; gap:6px;"
+              style="font-family:var(--font-mono); font-size:13px; color:var(--text-2); text-decoration:none; display:inline-flex; align-items:center; gap:6px;"
             >
               {t('blog.viewAll')}
               <svg
@@ -159,7 +159,7 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
             <a
               href={`/${lang}/tags/`}
               class="more"
-              style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-2); text-decoration:none; display:inline-flex; align-items:center; gap:6px;"
+              style="font-family:var(--font-mono); font-size:13px; color:var(--text-2); text-decoration:none; display:inline-flex; align-items:center; gap:6px;"
             >
               {t('blog.allCategories')}
               <svg
@@ -189,7 +189,7 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
       <div class="section-head">
         <span
           class="label"
-          style="font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-3);"
+          style="font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-3);"
           >{t('nav.about')}</span
         >
       </div>
@@ -203,11 +203,12 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
             alt="Edu González"
             width={64}
             height={64}
+            loading="eager"
             style="width:100%; height:100%; object-fit:cover;"
           />
         </div>
         <p
-          style="font-family:'Source Serif 4 Variable',serif; font-size:17px; line-height:1.65; color:var(--text-2); margin:0;"
+          style="font-family:var(--font-serif); font-size:17px; line-height:1.65; color:var(--text-2); margin:0;"
         >
           {
             data.aboutPreview.split(/(\[.*?\]\(.*?\))/g).map((part) => {

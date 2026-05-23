@@ -19,15 +19,6 @@ importers:
       '@astrojs/sitemap':
         specifier: 3.7.2
         version: 3.7.2
-      '@fontsource-variable/geist':
-        specifier: 5.2.8
-        version: 5.2.8
-      '@fontsource-variable/source-serif-4':
-        specifier: 5.2.9
-        version: 5.2.9
-      '@fontsource/jetbrains-mono':
-        specifier: 5.2.8
-        version: 5.2.8
       '@tailwindcss/vite':
         specifier: 4.2.2
         version: 4.2.2(vite@7.3.3(@types/node@24.12.3)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.4))
@@ -624,24 +615,6 @@ packages:
     resolution:
       {
         integrity: sha512-l59lUx8fq1v5g6SpmbDjiU0+7IdfbiWnAyRmtTVSpfhyq+nZMN4UcmYyu2b9Mynhzt7Gr+O+cXyEPDNb2AVWVQ==,
-      }
-
-  '@fontsource-variable/geist@5.2.8':
-    resolution:
-      {
-        integrity: sha512-cJ6m9e+8MQ5dCYJsLylfZrgBh6KkG4bOLckB35Tr9J/EqdkEM6QllH5PxqP1dhTvFup+HtMRPuz9xOjxXJggxw==,
-      }
-
-  '@fontsource-variable/source-serif-4@5.2.9':
-    resolution:
-      {
-        integrity: sha512-PPcxjLFk/fS0WHg79pDM2YNvz61kC+oYZ5cWZZyCS0DHpJncmuYOuiZAsvj4tDxlWPBEvxxcRLQQNmSaRbPkqw==,
-      }
-
-  '@fontsource/jetbrains-mono@5.2.8':
-    resolution:
-      {
-        integrity: sha512-6w8/SG4kqvIMu7xd7wt6x3idn1Qux3p9N62s6G3rfldOUYHpWcc2FKrqf+Vo44jRvqWj2oAtTHrZXEP23oSKwQ==,
       }
 
   '@humanfs/core@0.19.2':
@@ -6394,12 +6367,6 @@ snapshots:
   '@expressive-code/plugin-text-markers@0.42.0':
     dependencies:
       '@expressive-code/core': 0.42.0
-
-  '@fontsource-variable/geist@5.2.8': {}
-
-  '@fontsource-variable/source-serif-4@5.2.9': {}
-
-  '@fontsource/jetbrains-mono@5.2.8': {}
 
   '@humanfs/core@0.19.2':
     dependencies:

@@ -1,4 +1,4 @@
-import { defineConfig, envField } from 'astro/config';
+import { defineConfig, envField, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import expressiveCode from 'astro-expressive-code';
@@ -103,13 +103,43 @@ export default defineConfig({
   },
 
   build: {
-    inlineStylesheets: 'always',
+    inlineStylesheets: 'auto',
   },
 
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'hover',
   },
+
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Geist',
+      cssVariable: '--font-sans',
+      weights: ['400 800'],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['system-ui', '-apple-system', 'sans-serif'],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Source Serif 4',
+      cssVariable: '--font-serif',
+      weights: ['400 600'],
+      styles: ['normal', 'italic'],
+      subsets: ['latin'],
+      fallbacks: ['Georgia', 'serif'],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: 'JetBrains Mono',
+      cssVariable: '--font-mono',
+      weights: [400, 500, 600],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['monospace'],
+    },
+  ],
 
   env: {
     schema: {
