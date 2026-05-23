@@ -6,8 +6,9 @@ slug: "hola-mundo"
 description: "El clásico primer artículo donde explico por qué empiezo este blog."
 summary: "El clásico primer artículo donde explico por qué empiezo este blog."
 category: carrera
-tags: [aprendizaje, herramientas, tutorial]
+tags: [learning, tools, tutorial]
 lang: "es"
+translationKey: "hola-mundo"
 ---
 
 ## ¿Por qué un blog?

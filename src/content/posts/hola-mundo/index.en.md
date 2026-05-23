@@ -6,8 +6,9 @@ slug: "hello-world"
 description: "The classic first article where I explain why I'm starting this blog."
 summary: "The classic first article where I explain why I'm starting this blog."
 category: carrera
-tags: [aprendizaje, herramientas, tutorial]
+tags: [learning, tools, tutorial]
 lang: "en"
+translationKey: "hola-mundo"
 ---
 
 ## Why a blog?

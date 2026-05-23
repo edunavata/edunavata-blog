@@ -5,8 +5,9 @@ draft: false
 slug: "referencia-markdown"
 description: "Artículo de prueba que ejercita todas las funcionalidades de Markdown: tipografía, listas, tablas, bloques de código, citas y más."
 category: carrera
-tags: [referencia, herramientas, tutorial]
+tags: [reference, tools, tutorial]
 lang: "es"
+translationKey: "markdown-test"
 author: "Edu González"
 ---
 
