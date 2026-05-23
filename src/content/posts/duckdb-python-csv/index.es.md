@@ -10,6 +10,9 @@ categories: ["data-engineering"]
 lang: "es"
 aiGenerated: true
 aiModel: "Claude Sonnet 4.6"
+cover:
+  image: "cover.png"
+  alt: "Cover image"
 ---
 
 Si trabajas con datos en Python, probablemente has vivido esta situación: tienes un CSV de 2 GB, intentas cargarlo con `pandas.read_csv()` y el proceso muere a los 30 segundos. O peor: lo carga, pero cualquier agregación tarda minutos porque estás operando en memoria con tipos de Python en lugar de vectores nativos.
