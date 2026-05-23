@@ -60,17 +60,17 @@ const collectionPageJsonLd = {
   <div style="max-width:720px; margin:0 auto; padding:64px 32px 96px;">
     <header style="margin-bottom:40px;">
       <div
-        style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;"
+        style="font-family:var(--font-mono); font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;"
       >
         / blog
       </div>
       <h1
-        style="font-family:'Source Serif 4 Variable',Georgia,serif; font-weight:600; font-size:clamp(36px,4vw,44px); line-height:1.15; letter-spacing:-0.015em; color:var(--text); margin:0 0 12px;"
+        style="font-family:var(--font-serif); font-weight:600; font-size:clamp(36px,4vw,44px); line-height:1.15; letter-spacing:-0.015em; color:var(--text); margin:0 0 12px;"
       >
         {t('nav.blog')}
       </h1>
       <p
-        style="font-family:'Source Serif 4 Variable',serif; font-size:17px; line-height:1.6; color:var(--text-2); margin:0; max-width:56ch;"
+        style="font-family:var(--font-serif); font-size:17px; line-height:1.6; color:var(--text-2); margin:0; max-width:56ch;"
       >
         {
           lang === 'es'
@@ -79,7 +79,7 @@ const collectionPageJsonLd = {
         }
       </p>
       <div
-        style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-3); margin-top:18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;"
+        style="font-family:var(--font-mono); font-size:13px; color:var(--text-3); margin-top:18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;"
       >
         <span><span id="count-display">{allPosts.length}</span> {t('blog.articles')}</span>
         <span
@@ -106,7 +106,7 @@ const collectionPageJsonLd = {
       style="position:relative; margin-bottom:56px; padding-bottom:18px; border-bottom:1px solid var(--border);"
     >
       <div
-        style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px; display:flex; align-items:center; gap:8px;"
+        style="font-family:var(--font-mono); font-size:11px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px; display:flex; align-items:center; gap:8px;"
       >
         <svg
           width="11"
@@ -158,7 +158,7 @@ const collectionPageJsonLd = {
     <div
       class="empty"
       id="empty"
-      style="padding:80px 0; text-align:center; color:var(--text-3); font-family:'JetBrains Mono',monospace; font-size:13px; display:none;"
+      style="padding:80px 0; text-align:center; color:var(--text-3); font-family:var(--font-mono); font-size:13px; display:none;"
     >
       {t('taxonomy.noArticles')}
     </div>
@@ -168,7 +168,7 @@ const collectionPageJsonLd = {
 <style>
   .chip {
     flex-shrink: 0;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 13px;
     color: var(--text-2);
     padding: 7px 14px;
