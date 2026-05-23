@@ -35,6 +35,8 @@ interface Props {
    * does not have a localized alternate.
    */
   noindex?: boolean;
+  /** Post category slug — activates per-category accent color when set. */
+  category?: string;
 }
 
 const {
@@ -47,6 +49,7 @@ const {
   altUrls,
   manualHreflang = false,
   noindex = false,
+  category,
 } = Astro.props;
 const lang = Astro.props.lang || 'es';
 const t = useTranslations(lang);
@@ -120,7 +123,7 @@ function normalizeCanonicalPath(pathname: string) {
 }
 ---
 
-<html lang={lang}>
+<html lang={lang} data-category={category || undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -198,6 +201,15 @@ function normalizeCanonicalPath(pathname: string) {
             e.newDocument.documentElement.setAttribute('data-theme', t);
           });
         }
+        if (!window.__directionListenerAdded) {
+          window.__directionListenerAdded = true;
+          document.addEventListener('astro:before-preparation', function (e) {
+            var fromDepth = e.from.pathname.split('/').filter(Boolean).length;
+            var toDepth = e.to.pathname.split('/').filter(Boolean).length;
+            var dir = e.navigationType === 'push' || toDepth >= fromDepth ? 'forward' : 'backward';
+            document.documentElement.dataset.direction = dir;
+          });
+        }
       })();
     </script>
   </head>
@@ -205,7 +217,7 @@ function normalizeCanonicalPath(pathname: string) {
   <body>
     <a class="skip-link" href="#main">{t('a11y.skipToMain')}</a>
     <Navbar lang={lang} currentPath={Astro.url.pathname} languageUrls={altUrls} />
-    <main id="main" tabindex="-1">
+    <main id="main" tabindex="-1" transition:name="main-content">
       <slot />
     </main>
     <Footer lang={lang} />
