@@ -1,8 +1,8 @@
 export const stack = [
-  { key: 'Editor', val: 'Neovim', detail: '+ LazyVim' },
-  { key: 'Shell', val: 'zsh', detail: '+ starship' },
-  { key: 'Terminal', val: 'Ghostty', detail: '+ tmux' },
-  { key: 'OS', val: 'Fedora Linux', detail: 'en casa' },
-  { key: 'Blog', val: 'Hugo + Hextra', detail: '' },
-  { key: 'Hosting', val: 'Cloudflare Pages', detail: 'gratis' },
+  { key: 'Editor', val: 'VS Code', detail: '+ Cursor + kate/nano' },
+  { key: 'Shell', val: 'zsh', detail: '+ OhMyZsh' },
+  { key: 'Terminal', val: 'Konsole', detail: '+ Yakuake' },
+  { key: 'OS', val: 'Fedora', detail: 'KDE' },
+  { key: 'Blog', val: 'Astro', detail: '+ Tailwind' },
+  { key: 'Hosting', val: 'Cloudflare Pages', detail: 'GitHub Actions' },
 ];
