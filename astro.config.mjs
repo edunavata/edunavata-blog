@@ -112,7 +112,8 @@ export default defineConfig({
     '/en/categories/cloud/': '/en/cloud/',
     '/en/categories/linux/': '/en/linux/',
     '/en/categories/llms/': '/en/llms/',
-    '/en/categories/carrera/': '/en/carrera/',
+    '/en/categories/carrera/': '/en/career/',
+    '/en/carrera/': '/en/career/',
   },
 
   build: {

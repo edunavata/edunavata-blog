@@ -3,7 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations } from '@/i18n/utils';
 import { SITE } from '@/config/site';
-import { getCategoryLabel, type Category } from '@/config/taxonomy';
+import { getCategoryLabel, getCategorySlug, type Category } from '@/config/taxonomy';
 
 export const getStaticPaths = () => [{ params: { lang: 'es' } }, { params: { lang: 'en' } }];
 
@@ -39,7 +39,7 @@ const collectionPageJsonLd = {
       '@type': 'ListItem',
       position: i + 1,
       name: getCategoryLabel(name as Category, lang),
-      url: new URL(`/${lang}/${name}/`, SITE.url).toString(),
+      url: new URL(`/${lang}/${getCategorySlug(name as Category, lang)}/`, SITE.url).toString(),
       description: `${count} ${count === 1 ? 'post' : 'posts'}`,
     })),
   },
@@ -85,7 +85,7 @@ const collectionPageJsonLd = {
       {
         catTerms.map(([name, count], i) => (
           <a
-            href={`/${lang}/${name}/`}
+            href={`/${lang}/${getCategorySlug(name as Category, lang)}/`}
             style="display:grid; grid-template-columns:32px minmax(140px,220px) 1fr 56px; align-items:center; gap:20px; padding:16px 0; border-bottom:1px solid var(--border); text-decoration:none; color:inherit; transition:color 150ms ease;"
             onmouseover="this.querySelector('.freq-name').style.color='var(--accent)'"
             onmouseout="this.querySelector('.freq-name').style.color='var(--text)'"

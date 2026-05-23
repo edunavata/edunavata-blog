@@ -17,6 +17,19 @@ export function getCategoryLabel(slug: Category, lang: 'es' | 'en'): string {
   return CATEGORY_LABELS[slug][lang];
 }
 
+// Maps canonical (ES) category slugs to their English URL slug, only when they differ.
+export const CATEGORY_EN_SLUGS: Partial<Record<Category, string>> = {
+  carrera: 'career',
+};
+
+// Returns the URL slug for a category in the given language.
+export function getCategorySlug(category: Category, lang: 'es' | 'en'): string {
+  if (lang === 'en' && CATEGORY_EN_SLUGS[category]) {
+    return CATEGORY_EN_SLUGS[category]!;
+  }
+  return category;
+}
+
 export const TAGS = [
   // Data Engineering
   'apache-spark',
