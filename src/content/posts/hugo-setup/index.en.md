@@ -8,6 +8,7 @@ summary: "Quick guide on how I set up Hugo with the Hextra theme and deployed to
 category: carrera
 tags: [tutorial, tools, performance]
 lang: "en"
+translationKey: "hugo-setup"
 ---
 
 ## The stack

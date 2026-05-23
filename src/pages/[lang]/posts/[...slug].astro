@@ -127,7 +127,7 @@ const breadcrumbJsonLd = {
             '@type': 'ListItem',
             position: 3,
             name: getCategoryLabel(primaryCategory as Category, lang),
-            item: new URL(`/${lang}/categories/${primaryCategory}/`, SITE.url).toString(),
+            item: new URL(`/${lang}/${primaryCategory}/`, SITE.url).toString(),
           },
         ]
       : []),

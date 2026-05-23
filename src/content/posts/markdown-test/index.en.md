@@ -7,6 +7,7 @@ description: "Test article exercising every Markdown feature: typography, lists,
 category: carrera
 tags: [reference, tools, tutorial]
 lang: "en"
+translationKey: "markdown-test"
 author: "Edu González"
 ---
 

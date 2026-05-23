@@ -8,6 +8,7 @@ summary: "The classic first article where I explain why I'm starting this blog."
 category: carrera
 tags: [learning, tools, tutorial]
 lang: "en"
+translationKey: "hola-mundo"
 ---
 
 ## Why a blog?
