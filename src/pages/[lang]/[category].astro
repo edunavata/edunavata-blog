@@ -4,7 +4,7 @@ import PostCard from '@/components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { getPostUrl, getReadingTime, useTranslations } from '@/i18n/utils';
 import { SITE } from '@/config/site';
-import { getCategoryLabel, CATEGORIES, type Category } from '@/config/taxonomy';
+import { getCategoryLabel, getCategorySlug, CATEGORIES, type Category } from '@/config/taxonomy';
 import type { GetStaticPaths } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 
@@ -26,29 +26,36 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const validCategories = new Set(CATEGORIES as unknown as string[]);
   const paths: any[] = [];
   catsByLang.forEach((cats, lang) => {
-    cats.forEach((posts, category) => {
-      if (validCategories.has(category)) {
-        paths.push({ params: { lang, category }, props: { category, posts } });
+    cats.forEach((posts, canonicalCategory) => {
+      if (validCategories.has(canonicalCategory)) {
+        const urlSlug = getCategorySlug(canonicalCategory as Category, lang as 'es' | 'en');
+        paths.push({ params: { lang, category: urlSlug }, props: { canonicalCategory, posts } });
       }
     });
   });
   return paths;
 };
 
-const { category, posts: catPosts } = Astro.props as {
-  category: string;
+const { canonicalCategory, posts: catPosts } = Astro.props as {
+  canonicalCategory: string;
   posts: CollectionEntry<'posts'>[];
 };
 const lang = Astro.params.lang as 'es' | 'en';
 const t = useTranslations(lang);
 const sorted = catPosts.sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
-const categoryLabel = getCategoryLabel(category as Category, lang);
+const categoryLabel = getCategoryLabel(canonicalCategory as Category, lang);
 
 const categoryDescription =
   lang === 'es'
     ? `${sorted.length} ${sorted.length === 1 ? 'artículo' : 'artículos'} en la categoría ${categoryLabel}.`
     : `${sorted.length} ${sorted.length === 1 ? 'article' : 'articles'} in the ${categoryLabel} category.`;
-const categoryUrl = new URL(`/${lang}/${category}/`, SITE.url).toString();
+const urlSlug = Astro.params.category;
+const categoryUrl = new URL(`/${lang}/${urlSlug}/`, SITE.url).toString();
+
+// Hreflang: always explicit to handle asymmetric slugs (e.g. /es/carrera/ ↔ /en/career/)
+const esSlug = getCategorySlug(canonicalCategory as Category, 'es');
+const enSlug = getCategorySlug(canonicalCategory as Category, 'en');
+const categoryAltUrls = { es: `/es/${esSlug}/`, en: `/en/${enSlug}/` };
 const collectionPageJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -70,7 +77,13 @@ const collectionPageJsonLd = {
 };
 ---
 
-<BaseLayout title={categoryLabel} description={categoryDescription} lang={lang}>
+<BaseLayout
+  title={categoryLabel}
+  description={categoryDescription}
+  lang={lang}
+  altUrls={categoryAltUrls}
+  manualHreflang={true}
+>
   <script
     is:inline
     type="application/ld+json"
