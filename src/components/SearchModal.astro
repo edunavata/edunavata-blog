@@ -17,23 +17,26 @@ const t = useTranslations(lang);
   data-placeholder={t('search.placeholder') as string}
 >
   <div class="search-modal-inner">
-    <button
-      class="icon-btn search-close"
-      id="search-close"
-      aria-label={t('search.close') as string}
-    >
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
+    <div class="search-modal-bar">
+      <div id="pagefind-ui"></div>
+      <button
+        type="button"
+        class="icon-btn search-close"
+        id="search-close"
+        aria-label={t('search.close') as string}
       >
-        <path d="M18 6 6 18M6 6l12 12"></path>
-      </svg>
-    </button>
-    <div id="pagefind-ui"></div>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M18 6 6 18M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
   </div>
 </dialog>
 
@@ -96,6 +99,8 @@ const t = useTranslations(lang);
     trigger.addEventListener('click', openSearch, { signal });
 
     closeBtn.addEventListener('click', () => modal.close(), { signal });
+
+    modal.addEventListener('close', () => trigger?.focus(), { signal });
 
     modal.addEventListener(
       'click',
