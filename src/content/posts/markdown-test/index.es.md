@@ -7,6 +7,7 @@ description: "Artículo de prueba que ejercita todas las funcionalidades de Mark
 category: carrera
 tags: [reference, tools, tutorial]
 lang: "es"
+translationKey: "markdown-test"
 author: "Edu González"
 ---
 

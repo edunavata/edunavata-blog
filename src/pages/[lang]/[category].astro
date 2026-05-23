@@ -4,7 +4,7 @@ import PostCard from '@/components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { getPostUrl, getReadingTime, useTranslations } from '@/i18n/utils';
 import { SITE } from '@/config/site';
-import { getCategoryLabel, type Category } from '@/config/taxonomy';
+import { getCategoryLabel, CATEGORIES, type Category } from '@/config/taxonomy';
 import type { GetStaticPaths } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 
@@ -21,10 +21,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
     langCats.get(cat)!.push(post);
   });
 
+  // Only generate paths for valid category slugs — prevents this dynamic route
+  // from swallowing unrelated [lang]/[something] requests.
+  const validCategories = new Set(CATEGORIES as unknown as string[]);
   const paths: any[] = [];
   catsByLang.forEach((cats, lang) => {
     cats.forEach((posts, category) => {
-      paths.push({ params: { lang, category }, props: { category, posts } });
+      if (validCategories.has(category)) {
+        paths.push({ params: { lang, category }, props: { category, posts } });
+      }
     });
   });
   return paths;
@@ -43,7 +48,7 @@ const categoryDescription =
   lang === 'es'
     ? `${sorted.length} ${sorted.length === 1 ? 'artículo' : 'artículos'} en la categoría ${categoryLabel}.`
     : `${sorted.length} ${sorted.length === 1 ? 'article' : 'articles'} in the ${categoryLabel} category.`;
-const categoryUrl = new URL(`/${lang}/categories/${category}/`, SITE.url).toString();
+const categoryUrl = new URL(`/${lang}/${category}/`, SITE.url).toString();
 const collectionPageJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',

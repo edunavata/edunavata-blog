@@ -102,6 +102,17 @@ export default defineConfig({
     '/': '/es/',
     '/feed.xml': '/es/rss.xml',
     '/rss.xml': '/es/rss.xml',
+    // Legacy category URLs → clean URLs (no /categories/ prefix)
+    '/es/categories/data-engineering/': '/es/data-engineering/',
+    '/es/categories/cloud/': '/es/cloud/',
+    '/es/categories/linux/': '/es/linux/',
+    '/es/categories/llms/': '/es/llms/',
+    '/es/categories/carrera/': '/es/carrera/',
+    '/en/categories/data-engineering/': '/en/data-engineering/',
+    '/en/categories/cloud/': '/en/cloud/',
+    '/en/categories/linux/': '/en/linux/',
+    '/en/categories/llms/': '/en/llms/',
+    '/en/categories/carrera/': '/en/carrera/',
   },
 
   build: {

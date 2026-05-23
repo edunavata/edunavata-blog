@@ -11,6 +11,7 @@ cover:
   image: "cover.png"
   alt: "Cover image"
 lang: "es"
+translationKey: "hugo-setup"
 ---
 
 ## El stack

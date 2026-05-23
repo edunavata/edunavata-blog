@@ -19,6 +19,7 @@ const posts = defineCollection({
       aiModel: z.string().optional(),
       cover: z.object({ image: image(), alt: z.string() }).optional(),
       lang: z.enum(['es', 'en']).default('es'),
+      translationKey: z.string().optional(),
       author: z.string().default('Edu González'),
       updatedDate: z.coerce.date().optional(),
     }),
