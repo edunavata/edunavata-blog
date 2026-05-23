@@ -74,6 +74,17 @@ pnpm run lint     # linting
   - Body: 2–3 bullets de qué y por qué + checklist de test plan. Sin texto de relleno.
 - **Antes de cerrar:** muestra `git status` y menciona cualquier trabajo ajeno detectado.
 
+### Taxonomía de posts — Gobernanza
+
+**Fuente única de verdad:** `src/config/taxonomy.ts`
+
+- Antes de asignar `category` o `tags` a un post, leer ese fichero. No inventar valores.
+- **Categorías:** `data-engineering` · `cloud` · `linux` · `llms` · `carrera` (exactamente 1 por post).
+- **Tags:** vocabulario ~50 términos — ver `TAGS` en `taxonomy.ts` (exactamente 3–5 por post; ninguno puede repetir la categoría).
+- **Origins:** `ai-generated` (opcional; añadir si el post fue redactado íntegramente por IA).
+- El build falla automáticamente si se usa un valor fuera del vocabulario (validación Zod en `src/content.config.ts`).
+- Para añadir un tag o categoría nuevos: editar `taxonomy.ts` primero (criterio: ≥5 posts futuros comprometidos).
+
 ### Antes de cambios en el codebase
 
 1. Si hay cambios recientes significativos, ejecuta `index_codebase` (MCP `codebase-memory-mcp`).

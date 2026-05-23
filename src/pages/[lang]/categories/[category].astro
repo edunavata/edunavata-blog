@@ -2,8 +2,9 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PostCard from '@/components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { getPostUrl, getReadingTime } from '@/i18n/utils';
+import { getPostUrl, getReadingTime, useTranslations } from '@/i18n/utils';
 import { SITE } from '@/config/site';
+import { getCategoryLabel, type Category } from '@/config/taxonomy';
 import type { GetStaticPaths } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 
@@ -34,17 +35,19 @@ const { category, posts: catPosts } = Astro.props as {
   posts: CollectionEntry<'posts'>[];
 };
 const lang = Astro.params.lang as 'es' | 'en';
+const t = useTranslations(lang);
 const sorted = catPosts.sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
+const categoryLabel = getCategoryLabel(category as Category, lang);
 
 const categoryDescription =
   lang === 'es'
-    ? `${sorted.length} ${sorted.length === 1 ? 'artículo' : 'artículos'} en la categoría ${category}.`
-    : `${sorted.length} ${sorted.length === 1 ? 'article' : 'articles'} in the ${category} category.`;
+    ? `${sorted.length} ${sorted.length === 1 ? 'artículo' : 'artículos'} en la categoría ${categoryLabel}.`
+    : `${sorted.length} ${sorted.length === 1 ? 'article' : 'articles'} in the ${categoryLabel} category.`;
 const categoryUrl = new URL(`/${lang}/categories/${category}/`, SITE.url).toString();
 const collectionPageJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  name: category,
+  name: categoryLabel,
   description: categoryDescription,
   url: categoryUrl,
   inLanguage: SITE.hreflang[lang],
@@ -62,7 +65,7 @@ const collectionPageJsonLd = {
 };
 ---
 
-<BaseLayout title={category} description={categoryDescription} lang={lang}>
+<BaseLayout title={categoryLabel} description={categoryDescription} lang={lang}>
   <script
     is:inline
     type="application/ld+json"
@@ -74,17 +77,19 @@ const collectionPageJsonLd = {
       <div
         style="font-family:var(--font-mono); font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;"
       >
-        / categorías / {category}
+        {t('categories.breadcrumb')} / {categoryLabel}
       </div>
       <h1
         style="font-family:var(--font-serif); font-weight:600; font-size:clamp(36px,4vw,44px); line-height:1.15; color:var(--text); margin:0 0 12px;"
       >
-        {category}
+        {categoryLabel}
       </h1>
       <p
         style="font-family:var(--font-serif); font-size:17px; line-height:1.6; color:var(--text-2); margin:0;"
       >
-        {sorted.length} artículos en la categoría <em style="color:var(--text);">{category}</em>
+        {sorted.length}
+        {lang === 'es' ? 'artículos en la categoría' : 'articles in'}
+        <em style="color:var(--text);">{categoryLabel}</em>
       </p>
     </header>
 

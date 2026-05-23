@@ -1,71 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-
-const CATEGORIES = ['data-engineering', 'cloud', 'linux', 'llms', 'carrera'] as const;
-
-const TAGS = [
-  // Data Engineering
-  'apache-spark',
-  'dbt',
-  'airflow',
-  'kafka',
-  'flink',
-  'python',
-  'sql',
-  'data-pipelines',
-  'streaming',
-  'batch-processing',
-  'data-quality',
-  'lakehouse',
-  'delta-lake',
-  'iceberg',
-  'duckdb',
-  // Cloud
-  'aws',
-  'gcp',
-  'azure',
-  'terraform',
-  'docker',
-  'kubernetes',
-  'iac',
-  'serverless',
-  'cloud-storage',
-  'networking',
-  // Linux
-  'bash',
-  'shell-scripting',
-  'vim',
-  'git',
-  'linux-tools',
-  'performance',
-  'monitoring',
-  'systemd',
-  // LLMs
-  'llm',
-  'rag',
-  'fine-tuning',
-  'langchain',
-  'prompt-engineering',
-  'embeddings',
-  'ollama',
-  'openai-api',
-  'mlops',
-  // Carrera
-  'aprendizaje',
-  'productividad',
-  'open-source',
-  'entrevistas',
-  'herramientas',
-  // Transversales
-  'tutorial',
-  'referencia',
-  'mejores-practicas',
-  'debugging',
-  'rendimiento',
-] as const;
-
-const ORIGINS = ['ai-generated'] as const;
+import { CATEGORIES, TAGS, ORIGINS } from '@/config/taxonomy';
 
 const posts = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),

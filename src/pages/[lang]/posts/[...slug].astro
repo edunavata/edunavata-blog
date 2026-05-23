@@ -6,6 +6,7 @@ import { getCollection, render } from 'astro:content';
 import { useTranslations, getPostUrl, getReadingTime, formatDate } from '@/i18n/utils';
 import { ui } from '@/i18n/ui';
 import { SITE } from '@/config/site';
+import { getCategoryLabel, type Category } from '@/config/taxonomy';
 import type { GetStaticPaths } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
@@ -125,7 +126,7 @@ const breadcrumbJsonLd = {
           {
             '@type': 'ListItem',
             position: 3,
-            name: primaryCategory,
+            name: getCategoryLabel(primaryCategory as Category, lang),
             item: new URL(`/${lang}/categories/${primaryCategory}/`, SITE.url).toString(),
           },
         ]

@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations } from '@/i18n/utils';
 import { SITE } from '@/config/site';
+import { getCategoryLabel, type Category } from '@/config/taxonomy';
 
 export const getStaticPaths = () => [{ params: { lang: 'es' } }, { params: { lang: 'en' } }];
 
@@ -37,7 +38,7 @@ const collectionPageJsonLd = {
     itemListElement: catTerms.map(([name, count], i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      name,
+      name: getCategoryLabel(name as Category, lang),
       url: new URL(`/${lang}/categories/${name}/`, SITE.url).toString(),
       description: `${count} ${count === 1 ? 'post' : 'posts'}`,
     })),
@@ -98,7 +99,7 @@ const collectionPageJsonLd = {
               class="freq-name"
               style="font-family:var(--font-sans); font-size:16px; font-weight:500; color:var(--text);"
             >
-              {name}
+              {getCategoryLabel(name as Category, lang)}
             </span>
             <span style="position:relative; height:6px; background:var(--bar-track); border-radius:3px; overflow:hidden;">
               <span
