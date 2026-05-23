@@ -1,5 +1,7 @@
 ---
 import AiBadge from './AiBadge.astro';
+import { useTranslations, formatDate } from '../i18n/utils';
+import { ui } from '../i18n/ui';
 
 interface Props {
   title: string;
@@ -26,11 +28,8 @@ const {
   aiModel,
   lang = 'es',
 } = Astro.props;
-const formattedDate = new Date(date).toLocaleDateString('es-ES', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-});
+const t = useTranslations(lang);
+const formattedDate = formatDate(date, lang);
 ---
 
 {
@@ -59,9 +58,9 @@ const formattedDate = new Date(date).toLocaleDateString('es-ES', {
       <div class="post-meta">
         <span>{formattedDate}</span>
         <span class="dot" />
-        {readingTime && <span>{readingTime} min de lectura</span>}
+        {readingTime && <span>{ui[lang]['blog.minuteRead'](readingTime)}</span>}
         <span class="read">
-          Leer
+          {t('blog.readMore')}
           <svg
             width="12"
             height="12"

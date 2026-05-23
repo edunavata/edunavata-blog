@@ -2,6 +2,8 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import AiBadge from './AiBadge.astro';
+import { useTranslations, formatDate } from '../i18n/utils';
+import { ui } from '../i18n/ui';
 
 interface Props {
   title: string;
@@ -30,11 +32,8 @@ const {
   aiModel,
   lang = 'es',
 } = Astro.props;
-const formattedDate = new Date(date).toLocaleDateString('es-ES', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-});
+const t = useTranslations(lang);
+const formattedDate = formatDate(date, lang);
 ---
 
 <a class="featured" href={href}>
@@ -62,14 +61,14 @@ const formattedDate = new Date(date).toLocaleDateString('es-ES', {
         <span class="dot"></span>
         <span>{formattedDate}</span>
         <span class="dot"></span>
-        {readingTime && <span>{readingTime} min de lectura</span>}
+        {readingTime && <span>{ui[lang]['blog.minuteRead'](readingTime)}</span>}
       </div>
       {origins?.includes('ai-generated') && <AiBadge model={aiModel} lang={lang} />}
     </div>
     <h2>{title}</h2>
     {description && <p>{description}</p>}
     <span class="read-link">
-      Leer artículo
+      {t('blog.readArticle')}
       <svg
         width="13"
         height="13"
