@@ -4,7 +4,7 @@ export const about = {
     heroTagline: 'Ingeniero en Data & Cloud. Documento decisiones técnicas.',
     heroRole:
       'Trabajo en Data & Cloud, vengo de Linux, fullstack y seguridad, y llevo años aprendiendo de las personas que construyeron las cosas que usamos todos los días. Este blog es donde documento lo que encuentro.',
-    heroEyebrow: 'Madrid · GMT+1 · disponible',
+    heroEyebrow: 'Madrid · GMT+1',
     introSections: [
       {
         paragraphs: [
@@ -18,7 +18,7 @@ export const about = {
         paragraphs: [
           'Cuando tengo que resolver algo, la primera pregunta que me hago es: ¿alguien ya ha dedicado años a construir una solución validada para esto? Casi siempre la respuesta es sí.',
           'Aprender a leer código de producción real — entender por qué existe cada decisión de diseño, no solo cómo funciona — es lo que más me ha enseñado. Requiere humildad, especialmente en cosas que parecen triviales.',
-          'En los últimos dos años he validado esta metodología en proyectos reales, incluyendo una migración masiva de ETL legacy a Spark con un transpiler que desarrollé desde cero. Los resultados superaron las expectativas de todos los equipos con los que trabajé.',
+          'En los últimos dos años he aplicado esta metodología en proyectos reales: un transpiler para migrar ETL legacy a Apache Spark, con el que automaticé la conversión a escala en producción.',
         ],
       },
       {
@@ -46,7 +46,7 @@ export const about = {
     heroTagline: 'Data & Cloud engineer. I document technical decisions.',
     heroRole:
       'I work in Data & Cloud, come from Linux, fullstack, and security, and have spent years learning from the people who built the things we use every day. This blog is where I document what I find.',
-    heroEyebrow: 'Madrid · GMT+1 · available',
+    heroEyebrow: 'Madrid · GMT+1',
     introSections: [
       {
         paragraphs: [

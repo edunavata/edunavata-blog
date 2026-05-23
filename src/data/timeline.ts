@@ -3,13 +3,13 @@ export const timeline = {
     {
       when: '2026 — Actualidad',
       role: 'Data Engineer · Álamo Consulting',
-      what: 'Consultoría en el sector financiero. Trabajo en una migración masiva de ETL legacy a Apache Spark para una aseguradora, incluyendo el desarrollo de un transpiler propio para automatizar la conversión. Primera experiencia en un entorno de consultoría de alto impacto.',
+      what: 'Consultoría en el sector financiero. Trabajo en una migración masiva de ETL legacy a Apache Spark para una aseguradora, incluyendo el desarrollo de un transpiler propio para automatizar la conversión.',
       tags: ['Apache Spark', 'ETL', 'Data Engineering', 'Python'],
     },
     {
       when: '2024 — 2025',
       role: 'Data Engineer · EDP Renewables',
-      what: 'Primera posición profesional con impacto directo en producción. Desarrollé múltiples proyectos en solitario con autonomía técnica completa — desde la arquitectura hasta el despliegue. Aprendí a usar la IA como herramienta de apalancamiento real, no como sustituto del criterio.',
+      what: 'Desarrollé y desplegué pipelines de datos en producción en solitario, desde la arquitectura hasta el despliegue, en una empresa del sector energético. Primera aproximación seria a la IA como herramienta de ingeniería — sin delegar el criterio arquitectónico.',
       tags: ['Cloud', 'Python', 'Data Pipelines'],
     },
     {
@@ -33,13 +33,13 @@ export const timeline = {
     {
       when: '2026 — Present',
       role: 'Data Engineer · Álamo Consulting',
-      what: 'Financial sector consulting. Working on a large-scale migration of legacy ETL pipelines to Apache Spark for an insurance company, including developing a custom transpiler to automate the conversion. First experience in a high-impact consulting environment.',
+      what: 'Financial sector consulting. Working on a large-scale migration of legacy ETL pipelines to Apache Spark for an insurance company, including developing a custom transpiler to automate the conversion.',
       tags: ['Apache Spark', 'ETL', 'Data Engineering', 'Python'],
     },
     {
       when: '2024 — 2025',
       role: 'Data Engineer · EDP Renewables',
-      what: 'First professional position with direct production impact. Developed multiple projects end-to-end with full technical autonomy — from architecture to deployment. Learned to use AI as a real leverage tool, not a replacement for judgment.',
+      what: 'Built and deployed data pipelines end-to-end at an energy company, working solo from architecture to production. First serious engagement with AI as an engineering tool — without delegating architectural judgment.',
       tags: ['Cloud', 'Python', 'Data Pipelines'],
     },
     {
