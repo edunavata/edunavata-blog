@@ -9,12 +9,22 @@ import { useTranslations } from '@/i18n/utils';
 import { SITE } from '@/config/site';
 import { Image } from 'astro:assets';
 import avatarImg from '@/assets/avatar.jpg';
+import { getCollection } from 'astro:content';
+import { CATEGORIES, getCategorySlug, getCategoryLabel } from '@/config/taxonomy';
 
 export const getStaticPaths = () => [{ params: { lang: 'es' } }, { params: { lang: 'en' } }];
 
 const { lang } = Astro.params as { lang: 'es' | 'en' };
 const t = useTranslations(lang);
 const data = about[lang];
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const categoryTopics = CATEGORIES.filter((cat) =>
+  allPosts.some((p) => p.data.category === cat && p.data.lang === lang)
+).map((cat) => ({
+  name: getCategoryLabel(cat, lang),
+  url: `/${lang}/${getCategorySlug(cat, lang)}/`,
+}));
 
 const contactIcons: Record<string, string> = {
   email: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`,
@@ -186,7 +196,7 @@ const personJsonLd = {
         {t('about.writesAbout')}
       </div>
       <div style="display:flex; flex-wrap:wrap; gap:8px;">
-        {data.topics.map((topic) => <TagPill tag={topic.name} href={topic.url} />)}
+        {categoryTopics.map((topic) => <TagPill tag={topic.name} href={topic.url} />)}
       </div>
     </section>
 

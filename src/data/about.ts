@@ -39,13 +39,6 @@ export const about = {
         ],
       },
     ],
-    topics: [
-      { name: 'hugo', url: '/tags/hugo/' },
-      { name: 'cloudflare', url: '/tags/cloudflare/' },
-      { name: 'tutorial', url: '/tags/tutorial/' },
-      { name: 'personal', url: '/tags/personal/' },
-      { name: 'meta', url: '/tags/meta/' },
-    ],
     pgp: 'D9F1 8A2C 3B7E 5F44 1AC2  9E8D 7B6A 4C13 5D02 EFAB',
   },
   en: {
@@ -84,11 +77,6 @@ export const about = {
           "Subscribe via RSS — no newsletter, no notifications. If you're working on something interesting or want to discuss topics from the blog, write to [edunavata@gmail.com](mailto:edunavata@gmail.com). I read everything, though I don't always respond quickly.",
         ],
       },
-    ],
-    topics: [
-      { name: 'hugo', url: '/en/tags/hugo/' },
-      { name: 'cloudflare', url: '/en/tags/cloudflare/' },
-      { name: 'tutorial', url: '/en/tags/tutorial/' },
     ],
     pgp: 'D9F1 8A2C 3B7E 5F44 1AC2  9E8D 7B6A 4C13 5D02 EFAB',
   },
