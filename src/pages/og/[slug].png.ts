@@ -22,7 +22,8 @@ export const GET: APIRoute = async ({ props }) => {
 
   const svg = buildSvg(W, H, lines, lineHeight, titleY, author);
   const buf = await sharp(Buffer.from(svg)).png({ compressionLevel: 8 }).toBuffer();
-  return new Response(buf, { headers: { 'Content-Type': 'image/png' } });
+  const body = new Uint8Array(buf);
+  return new Response(body, { headers: { 'Content-Type': 'image/png' } });
 };
 
 function buildSvg(
