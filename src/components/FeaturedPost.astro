@@ -12,7 +12,7 @@ interface Props {
   readingTime?: number;
   coverImage?: ImageMetadata;
   coverAlt?: string;
-  aiGenerated?: boolean;
+  origins?: string[];
   aiModel?: string;
   lang?: 'es' | 'en';
 }
@@ -26,7 +26,7 @@ const {
   readingTime,
   coverImage,
   coverAlt,
-  aiGenerated,
+  origins,
   aiModel,
   lang = 'es',
 } = Astro.props;
@@ -64,7 +64,7 @@ const formattedDate = new Date(date).toLocaleDateString('es-ES', {
         <span class="dot"></span>
         {readingTime && <span>{readingTime} min de lectura</span>}
       </div>
-      {aiGenerated && <AiBadge model={aiModel} lang={lang} />}
+      {origins?.includes('ai-generated') && <AiBadge model={aiModel} lang={lang} />}
     </div>
     <h2>{title}</h2>
     {description && <p>{description}</p>}

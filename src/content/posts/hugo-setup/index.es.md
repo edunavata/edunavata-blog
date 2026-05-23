@@ -5,8 +5,8 @@ draft: false
 slug: "como-monte-este-blog"
 description: "Guía rápida de cómo configuré Hugo con el tema Hextra y despliegue en Cloudflare Pages."
 summary: "Guía rápida de cómo configuré Hugo con el tema Hextra y despliegue en Cloudflare Pages."
-tags: ["hugo", "tutorial", "cloudflare"]
-categories: ["tech"]
+category: carrera
+tags: [tutorial, herramientas, rendimiento]
 cover:
   image: "cover.png"
   alt: "Cover image"

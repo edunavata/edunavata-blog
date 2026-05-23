@@ -23,11 +23,10 @@ const freqTerms = [...allTags.entries()].sort((a, b) => b[1] - a[1]);
 const maxCount = freqTerms[0]?.[1] || 1;
 
 const categories = new Map<string, number>();
-allPosts.forEach((p) =>
-  p.data.categories.forEach((cat) => {
-    categories.set(cat, (categories.get(cat) || 0) + 1);
-  })
-);
+allPosts.forEach((p) => {
+  const cat = p.data.category;
+  categories.set(cat, (categories.get(cat) || 0) + 1);
+});
 
 const alphaGroups: { letter: string; terms: [string, number][] }[] = [];
 const groupMap = new Map<string, [string, number][]>();

@@ -4,8 +4,8 @@ date: 2025-05-17
 draft: false
 slug: "markdown-reference"
 description: "Test article exercising every Markdown feature: typography, lists, tables, code blocks, blockquotes, and more."
-tags: ["markdown", "test", "reference"]
-categories: ["tech"]
+category: carrera
+tags: [referencia, herramientas, tutorial]
 lang: "en"
 author: "Edu González"
 ---

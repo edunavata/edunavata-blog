@@ -4,8 +4,8 @@ date: 2025-05-17
 draft: false
 slug: "referencia-markdown"
 description: "Artículo de prueba que ejercita todas las funcionalidades de Markdown: tipografía, listas, tablas, bloques de código, citas y más."
-tags: ["markdown", "test", "referencia"]
-categories: ["tech"]
+category: carrera
+tags: [referencia, herramientas, tutorial]
 lang: "es"
 author: "Edu González"
 ---

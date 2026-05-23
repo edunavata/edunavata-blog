@@ -9,7 +9,7 @@ interface Props {
   description?: string;
   readingTime?: number;
   variant?: 'grid' | 'row';
-  aiGenerated?: boolean;
+  origins?: string[];
   aiModel?: string;
   lang?: 'es' | 'en';
 }
@@ -22,7 +22,7 @@ const {
   description,
   readingTime,
   variant = 'grid',
-  aiGenerated,
+  origins,
   aiModel,
   lang = 'es',
 } = Astro.props;
@@ -37,7 +37,7 @@ const formattedDate = new Date(date).toLocaleDateString('es-ES', {
   variant === 'grid' ? (
     <a class="post-card" href={href}>
       {tags.length > 0 && <div class="pc-tag">{tags[0]}</div>}
-      {aiGenerated && <AiBadge model={aiModel} lang={lang} />}
+      {origins?.includes('ai-generated') && <AiBadge model={aiModel} lang={lang} />}
       <h3>{title}</h3>
       {description && <p>{description}</p>}
       <div class="pc-meta">
@@ -52,7 +52,7 @@ const formattedDate = new Date(date).toLocaleDateString('es-ES', {
         {tags.map((tag) => (
           <span class="tag">#{tag}</span>
         ))}
-        {aiGenerated && <AiBadge model={aiModel} lang={lang} />}
+        {origins?.includes('ai-generated') && <AiBadge model={aiModel} lang={lang} />}
       </div>
       <h2>{title}</h2>
       {description && <p>{description}</p>}

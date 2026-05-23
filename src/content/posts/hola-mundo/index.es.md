@@ -5,8 +5,8 @@ draft: false
 slug: "hola-mundo"
 description: "El clásico primer artículo donde explico por qué empiezo este blog."
 summary: "El clásico primer artículo donde explico por qué empiezo este blog."
-tags: ["personal", "meta"]
-categories: ["general"]
+category: carrera
+tags: [aprendizaje, herramientas, tutorial]
 lang: "es"
 ---
 

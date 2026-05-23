@@ -12,7 +12,7 @@ const t = useTranslations(lang);
 
 const aiPosts = await getCollection(
   'posts',
-  ({ data }) => data.lang === lang && !data.draft && data.aiGenerated === true
+  ({ data }) => data.lang === lang && !data.draft && data.origins?.includes('ai-generated') === true
 );
 const sorted = aiPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
@@ -42,7 +42,7 @@ const collectionJsonLd = {
 };
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
+<BaseLayout title={pageTitle} description={pageDescription} lang={lang} noindex={sorted.length < 5}>
   <script
     is:inline
     type="application/ld+json"
@@ -86,7 +86,7 @@ const collectionJsonLd = {
               readingTime={getReadingTime(post.body ?? '')}
               variant="row"
               lang={lang}
-              aiGenerated={post.data.aiGenerated}
+              origins={post.data.origins}
               aiModel={post.data.aiModel}
             />
           ))}

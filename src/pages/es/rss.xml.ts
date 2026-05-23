@@ -16,7 +16,7 @@ export const GET: APIRoute = async ({ site }) => {
       pubDate: post.data.date,
       description: post.data.description,
       link: new URL(`/es/posts/${post.data.slug}/`, site!).toString(),
-      categories: [...post.data.tags, ...post.data.categories],
+      categories: [...post.data.tags, post.data.category],
     })),
     customData: `<language>${SITE.hreflang.es}</language>`,
   });

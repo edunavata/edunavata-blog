@@ -5,8 +5,8 @@ draft: false
 slug: "hello-world"
 description: "The classic first article where I explain why I'm starting this blog."
 summary: "The classic first article where I explain why I'm starting this blog."
-tags: ["personal", "meta"]
-categories: ["general"]
+category: carrera
+tags: [aprendizaje, herramientas, tutorial]
 lang: "en"
 ---
 

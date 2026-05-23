@@ -103,7 +103,7 @@ const blogPostingJsonLd = {
   keywords: post.data.tags.join(', '),
 };
 
-const primaryCategory = post.data.categories[0] ?? null;
+const primaryCategory = post.data.category ?? null;
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -228,7 +228,11 @@ const breadcrumbJsonLd = {
             </>
           )
         }
-        {post.data.aiGenerated && <AiBadge model={post.data.aiModel} lang={lang} />}
+        {
+          post.data.origins?.includes('ai-generated') && (
+            <AiBadge model={post.data.aiModel} lang={lang} />
+          )
+        }
       </div>
 
       <!-- Cover -->

@@ -12,11 +12,10 @@ const t = useTranslations(lang);
 const allPosts = await getCollection('posts', ({ data }) => data.lang === lang && !data.draft);
 
 const categories = new Map<string, number>();
-allPosts.forEach((p) =>
-  p.data.categories.forEach((cat) => {
-    categories.set(cat, (categories.get(cat) || 0) + 1);
-  })
-);
+allPosts.forEach((p) => {
+  const cat = p.data.category;
+  categories.set(cat, (categories.get(cat) || 0) + 1);
+});
 
 const catTerms = [...categories.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 const maxCount = Math.max(...categories.values(), 1);
