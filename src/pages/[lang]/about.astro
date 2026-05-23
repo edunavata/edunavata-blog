@@ -76,10 +76,7 @@ const personJsonLd = {
         />
       </div>
       <div>
-        <div
-          class="eyebrow"
-          style="font-family:var(--font-mono); font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; display:flex; align-items:center; gap:10px;"
-        >
+        <div class="hero-eyebrow">
           <span
             class="status-dot"
             style="width:7px; height:7px; border-radius:50%; background:oklch(0.74 0.14 145); box-shadow:0 0 0 3px oklch(0.74 0.14 145 / 0.18);"
@@ -87,23 +84,21 @@ const personJsonLd = {
           <span>{data.heroEyebrow}</span>
         </div>
         <h1
-          style="font-family:var(--font-serif); font-weight:600; font-size:clamp(34px,4vw,44px); line-height:1.1; letter-spacing:-0.02em; margin:0 0 8px; color:var(--text);"
+          style="font-family:var(--font-serif); font-weight:600; font-size:clamp(26px,7vw,44px); line-height:1.1; letter-spacing:-0.02em; margin:0 0 8px; color:var(--text);"
         >
           {data.heroName}
           <em style="font-style:italic; color:var(--text-2); font-weight:500;"
             >— {data.heroTagline}</em
           >
         </h1>
-        <p style="font-family:var(--font-serif); font-size:17px; color:var(--text-2); margin:0;">
+        <p class="hero-role">
           {data.heroRole}
         </p>
       </div>
     </section>
 
     <!-- INTRO -->
-    <section
-      style="padding:56px 0; border-bottom:1px solid var(--border); max-width:64ch; display:flex; flex-direction:column; gap:44px;"
-    >
+    <section class="about-section about-intro" style="border-bottom:1px solid var(--border);">
       {
         data.introSections.map((section) => (
           <div style="display:flex; flex-direction:column; gap:1.25em;">
@@ -135,7 +130,7 @@ const personJsonLd = {
     </section>
 
     <!-- TIMELINE / NOW -->
-    <section style="padding:56px 0; border-bottom:1px solid var(--border);">
+    <section class="about-section" style="border-bottom:1px solid var(--border);">
       <div
         style="font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;"
       >
@@ -175,7 +170,7 @@ const personJsonLd = {
     </section>
 
     <!-- STACK / USES -->
-    <section style="padding:56px 0; border-bottom:1px solid var(--border);">
+    <section class="about-section" style="border-bottom:1px solid var(--border);">
       <div
         style="font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;"
       >
@@ -203,7 +198,7 @@ const personJsonLd = {
     </section>
 
     <!-- WRITES ABOUT -->
-    <section style="padding:56px 0; border-bottom:1px solid var(--border);">
+    <section class="about-section" style="border-bottom:1px solid var(--border);">
       <div
         style="font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;"
       >
@@ -215,7 +210,7 @@ const personJsonLd = {
     </section>
 
     <!-- CONTACT -->
-    <section style="padding:56px 0;">
+    <section class="about-section">
       <div
         style="font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:28px;"
       >
@@ -321,6 +316,42 @@ const personJsonLd = {
     margin: 0 auto;
   }
 
+  /* eyebrow row: centered on mobile, left-aligned on tablet+ */
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  /* bio paragraph: left-align for readability on narrow screens */
+  .hero-role {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--text-2);
+    margin: 0;
+    text-align: start;
+  }
+
+  /* section padding: tighter on mobile */
+  .about-section {
+    padding: 36px 0;
+  }
+
+  /* intro sub-section gap: reduced on mobile */
+  .about-intro {
+    max-width: 64ch;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
   .timeline-row {
     display: flex;
     flex-direction: column;
@@ -365,6 +396,18 @@ const personJsonLd = {
     }
     .about-hero .avatar {
       margin: 0;
+    }
+    .hero-eyebrow {
+      justify-content: flex-start;
+    }
+    .hero-role {
+      font-size: 17px;
+    }
+    .about-section {
+      padding: 56px 0;
+    }
+    .about-intro {
+      gap: 44px;
     }
     .timeline-row {
       display: grid;
