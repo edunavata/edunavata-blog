@@ -170,7 +170,6 @@ export default defineConfig({
           properties: {
             className: ['heading-anchor'],
             ariaLabel: 'Enlace permanente a esta sección',
-            tabIndex: -1,
           },
           content: {
             type: 'element',
