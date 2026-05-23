@@ -206,7 +206,7 @@ const collectionPageJsonLd = {
 </style>
 
 <script is:inline>
-  (function () {
+  function initTagFilter() {
     var chips = document.querySelectorAll('.chip');
     var posts = document.querySelectorAll('.post-item');
     var empty = document.getElementById('empty');
@@ -226,8 +226,11 @@ const collectionPageJsonLd = {
           if (show) visible++;
         });
         if (empty) empty.classList.toggle('show', visible === 0);
-        if (countDisplay) countDisplay.textContent = visible;
+        if (countDisplay) countDisplay.textContent = String(visible);
       });
     });
-  })();
+  }
+
+  // Runs on initial load AND after every View Transition navigation.
+  document.addEventListener('astro:page-load', initTagFilter);
 </script>
