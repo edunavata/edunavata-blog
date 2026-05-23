@@ -6,7 +6,7 @@ slug: "how-i-built-this-blog"
 description: "Quick guide on how I set up Hugo with the Hextra theme and deployed to Cloudflare Pages."
 summary: "Quick guide on how I set up Hugo with the Hextra theme and deployed to Cloudflare Pages."
 category: carrera
-tags: [tutorial, herramientas, rendimiento]
+tags: [tutorial, tools, performance]
 lang: "en"
 ---
 

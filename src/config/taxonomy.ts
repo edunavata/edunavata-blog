@@ -65,17 +65,16 @@ export const TAGS = [
   'openai-api',
   'mlops',
   // Carrera
-  'aprendizaje',
-  'productividad',
+  'learning',
+  'productivity',
   'open-source',
-  'entrevistas',
-  'herramientas',
+  'interviews',
+  'tools',
   // Transversales
   'tutorial',
-  'referencia',
-  'mejores-practicas',
+  'reference',
+  'best-practices',
   'debugging',
-  'rendimiento',
 ] as const;
 
 export const ORIGINS = ['ai-generated'] as const;
