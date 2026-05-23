@@ -26,3 +26,6 @@ pnpm-debug.log*
 .claude/
 .agents/
 .tasks/
+
+# Internal documentation (personal learning notes, not for distribution)
+docs/internal/
