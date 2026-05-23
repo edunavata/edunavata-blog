@@ -17,6 +17,7 @@ export const getStaticPaths = () => [{ params: { lang: 'es' } }, { params: { lan
 const { lang } = Astro.params as { lang: 'es' | 'en' };
 const t = useTranslations(lang);
 const data = about[lang];
+const timelineData = timeline[lang];
 
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 const categoryTopics = CATEGORIES.filter((cat) =>
@@ -144,16 +145,29 @@ const personJsonLd = {
         style="display:flex; flex-direction:column; font-family:var(--font-serif); font-size:17px; line-height:1.55;"
       >
         {
-          timeline.map((item) => (
+          timelineData.map((item) => (
             <div class="timeline-row">
               <span style="font-family:var(--font-mono); font-size:12px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.06em;">
                 {item.when}
               </span>
-              <div
-                set:html={item.what
-                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                  .replace(/<(.*?)>/g, '<em>&lt;$1&gt;</em>')}
-              />
+              <div>
+                <div style="font-family:var(--font-sans); font-size:13px; font-weight:600; color:var(--text); margin-bottom:6px;">
+                  {item.role}
+                </div>
+                <div
+                  style="font-family:var(--font-serif); font-size:17px; line-height:1.55; color:var(--text-2);"
+                  set:html={item.what.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+                />
+                {item.tags && item.tags.length > 0 && (
+                  <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;">
+                    {item.tags.map((tag) => (
+                      <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-3); border:1px solid var(--border); border-radius:4px; padding:2px 7px;">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ))
         }
@@ -357,7 +371,7 @@ const personJsonLd = {
       grid-template-columns: 100px 1fr;
       gap: 28px;
       padding: 18px 0;
-      align-items: baseline;
+      align-items: start;
     }
     .stack-grid {
       grid-template-columns: repeat(2, 1fr);
