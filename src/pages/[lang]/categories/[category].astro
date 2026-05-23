@@ -15,10 +15,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const lang = post.data.lang;
     if (!catsByLang.has(lang)) catsByLang.set(lang, new Map());
     const langCats = catsByLang.get(lang)!;
-    post.data.categories.forEach((cat: string) => {
-      if (!langCats.has(cat)) langCats.set(cat, []);
-      langCats.get(cat)!.push(post);
-    });
+    const cat = post.data.category;
+    if (!langCats.has(cat)) langCats.set(cat, []);
+    langCats.get(cat)!.push(post);
   });
 
   const paths: any[] = [];

@@ -5,11 +5,11 @@ draft: false
 slug: "duckdb-python-csv"
 description: "Cómo usar DuckDB en Python para analizar ficheros CSV con SQL sin levantar ningún servidor ni cargar datos en memoria."
 summary: "DuckDB convierte cualquier CSV en una tabla SQL en milisegundos, directamente desde Python, sin servidor y sin copiar los datos."
-tags: ["python", "data-engineering", "duckdb", "sql"]
-categories: ["data-engineering"]
-lang: "es"
-aiGenerated: true
+category: data-engineering
+tags: [duckdb, python, sql, tutorial]
+origins: [ai-generated]
 aiModel: "Claude Sonnet 4.6"
+lang: "es"
 cover:
   image: "cover.png"
   alt: "Cover image"

@@ -98,7 +98,7 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
             coverImage={featured.data.cover?.image}
             coverAlt={featured.data.cover?.alt}
             lang={lang}
-            aiGenerated={featured.data.aiGenerated}
+            origins={featured.data.origins}
             aiModel={featured.data.aiModel}
           />
         </section>
@@ -141,7 +141,7 @@ const categories = [...allTags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9
                 readingTime={getReadingTime(post.body ?? '')}
                 variant="grid"
                 lang={lang}
-                aiGenerated={post.data.aiGenerated}
+                origins={post.data.origins}
                 aiModel={post.data.aiModel}
               />
             ))}
