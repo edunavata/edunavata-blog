@@ -87,25 +87,34 @@ const personJsonLd = {
 
     <!-- INTRO -->
     <section
-      style="padding:56px 0; border-bottom:1px solid var(--border); font-family:var(--font-serif); font-size:19px; line-height:1.72; color:var(--text); max-width:64ch;"
+      style="padding:56px 0; border-bottom:1px solid var(--border); max-width:64ch; display:flex; flex-direction:column; gap:44px;"
     >
       {
-        data.introParagraphs.map((p) => (
-          <p style="margin:0;">
-            {p.split(/(\[.*?\]\(.*?\))/g).map((part) => {
-              const match = part.match(/\[(.*?)\]\((.*?)\)/);
-              if (match)
-                return (
-                  <a
-                    href={match[2]}
-                    style="color:var(--accent); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; text-decoration-color:color-mix(in oklch, var(--accent), transparent 60%);"
-                  >
-                    {match[1]}
-                  </a>
-                );
-              return part;
-            })}
-          </p>
+        data.introSections.map((section) => (
+          <div style="display:flex; flex-direction:column; gap:1.25em;">
+            {section.label && (
+              <div style="font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3);">
+                {section.label}
+              </div>
+            )}
+            {section.paragraphs.map((p) => (
+              <p style="margin:0; font-family:var(--font-serif); font-size:19px; line-height:1.72; color:var(--text); text-wrap:pretty;">
+                {p.split(/(\[.*?\]\(.*?\))/g).map((part) => {
+                  const match = part.match(/\[(.*?)\]\((.*?)\)/);
+                  if (match)
+                    return (
+                      <a
+                        href={match[2]}
+                        style="color:var(--accent); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; text-decoration-color:color-mix(in oklch, var(--accent), transparent 60%);"
+                      >
+                        {match[1]}
+                      </a>
+                    );
+                  return part;
+                })}
+              </p>
+            ))}
+          </div>
         ))
       }
     </section>
