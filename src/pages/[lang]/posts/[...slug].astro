@@ -582,97 +582,101 @@ const breadcrumbJsonLd = {
   }
 </style>
 
-<script is:inline>
-  (function () {
-    var progress = document.getElementById('progress');
-    var activeHash = window.location.hash || '';
+<script>
+  function setupPost() {
+    if (window.__postController) window.__postController.abort();
 
-    function setActiveTocLink(id) {
-      document.querySelectorAll('.toc a').forEach(function (a) {
-        var isActive = a.getAttribute('href') === '#' + id;
-        if (a.parentElement) a.parentElement.classList.toggle('active', isActive);
+    const progress = document.getElementById('progress');
+    if (!progress) return;
+
+    window.__postController = new AbortController();
+    const { signal } = window.__postController;
+
+    let activeHash = window.location.hash || '';
+
+    function setActiveTocLink(id: string) {
+      document.querySelectorAll('.toc a').forEach((a) => {
+        if (a.parentElement)
+          a.parentElement.classList.toggle('active', a.getAttribute('href') === '#' + id);
       });
     }
 
-    function updateHash(id, mode) {
+    function updateHash(id: string, mode: string) {
       if (!id) return;
-      var nextHash = '#' + id;
+      const nextHash = '#' + id;
       if (activeHash === nextHash) return;
       activeHash = nextHash;
-      if (mode === 'push') {
-        window.history.pushState(null, '', nextHash);
-      } else {
-        window.history.replaceState(null, '', nextHash);
-      }
+      if (mode === 'push') window.history.pushState(null, '', nextHash);
+      else window.history.replaceState(null, '', nextHash);
     }
 
     function onScroll() {
-      var scrollTop = window.scrollY || document.documentElement.scrollTop;
-      var docH = document.documentElement.scrollHeight - window.innerHeight;
-      var pct = Math.max(0, Math.min(1, scrollTop / Math.max(1, docH)));
-      if (progress) progress.style.transform = 'scaleX(' + pct.toFixed(4) + ')';
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = Math.max(0, Math.min(1, scrollTop / Math.max(1, docH)));
+      progress!.style.transform = 'scaleX(' + pct.toFixed(4) + ')';
 
-      var offset = 120;
-      var ids = [].slice
-        .call(document.querySelectorAll('.toc a') || [])
-        .map(function (a) {
-          return (a.getAttribute('href') || '').slice(1);
-        })
-        .filter(function (id, index, all) {
-          return id && all.indexOf(id) === index;
-        });
-      var headings = ids
-        .map(function (id) {
-          return document.getElementById(id);
-        })
-        .filter(Boolean);
-      var activeHeading = headings[0];
-      headings.forEach(function (h) {
+      const offset = 120;
+      const ids = [...document.querySelectorAll('.toc a')]
+        .map((a) => (a.getAttribute('href') || '').slice(1))
+        .filter((id, i, all) => id && all.indexOf(id) === i);
+      const headings = ids
+        .map((id) => document.getElementById(id))
+        .filter((el): el is HTMLElement => el !== null);
+      let activeHeading = headings[0];
+      headings.forEach((h) => {
         if (h.getBoundingClientRect().top - offset <= 0) activeHeading = h;
       });
-      if (activeHeading && activeHeading.id) {
+      if (activeHeading?.id) {
         setActiveTocLink(activeHeading.id);
         updateHash(activeHeading.id, 'replace');
       }
     }
-    if (window.__postScrollHandler) {
-      window.removeEventListener('scroll', window.__postScrollHandler);
-    }
-    window.__postScrollHandler = onScroll;
-    window.addEventListener('scroll', onScroll, { passive: true });
+
+    window.addEventListener('scroll', onScroll, { passive: true, signal });
     onScroll();
 
-    document.querySelectorAll('.toc a').forEach(function (a) {
-      a.addEventListener('click', function (e) {
-        e.preventDefault();
-        var id = (a.getAttribute('href') || '').slice(1);
-        var target = id && document.getElementById(id);
-        if (target) {
-          var top = target.getBoundingClientRect().top + window.scrollY - 80;
-          setActiveTocLink(id);
-          updateHash(id, 'push');
-          window.scrollTo({ top: top, behavior: 'smooth' });
-        }
-      });
+    document.querySelectorAll('.toc a').forEach((a) => {
+      a.addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          const id = (a.getAttribute('href') || '').slice(1);
+          const target = id && document.getElementById(id);
+          if (target) {
+            const top = target.getBoundingClientRect().top + window.scrollY - 80;
+            setActiveTocLink(id);
+            updateHash(id, 'push');
+            window.scrollTo({ top, behavior: 'smooth' });
+          }
+        },
+        { signal }
+      );
     });
 
-    var copyBtn = document.getElementById('copy-link');
+    const copyBtn = document.getElementById('copy-link');
     if (copyBtn) {
-      copyBtn.addEventListener('click', async function () {
-        try {
-          await navigator.clipboard.writeText(location.href);
-        } catch {
-          /* clipboard unsupported */
-        }
-        copyBtn.classList.add('ok');
-        var span = copyBtn.querySelector('span');
-        var old = span ? span.textContent : '';
-        if (span) span.textContent = '✓ Copiado';
-        setTimeout(function () {
-          copyBtn.classList.remove('ok');
-          if (span) span.textContent = old;
-        }, 1600);
-      });
+      copyBtn.addEventListener(
+        'click',
+        async () => {
+          try {
+            await navigator.clipboard.writeText(location.href);
+          } catch {
+            /* clipboard unsupported */
+          }
+          copyBtn.classList.add('ok');
+          const span = copyBtn.querySelector('span');
+          const old = span ? span.textContent : '';
+          if (span) span.textContent = '✓ Copiado';
+          setTimeout(() => {
+            copyBtn.classList.remove('ok');
+            if (span) span.textContent = old;
+          }, 1600);
+        },
+        { signal }
+      );
     }
-  })();
+  }
+
+  document.addEventListener('astro:page-load', setupPost);
 </script>

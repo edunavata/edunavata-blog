@@ -5,7 +5,7 @@ interface Window {
   __mobileMenuController?: AbortController;
   __themeSwapListenerAdded?: boolean;
   __tagsKeydown?: boolean;
-  __postScrollHandler?: EventListener;
+  __postController?: AbortController;
   __searchController?: AbortController;
   // pagefind-ui.js is an IIFE that registers PagefindUI globally at runtime
   PagefindUI?: new (options: {
