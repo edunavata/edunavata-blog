@@ -37,7 +37,7 @@ const formattedDate = formatDate(date, lang);
     <a class="post-card" href={href}>
       {tags.length > 0 && <div class="pc-tag">{tags[0]}</div>}
       {origins?.includes('ai-generated') && <AiBadge model={aiModel} lang={lang} />}
-      <h3 transition:name={`post-title-${href.split('/').filter(Boolean).pop()}`}>{title}</h3>
+      <h3>{title}</h3>
       {description && <p>{description}</p>}
       <div class="pc-meta">
         <span>{formattedDate}</span>
@@ -53,7 +53,7 @@ const formattedDate = formatDate(date, lang);
         ))}
         {origins?.includes('ai-generated') && <AiBadge model={aiModel} lang={lang} />}
       </div>
-      <h2 transition:name={`post-title-${href.split('/').filter(Boolean).pop()}`}>{title}</h2>
+      <h2>{title}</h2>
       {description && <p>{description}</p>}
       <div class="post-meta">
         <span>{formattedDate}</span>

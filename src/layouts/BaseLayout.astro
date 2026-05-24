@@ -201,15 +201,6 @@ function normalizeCanonicalPath(pathname: string) {
             e.newDocument.documentElement.setAttribute('data-theme', t);
           });
         }
-        if (!window.__directionListenerAdded) {
-          window.__directionListenerAdded = true;
-          document.addEventListener('astro:before-preparation', function (e) {
-            var fromDepth = e.from.pathname.split('/').filter(Boolean).length;
-            var toDepth = e.to.pathname.split('/').filter(Boolean).length;
-            var dir = e.navigationType === 'push' || toDepth >= fromDepth ? 'forward' : 'backward';
-            document.documentElement.dataset.direction = dir;
-          });
-        }
       })();
     </script>
   </head>
@@ -217,7 +208,7 @@ function normalizeCanonicalPath(pathname: string) {
   <body>
     <a class="skip-link" href="#main">{t('a11y.skipToMain')}</a>
     <Navbar lang={lang} currentPath={Astro.url.pathname} languageUrls={altUrls} />
-    <main id="main" tabindex="-1" transition:name="main-content">
+    <main id="main" tabindex="-1">
       <slot />
     </main>
     <Footer lang={lang} />
