@@ -71,7 +71,7 @@
 /* data-engineering uses the default blue (hue 235°) — no override needed.   */
 /* swapRootAttributes during View Transitions copies data-category from the   */
 /* incoming page's <html> automatically, so no JS event handlers are needed.  */
-:root[data-category='cloud'] {
+:root[data-category='cloud'] main {
   --accent: oklch(0.52 0.15 205);
   --accent-soft: oklch(0.52 0.15 205 / 0.08);
   --selection: oklch(0.52 0.15 205 / 0.2);
@@ -79,7 +79,7 @@
   --callout-info-bd: oklch(0.52 0.15 205 / 0.25);
   --bar: oklch(0.52 0.15 205 / 0.3);
 }
-:root[data-category='linux'] {
+:root[data-category='linux'] main {
   --accent: oklch(0.52 0.15 145);
   --accent-soft: oklch(0.52 0.15 145 / 0.08);
   --selection: oklch(0.52 0.15 145 / 0.2);
@@ -87,7 +87,7 @@
   --callout-info-bd: oklch(0.52 0.15 145 / 0.25);
   --bar: oklch(0.52 0.15 145 / 0.3);
 }
-:root[data-category='llms'] {
+:root[data-category='llms'] main {
   --accent: oklch(0.52 0.15 280);
   --accent-soft: oklch(0.52 0.15 280 / 0.08);
   --selection: oklch(0.52 0.15 280 / 0.2);
@@ -95,7 +95,7 @@
   --callout-info-bd: oklch(0.52 0.15 280 / 0.25);
   --bar: oklch(0.52 0.15 280 / 0.3);
 }
-:root[data-category='carrera'] {
+:root[data-category='carrera'] main {
   --accent: oklch(0.52 0.15 60);
   --accent-soft: oklch(0.52 0.15 60 / 0.08);
   --selection: oklch(0.52 0.15 60 / 0.2);
@@ -104,8 +104,8 @@
   --bar: oklch(0.52 0.15 60 / 0.3);
 }
 
-/* Dark mode — double-attribute selector beats :root[data-theme='dark'] alone */
-:root[data-theme='dark'][data-category='cloud'] {
+/* Dark mode — scoped to main to protect navbar/footer */
+:root[data-theme='dark'][data-category='cloud'] main {
   --accent: oklch(0.72 0.13 205);
   --accent-soft: oklch(0.72 0.13 205 / 0.12);
   --selection: oklch(0.72 0.13 205 / 0.35);
@@ -113,7 +113,7 @@
   --callout-info-bd: oklch(0.72 0.13 205 / 0.35);
   --bar: oklch(0.72 0.13 205 / 0.35);
 }
-:root[data-theme='dark'][data-category='linux'] {
+:root[data-theme='dark'][data-category='linux'] main {
   --accent: oklch(0.72 0.13 145);
   --accent-soft: oklch(0.72 0.13 145 / 0.12);
   --selection: oklch(0.72 0.13 145 / 0.35);
@@ -121,7 +121,7 @@
   --callout-info-bd: oklch(0.72 0.13 145 / 0.35);
   --bar: oklch(0.72 0.13 145 / 0.35);
 }
-:root[data-theme='dark'][data-category='llms'] {
+:root[data-theme='dark'][data-category='llms'] main {
   --accent: oklch(0.72 0.13 280);
   --accent-soft: oklch(0.72 0.13 280 / 0.12);
   --selection: oklch(0.72 0.13 280 / 0.35);
@@ -129,7 +129,7 @@
   --callout-info-bd: oklch(0.72 0.13 280 / 0.35);
   --bar: oklch(0.72 0.13 280 / 0.35);
 }
-:root[data-theme='dark'][data-category='carrera'] {
+:root[data-theme='dark'][data-category='carrera'] main {
   --accent: oklch(0.72 0.13 60);
   --accent-soft: oklch(0.72 0.13 60 / 0.12);
   --selection: oklch(0.72 0.13 60 / 0.35);
@@ -159,53 +159,6 @@ html.no-transitions *::after {
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
-}
-
-/* Directional slide for the named main-content group only.                  */
-/* data-direction is set by astro:before-preparation in BaseLayout's script.  */
-@keyframes vt-out-left {
-  to {
-    transform: translateX(-14px);
-    opacity: 0;
-  }
-}
-@keyframes vt-in-right {
-  from {
-    transform: translateX(14px);
-    opacity: 0;
-  }
-}
-@keyframes vt-out-right {
-  to {
-    transform: translateX(14px);
-    opacity: 0;
-  }
-}
-@keyframes vt-in-left {
-  from {
-    transform: translateX(-14px);
-    opacity: 0;
-  }
-}
-
-:root[data-direction='forward']::view-transition-old(main-content) {
-  animation: vt-out-left 0.18s ease-in both;
-}
-:root[data-direction='forward']::view-transition-new(main-content) {
-  animation: vt-in-right 0.18s ease-out both;
-}
-:root[data-direction='backward']::view-transition-old(main-content) {
-  animation: vt-out-right 0.18s ease-in both;
-}
-:root[data-direction='backward']::view-transition-new(main-content) {
-  animation: vt-in-left 0.18s ease-out both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(main-content),
-  ::view-transition-new(main-content) {
-    animation: none !important;
-  }
 }
 
 /* ───────── Base styles ───────── */
