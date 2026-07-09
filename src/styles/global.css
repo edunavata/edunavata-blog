@@ -822,7 +822,7 @@ a {
   margin-top: 1.4em;
 }
 .body p {
-  margin: 0;
+  margin-bottom: 0;
 }
 .body h2 {
   font-family: var(--font-serif);
