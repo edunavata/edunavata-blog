@@ -35,8 +35,6 @@ interface Props {
    * does not have a localized alternate.
    */
   noindex?: boolean;
-  /** Post category slug — activates per-category accent color when set. */
-  category?: string;
 }
 
 const {
@@ -49,7 +47,6 @@ const {
   altUrls,
   manualHreflang = false,
   noindex = false,
-  category,
 } = Astro.props;
 const lang = Astro.props.lang || 'es';
 const t = useTranslations(lang);
@@ -123,7 +120,7 @@ function normalizeCanonicalPath(pathname: string) {
 }
 ---
 
-<html lang={lang} data-category={category || undefined}>
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
