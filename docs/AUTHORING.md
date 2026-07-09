@@ -8,6 +8,65 @@ frontmatter, taxonomía, metodología SEO y flujo de publicación bilingüe.
 
 ---
 
+## Quickstart
+
+Pasos mínimos para publicar un post. Para el detalle de cada campo, taxonomía completa y
+metodología SEO, sigue leyendo las secciones numeradas.
+
+1. **Crea la carpeta del post** (nombre libre, se recomienda que coincida con el slug):
+
+   ```bash
+   mkdir -p src/content/posts/mi-nuevo-post
+   ```
+
+2. **Crea `index.es.md`** con el frontmatter mínimo obligatorio:
+
+   ```yaml
+   ---
+   title: 'Título del post'
+   date: 2026-07-09
+   slug: 'mi-nuevo-post'
+   description: 'Descripción SEO de 50–160 caracteres con la keyword principal.'
+   lang: 'es'
+   category: data-engineering # exactamente 1 valor del catálogo — ver §3
+   tags: [python, sql, tutorial] # 3–5 valores del catálogo — ver §4
+   ---
+   Contenido del post en Markdown a partir de aquí.
+   ```
+
+3. **(Opcional) añade portada** — `cover.png` en la misma carpeta:
+
+   ```yaml
+   cover:
+     image: './cover.png'
+     alt: 'Descripción visual de la portada.'
+   ```
+
+4. **(Opcional) traduce** — crea `index.en.md` en la misma carpeta, `lang: 'en'` y el mismo
+   `translationKey` en ambos archivos (ver §7).
+
+5. **Previsualiza en local:**
+
+   ```bash
+   pnpm run dev
+   # → http://localhost:4321/es/posts/mi-nuevo-post/
+   ```
+
+6. **Valida antes de publicar:**
+
+   ```bash
+   pnpm run build   # valida el schema Zod, genera sitemap y pagefind
+   pnpm run lint
+   ```
+
+7. **Commit y PR** siguiendo el flujo de ramas del proyecto (ver `CLAUDE.md` en la raíz).
+
+> ⚠️ `category` y `tags` deben salir del catálogo cerrado en `src/config/taxonomy.ts` — el build
+> falla si usas un valor fuera de él. Repasa el [checklist](#9-checklist-antes-de-publicar) antes
+> de dar el post por terminado.
+
+---
+
 ## Índice
 
 1. [Estructura de archivos](#1-estructura-de-archivos)
