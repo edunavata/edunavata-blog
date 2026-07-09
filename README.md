@@ -175,7 +175,8 @@ Variables que necesita Cloudflare Pages:
 ## Añadir un artículo
 
 El proceso completo (frontmatter, slugs, traducciones, imágenes) está documentado en
-**[`docs/AUTHORING.md`](docs/AUTHORING.md)**.
+**[`docs/AUTHORING.md`](docs/AUTHORING.md)** — empieza por su sección
+**[Quickstart](docs/AUTHORING.md#quickstart)**.
 
 Resumen rápido:
 
