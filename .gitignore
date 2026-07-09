@@ -31,3 +31,4 @@ pnpm-debug.log*
 
 # Internal documentation (personal learning notes, not for distribution)
 docs/internal/
+.tokensave
