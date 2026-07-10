@@ -14,9 +14,9 @@ const posts = defineCollection({
       const segments = entry.replace(/\.md$/, '').split('/');
       const fileName = segments.pop() ?? entry;
       const folder = segments.join('/');
-      const langSuffix = fileName.includes('.') ? fileName.split('.').pop() : '';
+      const lang = fileName.match(/\.(es|en)$/)?.[1];
       const base = folder || fileName;
-      return langSuffix ? `${base}-${langSuffix}` : base;
+      return lang ? `${base}-${lang}` : base;
     },
   }),
   schema: ({ image }) =>
