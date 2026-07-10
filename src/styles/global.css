@@ -808,23 +808,29 @@ a {
     opacity: 0.4;
   }
 }
-/* Resalta el destino al saltar desde la ToC o una footnote. */
-.body :is(h2, h3, h4):target {
-  animation: target-flash 1.6s ease-out;
-}
+/* Resalta el destino al saltar desde la ToC o una footnote.
+   Marca visible tipo rotulador que se mantiene un instante y se desvanece,
+   con una barra de acento a la izquierda para reforzar la orientación. */
+.body :is(h2, h3, h4):target,
 .body .footnotes li:target {
-  animation: target-flash 1.6s ease-out;
-  border-radius: 4px;
+  animation: target-flash 2.4s ease-out;
+  border-radius: 6px;
 }
 @keyframes target-flash {
   0%,
-  30% {
-    background: var(--accent-soft);
-    box-shadow: 0 0 0 6px var(--accent-soft);
+  25% {
+    background-color: color-mix(in oklab, var(--accent) 18%, transparent);
+    box-shadow:
+      -0.5em 0 0 color-mix(in oklab, var(--accent) 18%, transparent),
+      0.5em 0 0 color-mix(in oklab, var(--accent) 18%, transparent),
+      inset 3px 0 0 var(--accent);
   }
   100% {
-    background: transparent;
-    box-shadow: 0 0 0 6px transparent;
+    background-color: transparent;
+    box-shadow:
+      -0.5em 0 0 transparent,
+      0.5em 0 0 transparent,
+      inset 0 0 0 transparent;
   }
 }
 @media (prefers-reduced-motion: reduce) {
