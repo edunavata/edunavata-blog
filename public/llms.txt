@@ -2,7 +2,7 @@
 
 > Blog de ingeniería personal en español e inglés.
 > Autor: Edu González (@edunavata)
-> URL: https://edunavata-blog.pages.dev
+> URL: https://edunavata.com
 
 ## Sobre este blog
 
