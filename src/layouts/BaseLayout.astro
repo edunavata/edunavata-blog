@@ -90,7 +90,8 @@ const feedTitle = `${SITE.title} — Feed (${lang.toUpperCase()})`;
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: SITE.title,
+  name: SITE.siteName,
+  alternateName: SITE.brand,
   url: SITE.url,
   description: SITE.description,
   inLanguage,
@@ -148,7 +149,7 @@ function normalizeCanonicalPath(pathname: string) {
     <meta name="description" content={description} />
 
     <meta property="og:type" content={ogType} />
-    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:site_name" content={SITE.siteName} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

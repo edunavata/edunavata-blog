@@ -4,6 +4,7 @@
 export const SITE = {
   url: import.meta.env.SITE_URL || 'https://edunavata.com',
   title: 'Edu González — Blog Técnico',
+  siteName: 'Edu González',
   description: 'Cloud, Data Engineering, LLMs, Linux y Ciberseguridad.',
   author: 'Edu González',
   brand: '~edunavata',
