@@ -4,7 +4,21 @@ import { z } from 'astro/zod';
 import { CATEGORIES, TAGS, ORIGINS } from '@/config/taxonomy';
 
 const posts = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/posts',
+    // Files follow "<folder>/index.<lang>.md". The default id collapses both
+    // languages to the folder name and silently drops one entry, so derive an
+    // id that keeps the language suffix (e.g. "llm-tool-en").
+    generateId: ({ entry }) => {
+      const segments = entry.replace(/\.md$/, '').split('/');
+      const fileName = segments.pop() ?? entry;
+      const folder = segments.join('/');
+      const lang = fileName.match(/\.(es|en)$/)?.[1];
+      const base = folder || fileName;
+      return lang ? `${base}-${lang}` : base;
+    },
+  }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
