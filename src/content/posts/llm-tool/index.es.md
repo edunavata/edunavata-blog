@@ -2,7 +2,7 @@
 title: 'Herramientas desechables con LLM: cuándo construir y cuándo no'
 date: 2026-07-09
 draft: false
-slug: 'llm-tool'
+slug: 'herramientas-desechables-llm-aws'
 description: 'Tres herramientas construidas con LLM y boto3 sobre AWS y por qué solo una mereció la pena. Un criterio práctico para decidir qué construir.'
 summary: 'Construí tres scripts con LLM y boto3 para Athena, Glue y Redshift. Solo uno sobrevivió. La diferencia no fue técnica: fue si alguien más lo necesitaba.'
 category: carrera
