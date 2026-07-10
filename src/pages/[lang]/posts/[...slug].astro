@@ -751,7 +751,7 @@ const breadcrumbJsonLd = {
         'click',
         async () => {
           try {
-            await navigator.clipboard.writeText(location.href);
+            await navigator.clipboard.writeText(location.origin + location.pathname);
           } catch {
             /* clipboard unsupported */
           }
