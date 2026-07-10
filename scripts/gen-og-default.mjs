@@ -6,7 +6,7 @@ const W = 1200;
 const H = 630;
 
 // Domain hostname derived from SITE_URL env or default.
-const SITE_URL = process.env.SITE_URL || 'https://edunavata-blog.pages.dev';
+const SITE_URL = process.env.SITE_URL || 'https://edunavata.com';
 const HOSTNAME = new URL(SITE_URL).hostname;
 const AUTHOR = process.env.AUTHOR_NAME || 'Edu González';
 const TAGLINE = process.env.TAGLINE || 'Cloud · Data · LLMs · Linux · Ciberseguridad';

@@ -94,7 +94,7 @@ function buildPostTranslationMap() {
 const postTranslations = buildPostTranslationMap();
 
 export default defineConfig({
-  site: process.env.SITE_URL || 'https://edunavata-blog.pages.dev',
+  site: process.env.SITE_URL || 'https://edunavata.com',
 
   trailingSlash: 'always',
 

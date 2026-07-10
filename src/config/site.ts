@@ -2,7 +2,7 @@
 // SITE_URL is read from the environment variable (set in .env or your hosting dashboard).
 
 export const SITE = {
-  url: import.meta.env.SITE_URL || 'https://edunavata-blog.pages.dev',
+  url: import.meta.env.SITE_URL || 'https://edunavata.com',
   title: 'Edu González — Blog Técnico',
   description: 'Cloud, Data Engineering, LLMs, Linux y Ciberseguridad.',
   author: 'Edu González',

@@ -59,7 +59,7 @@ function buildSvg(
   ${textLines}
   <rect x="80" y="${underlineY}" width="420" height="2" fill="#4a90d9" opacity="0.6" rx="1"/>
   <text x="80" y="${H - 48}" font-family="Courier New,monospace" font-size="15" fill="#6b7280" letter-spacing="0.04em">${escXml(author)}</text>
-  <text x="${W - 60}" y="${H - 48}" font-family="Courier New,monospace" font-size="13" fill="#2d3748" text-anchor="end" letter-spacing="0.04em">edunavata-blog.pages.dev</text>
+  <text x="${W - 60}" y="${H - 48}" font-family="Courier New,monospace" font-size="13" fill="#2d3748" text-anchor="end" letter-spacing="0.04em">edunavata.com</text>
   <circle cx="${W - 60}" cy="${H - 30}" r="3" fill="#4a90d9" opacity="0.4"/>
 </svg>`;
 }

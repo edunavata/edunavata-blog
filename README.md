@@ -2,7 +2,7 @@
 
 Blog personal de ingeniería sobre **Cloud, Data Engineering, LLMs, Linux y Ciberseguridad**. Bilingüe (ES/EN), estático, optimizado para SEO y experiencias de búsqueda generativas.
 
-> Sitio en producción: <https://edunavata-blog.pages.dev>
+> Sitio en producción: <https://edunavata.com>
 
 ---
 
@@ -129,9 +129,9 @@ El redirect de `www` a dominio apex no se puede versionar completamente en `_red
 
 ### Variables de entorno
 
-| Variable   | Uso                                            | Default                            |
-| ---------- | ---------------------------------------------- | ---------------------------------- |
-| `SITE_URL` | URL base usada por canonical, OG, sitemap, RSS | `https://edunavata-blog.pages.dev` |
+| Variable   | Uso                                            | Default                 |
+| ---------- | ---------------------------------------------- | ----------------------- |
+| `SITE_URL` | URL base usada por canonical, OG, sitemap, RSS | `https://edunavata.com` |
 
 Configura en `.env` para desarrollo local, o en el dashboard de Cloudflare Pages en producción.
 
@@ -194,4 +194,4 @@ npm run dev   # preview en /es/posts/mi-nuevo-articulo/
 Código: MIT. Contenido de los posts: © Edu González — todos los derechos reservados salvo indicación expresa.
 
 - Autor: [Edu González](https://github.com/edunavata)
-- Contacto: ver [/es/about](https://edunavata-blog.pages.dev/es/about/) en el sitio
+- Contacto: ver [/es/about](https://edunavata.com/es/about/) en el sitio
