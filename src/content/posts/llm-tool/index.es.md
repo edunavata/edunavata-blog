@@ -8,6 +8,9 @@ summary: 'Construí tres scripts con LLM y boto3 para Athena, Glue y Redshift. S
 category: carrera
 tags: [tools, productivity, llm, aws, best-practices]
 lang: 'es'
+cover:
+  image: './cover.png'
+  alt: 'Herramientas desechables con LLM en AWS'
 ---
 
 Probablemente estemos de acuerdo en que la interfaz web de AWS es pesada y lenta. Si has trabajado con ella reconocerás esa sensación de esperar a que cargue o echar en falta funciones de productividad básicas. Todo se acentúa si trabajas en máquinas de bajos recursos o escritorios remotos: en mi caso, llegué a desperdiciar fácilmente **un 30% de mi jornada** esperando a la interfaz.
