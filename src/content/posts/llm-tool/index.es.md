@@ -8,6 +8,9 @@ summary: 'Construí tres scripts con LLM y boto3 para Athena, Glue y Redshift. S
 category: carrera
 tags: [tools, productivity, llm, aws, best-practices]
 lang: 'es'
+cover:
+  image: './cover.png'
+  alt: 'Herramientas desechables con LLM en AWS'
 ---
 
 Probablemente estemos de acuerdo en que la interfaz web de AWS es pesada y lenta. Si has trabajado con ella reconocerás esa sensación de esperar a que cargue o echar en falta funciones de productividad básicas. Todo se acentúa si trabajas en máquinas de bajos recursos o escritorios remotos: en mi caso, llegué a desperdiciar fácilmente **un 30% de mi jornada** esperando a la interfaz.
@@ -22,11 +25,11 @@ Esa fue la primera herramienta. Después construí dos más, y las tres tuvieron
 
 La interfaz de Athena me parece especialmente lenta y pesada, sobre todo con varias bases de datos y múltiples tablas. Estoy acostumbrado a usar DBeaver, y frente a un cliente así la UX de Athena baja drásticamente. En entornos corporativos tampoco sueles tener permisos para configurar servicios como Spectrum, así que esa vía quedaba descartada. Necesitaba mejorar mi flujo de trabajo usando solo la autenticación que ya tenía.
 
-Así que le pedí a Opus —*mi compañero de confianza para estas cosas*— que desarrollara un script sencillo para ejecutar consultas en Athena, con los flags elementales (`workgroup`, perfil AWS, etc.). En **cinco minutos** tenía la herramienta lista, la subí a mi repo, y en pocos minutos más mi agente de código ya hacía consultas a Athena libremente. También podía escribir yo mismo las consultas y ver los resultados en terminal.
+Así que le pedí a Opus, *mi compañero de confianza para estas cosas*, que desarrollara un script sencillo para ejecutar consultas en Athena, con los flags elementales (`workgroup`, perfil AWS, etc.). En **cinco minutos** tenía la herramienta lista, la subí a mi repo, y en pocos minutos más mi agente de código ya hacía consultas a Athena libremente. También podía escribir yo mismo las consultas y ver los resultados en terminal.
 
 La herramienta funcionaba, pero se quedaba corta en cuanto la tabla crecía: solo servía para consultas puntuales de pocas columnas. No sustituía a la interfaz original, y **el dolor que evitaba era menor que el que introducía**.
 
-Nadie de mi equipo llegó a usarla. Yo mismo la usé un par de veces más y luego dejé de tocarla. No falló por mala ejecución — en cinco minutos tenía algo funcional — sino porque resolvía **una molestia mía, puntual, que no era lo bastante frecuente ni lo bastante compartida** como para justificar mantenerla.
+Nadie de mi equipo llegó a usarla. Yo mismo la usé un par de veces más y luego dejé de tocarla. No falló por mala ejecución, en cinco minutos tenía algo funcional, sino porque resolvía **una molestia mía, puntual, que no era lo bastante frecuente ni lo bastante compartida** como para justificar mantenerla.
 
 Y hay una segunda confirmación, con perspectiva: hoy en mi equipo usamos Kiro, que tiene disponible una tool para interactuar con Athena entre otros servicios de AWS. Mi herramienta hoy sería directamente redundante.
 
@@ -49,11 +52,11 @@ Parece rápido, pero fácilmente perdía **5 minutos** por despliegue.
 
 Ya había creado algún script suelto para interactuar con Glue en tareas muy concretas. En ese momento se me encendió la bombilla: qué bien estaría una consola tipo shell para Glue. Volví a llamar a *mi compañero de confianza* y el resultado fue increíble — ni siquiera dediqué tiempo a pensar bien los requisitos, solo definí de forma vaga la UX que quería y que usara únicamente `boto3` como dependencia. En pocos minutos tenía una shell personal con historial de comandos donde podía ver jobs, ejecutarlos, ver logs, descargar y subir código. Lo que antes tardaba **5 minutos** ahora eran **20 segundos**, sin salir de VS Code.
 
-Al principio solo la usaba yo. Cuando terminé de validarla se la enseñé a un compañero — hubo la fricción inicial típica (me puso cara rara). Unos días después me dijo *"estaría bien añadirle esta funcionalidad"*; la semana siguiente, *"mira lo que añadí a la herramienta"*. Eso es el mejor feedback posible.
+Al principio solo la usaba yo. Cuando terminé de validarla se la enseñé a un compañero, hubo la fricción inicial típica (me puso cara rara). Unos días después me dijo *"estaría bien añadirle esta funcionalidad"*; la semana siguiente, *"mira lo que añadí a la herramienta"*. Eso es el mejor feedback posible.
 
 Hoy la uso a diario. Si necesito revisar logs en profundidad se lo mando a Kiro, que tiene su propia herramienta para eso y lo hace diez veces más rápido que yo. Pero siempre tengo una consola de Glue abierta en mi entorno, para comprobaciones rápidas o relanzar algo a mano.
 
-El ROI ha sido altísimo: minutos de desarrollo inicial más algunas horas puliéndola y añadiendo casos de uso, a cambio de una productividad **x10 o x20** — y la paz mental que la interfaz de AWS nunca dio.
+El ROI ha sido altísimo: minutos de desarrollo inicial más algunas horas puliéndola y añadiendo casos de uso, a cambio de una productividad **x10 o x20**, y la paz mental que la interfaz de AWS nunca dio.
 
 Esta es la diferencia con Athena. Que yo diga que una herramienta es útil no prueba nada; que un compañero la extienda por su cuenta, sin que se lo pida, sí.
 
@@ -65,7 +68,7 @@ Cuando estás en medio de una gran migración de datos, uno de los pasos más im
 
 Estas queries hoy las desarrollamos con IA, pero siempre toca ejecutarlas, analizar resultados, ir haciendo pequeños ajustes. Y en el fondo es trabajo mecánico, de poco valor añadido. Una vez detectas las discrepancias, lo que de verdad aporta valor es decidir si lo nuevo es mejor, peor o neutral, y si los nuevos procesos merecen corregirse. Pero eso es la menor parte del tiempo.
 
-Hace unos meses ya había explorado la idea de dar a un LLM acceso a una base de datos mediante un MCP ([lo dejo aquí](https://github.com/edunavata/GPU-MCP) por si interesa), de forma rudimentaria y experimental — aún no estábamos de lleno en la era agéntica. Viendo lo que los agentes de código ya podían hacer, retomé la idea, pero mucho más simple: un enfoque de Skill en lugar de MCP. Creé un script que, usando `boto3`, permitía hacer consultas a Redshift con ciertos guardarraíles (*whitelist*, solo operaciones `SELECT`, credenciales opacas al LLM). Y creé un agente de Kiro al que le expliqué el flujo de validación, con el objetivo de generar un reporte que facilitara la vida al desarrollador encargado de validar.
+Hace unos meses ya había explorado la idea de dar a un LLM acceso a una base de datos mediante un MCP ([lo dejo aquí](https://github.com/edunavata/GPU-MCP) por si interesa), de forma rudimentaria y experimental, aún no estábamos de lleno en la era agéntica. Viendo lo que los agentes de código ya podían hacer, retomé la idea, pero mucho más simple: un enfoque de Skill en lugar de MCP. Creé un script que, usando `boto3`, permitía hacer consultas a Redshift con ciertos guardarraíles (*whitelist*, solo operaciones `SELECT`, credenciales opacas al LLM). Y creé un agente de Kiro al que le expliqué el flujo de validación, con el objetivo de generar un reporte que facilitara la vida al desarrollador encargado de validar.
 
 ¿El resultado? En **pocos minutos**, un reporte limpio, obtenido mediante un procedimiento replicable, con todas las queries usadas numeradas y registradas. Ese mismo reporte manualmente lleva **horas**. La herramienta despertó mucho hype en mi equipo, especialmente en usuarios no técnicos — incluso mi jefe validó el valor del reporte en cuanto lo vio. Parece magia pedirle al LLM que revise las tablas nuevas contra las de referencia y obtener un reporte en minutos, con datos reales.
 

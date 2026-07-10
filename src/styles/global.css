@@ -746,12 +746,22 @@ a {
   font-size: 18px;
   line-height: 1.72;
   color: var(--text);
+  /* Evita que URLs largas o código inline desborden en viewports estrechos. */
+  overflow-wrap: break-word;
 }
 .body > * + * {
   margin-top: 1.4em;
 }
 .body p {
   margin-bottom: 0;
+}
+/* Reparte mejor la última línea: menos huérfanas y ríos tipográficos. */
+.body p,
+.body li {
+  text-wrap: pretty;
+}
+.body :is(h2, h3, h4) {
+  text-wrap: balance;
 }
 .body h2 {
   font-family: var(--font-serif);
@@ -791,6 +801,43 @@ a {
 .body :is(h2, h3) .heading-anchor:focus-visible {
   opacity: 1;
   color: var(--accent);
+}
+/* En táctil no hay hover: deja el ancla siempre visible pero discreta. */
+@media (hover: none) {
+  .body :is(h2, h3) .heading-anchor {
+    opacity: 0.4;
+  }
+}
+/* Resalta el destino al saltar desde la ToC o una footnote.
+   Marca visible tipo rotulador que se mantiene un instante y se desvanece,
+   con una barra de acento a la izquierda para reforzar la orientación. */
+.body :is(h2, h3, h4):target,
+.body .footnotes li:target {
+  animation: target-flash 2.4s ease-out;
+  border-radius: 6px;
+}
+@keyframes target-flash {
+  0%,
+  25% {
+    background-color: color-mix(in oklab, var(--accent) 18%, transparent);
+    box-shadow:
+      -0.5em 0 0 color-mix(in oklab, var(--accent) 18%, transparent),
+      0.5em 0 0 color-mix(in oklab, var(--accent) 18%, transparent),
+      inset 3px 0 0 var(--accent);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow:
+      -0.5em 0 0 transparent,
+      0.5em 0 0 transparent,
+      inset 0 0 0 transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .body :is(h2, h3, h4):target,
+  .body .footnotes li:target {
+    animation: none;
+  }
 }
 .body strong {
   color: var(--text);
