@@ -117,7 +117,7 @@ export default defineConfig({
   },
 
   build: {
-    inlineStylesheets: 'always',
+    inlineStylesheets: 'auto',
   },
 
   prefetch: {
@@ -142,6 +142,7 @@ export default defineConfig({
       weights: ['400 600'],
       styles: ['normal', 'italic'],
       subsets: ['latin'],
+      display: 'optional',
       fallbacks: ['Georgia', 'serif'],
     },
     {
