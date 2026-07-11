@@ -10,6 +10,10 @@
 /es/tags /es/tags/ 301
 /en/tags /en/tags/ 301
 
+# Localized slug (old slug was indexed — keep 301 permanently)
+/es/posts/llm-tool /es/posts/herramientas-desechables-llm-aws/ 301
+/es/posts/llm-tool/ /es/posts/herramientas-desechables-llm-aws/ 301
+
 /es/posts/:slug /es/posts/:slug/ 301
 /en/posts/:slug /en/posts/:slug/ 301
 /es/categories/:category /es/categories/:category/ 301
