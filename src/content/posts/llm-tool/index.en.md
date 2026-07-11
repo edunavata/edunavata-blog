@@ -2,7 +2,7 @@
 title: 'Disposable LLM tools: when to build and when not to'
 date: 2026-07-09
 draft: false
-slug: 'llm-tool'
+slug: 'disposable-llm-tools'
 description: 'Three tools built with an LLM and boto3 on AWS, and why only one was worth it. A practical criterion for deciding what to build.'
 summary: 'I built three scripts with an LLM and boto3 for Athena, Glue and Redshift. Only one survived. The difference wasn''t technical: it was whether anyone else needed it.'
 category: carrera
