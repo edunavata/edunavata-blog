@@ -43,6 +43,8 @@ const formattedDate = formatDate(date, lang);
         <Image
           src={coverImage}
           alt={coverAlt || ''}
+          widths={[320, 480, 640, 800, 1024]}
+          sizes="(min-width: 1024px) 45vw, 92vw"
           loading="eager"
           fetchpriority="high"
           style="width:100%;height:100%;object-fit:cover;"
